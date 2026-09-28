@@ -7,7 +7,18 @@
 <title>Impression Solutions - Invoice</title>
 
 <style>
-* {
+.company-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.company-logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+    * {
     box-sizing: border-box;
 }
 
@@ -531,7 +542,10 @@ td input {
 
         <div class="company">
 
-            <h1>IMPRESSION SOLUTIONS</h1>
+           <div class="company-header">
+    <img src="icon.png" alt="Impression Solutions" class="company-logo">
+    <h1>Impression Solutions</h1>
+</div>
 
             <div class="company-details">
                 <strong>Impression Solutions (PTY) LTD</strong><br>
