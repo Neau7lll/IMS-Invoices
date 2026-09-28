@@ -1,0 +1,15 @@
+{
+  "name": "Impression Solutions Invoice",
+  "short_name": "IMS Invoice",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#eef1f5",
+  "theme_color": "#17263a",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "786x786",
+      "type": "image/png"
+    }
+  ]
+}
