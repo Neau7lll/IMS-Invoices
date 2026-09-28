@@ -1,1 +1,630 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impression Solutions - Invoice</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        color: #222;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 30px;
+    }
+
+    h2 {
+        margin-top: 30px;
+        border-bottom: 2px solid #222;
+        padding-bottom: 8px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .company {
+        flex: 1;
+    }
+
+    .invoice-info {
+        text-align: right;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+
+    textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .full {
+        grid-column: 1 / -1;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
+
+    th {
+        background: #eee;
+        text-align: left;
+    }
+
+    .amount {
+        text-align: right;
+    }
+
+    .totals {
+        margin-left: auto;
+        width: 300px;
+        margin-top: 20px;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+    }
+
+    .grand-total {
+        font-size: 20px;
+        font-weight: bold;
+        border-top: 2px solid #222;
+        margin-top: 5px;
+        padding-top: 12px;
+    }
+
+    button {
+        border: none;
+        padding: 11px 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+        margin: 5px;
+    }
+
+    .primary {
+        background: #222;
+        color: white;
+    }
+
+    .secondary {
+        background: #ddd;
+        color: #222;
+    }
+
+    .danger {
+        background: #b00020;
+        color: white;
+    }
+
+    .actions {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .customer-controls {
+        display: flex;
+        gap: 10px;
+        align-items: end;
+        margin-bottom: 15px;
+    }
+
+    .customer-controls > div {
+        flex: 1;
+    }
+
+    @media (max-width: 700px) {
+        body {
+            padding: 5px;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .header {
+            display: block;
+        }
+
+        .invoice-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .full {
+            grid-column: auto;
+        }
+
+        .totals {
+            width: 100%;
+        }
+
+        table {
+            font-size: 13px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="company">
+            <h1>IMPRESSION SOLUTIONS</h1>
+            <p>Invoice</p>
+        </div>
+
+        <div class="invoice-info">
+            <strong>Invoice No:</strong>
+            <span id="invoiceNumber"></span>
+            <br><br>
+
+            <strong>Date:</strong>
+            <input type="date" id="invoiceDate">
+        </div>
+
+    </div>
+
+
+    <h2>Customer Details</h2>
+
+    <div class="customer-controls">
+
+        <div>
+            <label>Saved Customer</label>
+            <select id="customerSelect">
+                <option value="">-- New Customer --</option>
+            </select>
+        </div>
+
+        <button class="secondary" onclick="saveCustomer()">
+            Save Customer
+        </button>
+
+        <button class="danger" onclick="deleteCustomer()">
+            Delete
+        </button>
+
+    </div>
+
+
+    <div class="grid">
+
+        <div>
+            <label>Customer Name</label>
+            <input type="text" id="customerName">
+        </div>
+
+        <div>
+            <label>Company</label>
+            <input type="text" id="customerCompany">
+        </div>
+
+        <div>
+            <label>Contact Number</label>
+            <input type="text" id="customerPhone">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" id="customerEmail">
+        </div>
+
+        <div class="full">
+            <label>Address</label>
+            <textarea id="customerAddress"></textarea>
+        </div>
+
+    </div>
+
+
+    <h2>Invoice Items</h2>
+
+    <table id="itemsTable">
+
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th style="width:100px;">Qty</th>
+                <th style="width:150px;">Unit Price</th>
+                <th style="width:150px;">Amount</th>
+                <th style="width:80px;"></th>
+            </tr>
+        </thead>
+
+        <tbody id="itemsBody"></tbody>
+
+    </table>
+
+    <button class="secondary" onclick="addItem()">
+        + Add Item
+    </button>
+
+
+    <div class="totals">
+
+        <div class="total-row">
+            <span>Subtotal</span>
+            <span id="subtotal">R 0.00</span>
+        </div>
+
+        <div class="total-row grand-total">
+            <span>Total</span>
+            <span id="grandTotal">R 0.00</span>
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button class="primary" onclick="generatePDF()">
+            Generate PDF
+        </button>
+
+        <button class="secondary" onclick="newInvoice()">
+            New Invoice
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let invoiceNumber = localStorage.getItem("invoiceNumber");
+
+if (!invoiceNumber) {
+    invoiceNumber = 1;
+}
+
+document.getElementById("invoiceNumber").textContent =
+    String(invoiceNumber).padStart(5, "0");
+
+document.getElementById("invoiceDate").value =
+    new Date().toISOString().split("T")[0];
+
+
+
+function addItem() {
+
+    const tbody = document.getElementById("itemsBody");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>
+            <input type="text" class="description">
+        </td>
+
+        <td>
+            <input type="number"
+                   class="qty"
+                   value="1"
+                   min="0"
+                   oninput="calculateTotals()">
+        </td>
+
+        <td>
+            <input type="number"
+                   class="price"
+                   value="0"
+                   min="0"
+                   step="0.01"
+                   oninput="calculateTotals()">
+        </td>
+
+        <td class="amount">
+            R 0.00
+        </td>
+
+        <td>
+            <button class="danger"
+                    onclick="removeItem(this)">
+                X
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+
+    calculateTotals();
+}
+
+
+
+function removeItem(button) {
+
+    button.closest("tr").remove();
+
+    calculateTotals();
+}
+
+
+
+function calculateTotals() {
+
+    let total = 0;
+
+    const rows =
+        document.querySelectorAll("#itemsBody tr");
+
+    rows.forEach(row => {
+
+        const qty =
+            parseFloat(row.querySelector(".qty").value) || 0;
+
+        const price =
+            parseFloat(row.querySelector(".price").value) || 0;
+
+        const amount = qty * price;
+
+        row.querySelector(".amount").textContent =
+            "R " + amount.toFixed(2);
+
+        total += amount;
+
+    });
+
+    document.getElementById("subtotal").textContent =
+        "R " + total.toFixed(2);
+
+    document.getElementById("grandTotal").textContent =
+        "R " + total.toFixed(2);
+}
+
+
+
+function saveCustomer() {
+
+    const name =
+        document.getElementById("customerName").value.trim();
+
+    if (!name) {
+        alert("Please enter a customer name.");
+        return;
+    }
+
+    const customer = {
+
+        name: name,
+
+        company:
+            document.getElementById("customerCompany").value,
+
+        phone:
+            document.getElementById("customerPhone").value,
+
+        email:
+            document.getElementById("customerEmail").value,
+
+        address:
+            document.getElementById("customerAddress").value
+
+    };
+
+
+    let customers =
+        JSON.parse(localStorage.getItem("customers") || "[]");
+
+
+    const existing =
+        customers.findIndex(c => c.name === name);
+
+
+    if (existing >= 0) {
+
+        customers[existing] = customer;
+
+    } else {
+
+        customers.push(customer);
+
+    }
+
+
+    localStorage.setItem(
+        "customers",
+        JSON.stringify(customers)
+    );
+
+
+    loadCustomers();
+
+    alert("Customer saved.");
+}
+
+
+
+function loadCustomers() {
+
+    const select =
+        document.getElementById("customerSelect");
+
+    select.innerHTML =
+        '<option value="">-- New Customer --</option>';
+
+
+    const customers =
+        JSON.parse(localStorage.getItem("customers") || "[]");
+
+
+    customers.forEach((customer, index) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = index;
+
+        option.textContent =
+            customer.name +
+            (customer.company
+                ? " - " + customer.company
+                : "");
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+
+document.getElementById("customerSelect")
+.addEventListener("change", function() {
+
+    if (this.value === "") {
+        return;
+    }
+
+    const customers =
+        JSON.parse(localStorage.getItem("customers") || "[]");
+
+    const customer =
+        customers[this.value];
+
+    document.getElementById("customerName").value =
+        customer.name || "";
+
+    document.getElementById("customerCompany").value =
+        customer.company || "";
+
+    document.getElementById("customerPhone").value =
+        customer.phone || "";
+
+    document.getElementById("customerEmail").value =
+        customer.email || "";
+
+    document.getElementById("customerAddress").value =
+        customer.address || "";
+
+});
+
+
+
+function deleteCustomer() {
+
+    const select =
+        document.getElementById("customerSelect");
+
+    if (select.value === "") {
+        alert("Select a saved customer first.");
+        return;
+    }
+
+    let customers =
+        JSON.parse(localStorage.getItem("customers") || "[]");
+
+    customers.splice(select.value, 1);
+
+    localStorage.setItem(
+        "customers",
+        JSON.stringify(customers)
+    );
+
+    loadCustomers();
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerCompany").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerEmail").value = "";
+    document.getElementById("customerAddress").value = "";
+
+}
+
+
+
+function newInvoice() {
+
+    if (!confirm("Start a new invoice?")) {
+        return;
+    }
+
+    let nextNumber =
+        parseInt(localStorage.getItem("invoiceNumber") || "1") + 1;
+
+    localStorage.setItem(
+        "invoiceNumber",
+        nextNumber
+    );
+
+    location.reload();
+
+}
+
+
+
+function generatePDF() {
+
+    window.print();
+
+}
+
+
+
+loadCustomers();
+
+addItem();
+
+</script>
+
+</body>
+</html>
