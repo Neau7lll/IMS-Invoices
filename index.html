@@ -7,50 +7,73 @@
 <title>Impression Solutions - Invoice</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --navy: #17263a;
+    --blue: #2474b8;
+    --blue-light: #eaf3fb;
+    --grey: #f4f6f8;
+    --border: #d9dee5;
+    --text: #202832;
+    --muted: #6b7280;
+}
+
 body {
     margin: 0;
-    padding: 20px;
+    padding: 25px;
     font-family: Arial, Helvetica, sans-serif;
-    background: #eeeeee;
-    color: #222;
+    background: #eef1f5;
+    color: var(--text);
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1050px;
     margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
 }
 
 /* =========================
-   FORM
+   HEADER
 ========================= */
 
 .form-header {
     display: flex;
     justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 30px;
+    gap: 35px;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 4px solid var(--blue);
 }
 
 .company h1 {
     margin: 0 0 8px 0;
     font-size: 30px;
+    letter-spacing: 1px;
+    color: var(--navy);
 }
 
 .company-details {
-    line-height: 1.5;
+    line-height: 1.6;
     font-size: 14px;
+    color: var(--muted);
+}
+
+.company-details strong {
+    color: var(--navy);
 }
 
 .invoice-meta {
-    min-width: 230px;
+    min-width: 260px;
+    background: var(--blue-light);
+    padding: 15px 18px;
+    border-radius: 8px;
+    border-left: 4px solid var(--blue);
 }
 
 .invoice-meta-row {
@@ -61,21 +84,45 @@ body {
     gap: 15px;
 }
 
-.invoice-meta-row strong {
-    white-space: nowrap;
+.invoice-meta-row:last-child {
+    margin-bottom: 0;
 }
 
-h2 {
-    font-size: 20px;
-    margin-top: 30px;
-    border-bottom: 2px solid #222;
-    padding-bottom: 8px;
+.invoice-meta-row strong {
+    white-space: nowrap;
+    color: var(--navy);
 }
+
+#invoiceNumber {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--blue);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+h2 {
+    font-size: 17px;
+    color: var(--navy);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding: 10px 14px;
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-bottom: none;
+    border-radius: 4px;
+}
+
+/* =========================
+   INPUTS
+========================= */
 
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 16px;
 }
 
 .full {
@@ -85,18 +132,30 @@ h2 {
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--navy);
 }
 
 input,
 textarea,
 select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #bbb;
+    padding: 11px 12px;
+    border: 1px solid var(--border);
     border-radius: 5px;
-    font-size: 15px;
-    background: white;
+    font-size: 14px;
+    background: #ffffff;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(36, 116, 184, 0.12);
 }
 
 textarea {
@@ -104,88 +163,151 @@ textarea {
     resize: vertical;
 }
 
+/* =========================
+   CUSTOMER CONTROLS
+========================= */
+
 .customer-controls {
     display: flex;
     gap: 10px;
     align-items: end;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    padding: 15px;
+    background: var(--grey);
+    border-radius: 7px;
 }
 
 .customer-controls > div {
     flex: 1;
 }
 
+/* =========================
+   BUTTONS
+========================= */
+
 button {
     border: none;
     padding: 11px 18px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
 }
 
 .primary {
-    background: #222;
+    background: var(--blue);
     color: white;
+}
+
+.primary:hover {
+    background: #1d619b;
 }
 
 .secondary {
-    background: #ddd;
-    color: #222;
+    background: #e4e8ed;
+    color: var(--navy);
+}
+
+.secondary:hover {
+    background: #d7dce2;
 }
 
 .danger {
-    background: #b00020;
+    background: #b4232c;
     color: white;
+}
+
+/* =========================
+   ITEMS TABLE
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+}
+
+th {
+    background: var(--navy);
+    color: white;
+    text-align: left;
+    padding: 11px 9px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+td {
+    border-top: 1px solid var(--border);
+    padding: 8px;
+    background: white;
+}
+
+td input {
+    border: 1px solid #e1e5ea;
+}
+
+.amount {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: bold;
+    color: var(--navy);
 }
 
 .add-item {
     margin-top: 15px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 8px;
-}
-
-th {
-    background: #eeeeee;
-    text-align: left;
-}
-
-.amount {
-    text-align: right;
-    white-space: nowrap;
-}
+/* =========================
+   TOTALS
+========================= */
 
 .totals {
     width: 320px;
     margin-left: auto;
-    margin-top: 20px;
+    margin-top: 25px;
+    padding: 15px 18px;
+    background: var(--grey);
+    border-radius: 7px;
 }
 
 .total-row {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 7px 0;
 }
 
 .grand-total {
     font-size: 20px;
     font-weight: bold;
-    border-top: 2px solid #222;
+    color: var(--navy);
+    border-top: 2px solid var(--blue);
+    margin-top: 6px;
     padding-top: 12px;
 }
+
+#grandTotal {
+    color: var(--blue);
+}
+
+/* =========================
+   ACTIONS
+========================= */
 
 .actions {
     text-align: center;
     margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
 }
 
 /* =========================
@@ -195,7 +317,6 @@ th {
 .print-invoice {
     display: none;
 }
-
 
 /* =========================
    MOBILE
@@ -209,6 +330,7 @@ th {
 
     .container {
         padding: 15px;
+        border-radius: 5px;
     }
 
     .form-header {
@@ -233,14 +355,18 @@ th {
 
     .customer-controls button {
         margin-top: 10px;
+        margin-right: 5px;
     }
 
     .totals {
         width: 100%;
     }
 
-}
+    table {
+        font-size: 12px;
+    }
 
+}
 
 /* =========================
    PRINT
@@ -273,7 +399,7 @@ th {
     .print-header {
         display: flex;
         justify-content: space-between;
-        border-bottom: 2px solid #000;
+        border-bottom: 4px solid #2474b8;
         padding-bottom: 15px;
         margin-bottom: 25px;
     }
@@ -281,6 +407,7 @@ th {
     .print-company h1 {
         margin: 0 0 8px 0;
         font-size: 25px;
+        color: #17263a;
     }
 
     .print-company-details {
@@ -293,10 +420,12 @@ th {
     }
 
     .print-invoice-title h2 {
+        background: none;
         border: none;
         margin: 0 0 10px 0;
         padding: 0;
         font-size: 28px;
+        color: #17263a;
     }
 
     .print-meta {
@@ -305,7 +434,8 @@ th {
     }
 
     .print-customer {
-        border: 1px solid #000;
+        border: 1px solid #d9dee5;
+        border-left: 4px solid #2474b8;
         padding: 12px;
         margin-bottom: 25px;
     }
@@ -313,6 +443,7 @@ th {
     .print-section-title {
         font-weight: bold;
         font-size: 13px;
+        color: #17263a;
         margin-bottom: 8px;
     }
 
@@ -328,14 +459,15 @@ th {
     }
 
     .print-items th {
-        background: #eeeeee !important;
-        border: 1px solid #000;
+        background: #17263a !important;
+        color: white !important;
+        border: 1px solid #17263a;
         padding: 8px;
         font-size: 11px;
     }
 
     .print-items td {
-        border: 1px solid #000;
+        border: 1px solid #d9dee5;
         padding: 8px;
         font-size: 11px;
     }
@@ -358,7 +490,8 @@ th {
     }
 
     .print-grand-total {
-        border-top: 2px solid #000;
+        border-top: 3px solid #2474b8;
+        color: #17263a;
         font-size: 16px;
         font-weight: bold;
         padding-top: 10px;
@@ -366,7 +499,7 @@ th {
 
     .print-bank {
         margin-top: 45px;
-        border-top: 1px solid #000;
+        border-top: 1px solid #d9dee5;
         padding-top: 12px;
         font-size: 11px;
         line-height: 1.6;
@@ -376,6 +509,7 @@ th {
         margin-top: 35px;
         text-align: center;
         font-size: 10px;
+        color: #6b7280;
     }
 
 }
