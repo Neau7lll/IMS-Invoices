@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +7,6 @@
 <title>Impression Solutions - Invoice</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -34,19 +32,18 @@ body {
 .container {
     max-width: 1050px;
     margin: auto;
-    background: #ffffff;
+    background: white;
     padding: 35px;
     border-radius: 10px;
     box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .form-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 35px;
     padding-bottom: 25px;
     margin-bottom: 25px;
@@ -101,8 +98,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
     gap: 15px;
+    margin-bottom: 10px;
 }
 
 .invoice-meta-row:last-child {
@@ -120,9 +117,7 @@ body {
     color: var(--blue);
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/* SECTIONS */
 
 h2 {
     font-size: 17px;
@@ -132,13 +127,10 @@ h2 {
     padding: 10px 14px;
     background: var(--blue-light);
     border-left: 4px solid var(--blue);
-    border-bottom: none;
     border-radius: 4px;
 }
 
-/* =========================
-   INPUTS
-========================= */
+/* INPUTS */
 
 .grid {
     display: grid;
@@ -166,9 +158,8 @@ select {
     border: 1px solid var(--border);
     border-radius: 5px;
     font-size: 14px;
-    background: #ffffff;
+    background: white;
     color: var(--text);
-    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus,
@@ -184,14 +175,12 @@ textarea {
     resize: vertical;
 }
 
-/* =========================
-   CUSTOMER CONTROLS
-========================= */
+/* CUSTOMER CONTROLS */
 
 .customer-controls {
     display: flex;
     gap: 10px;
-    align-items: end;
+    align-items: flex-end;
     margin-bottom: 18px;
     padding: 15px;
     background: var(--grey);
@@ -202,9 +191,7 @@ textarea {
     flex: 1;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/* BUTTONS */
 
 button {
     border: none;
@@ -213,11 +200,6 @@ button {
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    transition: 0.2s;
-}
-
-button:hover {
-    transform: translateY(-1px);
 }
 
 .primary {
@@ -225,17 +207,9 @@ button:hover {
     color: white;
 }
 
-.primary:hover {
-    background: #1d619b;
-}
-
 .secondary {
     background: #e4e8ed;
     color: var(--navy);
-}
-
-.secondary:hover {
-    background: #d7dce2;
 }
 
 .danger {
@@ -243,18 +217,16 @@ button:hover {
     color: white;
 }
 
-/* =========================
-   ITEMS TABLE
-========================= */
+/* TABLE */
 
 table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 15px;
-    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 7px;
+    overflow: hidden;
 }
 
 th {
@@ -264,17 +236,12 @@ th {
     padding: 11px 9px;
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
 }
 
 td {
     border-top: 1px solid var(--border);
     padding: 8px;
     background: white;
-}
-
-td input {
-    border: 1px solid #e1e5ea;
 }
 
 .amount {
@@ -288,9 +255,7 @@ td input {
     margin-top: 15px;
 }
 
-/* =========================
-   TOTALS
-========================= */
+/* TOTALS */
 
 .totals {
     width: 320px;
@@ -320,9 +285,7 @@ td input {
     color: var(--blue);
 }
 
-/* =========================
-   ACTIONS
-========================= */
+/* ACTIONS */
 
 .actions {
     text-align: center;
@@ -331,17 +294,13 @@ td input {
     border-top: 1px solid var(--border);
 }
 
-/* =========================
-   PRINT INVOICE
-========================= */
+/* PRINT VERSION */
 
 .print-invoice {
     display: none;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media (max-width: 700px) {
 
@@ -386,12 +345,9 @@ td input {
     table {
         font-size: 12px;
     }
-
 }
 
-/* =========================
-   PRINT
-========================= */
+/* PRINT */
 
 @media print {
 
@@ -414,7 +370,7 @@ td input {
         display: block !important;
         width: 100%;
         font-family: Arial, Helvetica, sans-serif;
-        color: #000;
+        color: black;
     }
 
     .print-header {
@@ -435,7 +391,6 @@ td input {
         width: 60px;
         height: 60px;
         object-fit: contain;
-        flex-shrink: 0;
     }
 
     .print-company-content {
@@ -551,198 +506,226 @@ td input {
         font-size: 10px;
         color: #6b7280;
     }
-
 }
-
 </style>
-
 </head>
 
 <body>
 
-<!-- =========================
-     DATA ENTRY FORM
-========================= -->
-
 <div class="container">
 
-```
-<div class="form-header">
+    <div class="form-header">
 
-    <div class="company">
+        <div class="company">
 
-        <img src="icon.png"
-             alt="Impression Solutions"
-             class="company-logo">
+            <img
+                src="icon.png"
+                alt="Impression Solutions"
+                class="company-logo"
+            >
 
-        <div class="company-content">
+            <div class="company-content">
 
-            <h1>Impression Solutions</h1>
+                <h1>Impression Solutions</h1>
 
-            <div class="company-details">
-                <strong>Impression Solutions (PTY) LTD</strong><br>
-                17 Park Drive, Mulbarton, Johannesburg<br>
-                Tel: 071 895 1445
+                <div class="company-details">
+                    <strong>Impression Solutions (PTY) LTD</strong><br>
+                    17 Park Drive, Mulbarton, Johannesburg<br>
+                    Tel: 071 895 1445
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="invoice-meta">
+
+            <div class="invoice-meta-row">
+                <strong>Invoice No:</strong>
+                <span id="invoiceNumber"></span>
+            </div>
+
+            <div class="invoice-meta-row">
+                <strong>Date:</strong>
+                <input type="date" id="invoiceDate">
+            </div>
+
+            <div class="invoice-meta-row">
+                <strong>Due Date:</strong>
+                <input type="date" id="dueDate">
             </div>
 
         </div>
 
     </div>
 
-    <div class="invoice-meta">
+    <h2>Customer Details</h2>
 
-        <div class="invoice-meta-row">
-            <strong>Invoice No:</strong>
-            <span id="invoiceNumber"></span>
+    <div class="customer-controls">
+
+        <div>
+            <label>Saved Customer</label>
+
+            <select id="customerSelect">
+                <option value="">-- New Customer --</option>
+            </select>
         </div>
 
-        <div class="invoice-meta-row">
-            <strong>Date:</strong>
-            <input type="date" id="invoiceDate">
+        <button
+            type="button"
+            class="secondary"
+            onclick="saveCustomer()"
+        >
+            Save Customer
+        </button>
+
+        <button
+            type="button"
+            class="danger"
+            onclick="deleteCustomer()"
+        >
+            Delete
+        </button>
+
+    </div>
+
+    <div class="grid">
+
+        <div>
+            <label>Customer / Contact Name</label>
+            <input type="text" id="customerName">
         </div>
 
-        <div class="invoice-meta-row">
-            <strong>Due Date:</strong>
-            <input type="date" id="dueDate">
+        <div>
+            <label>Company</label>
+            <input type="text" id="customerCompany">
+        </div>
+
+        <div>
+            <label>Contact Number</label>
+            <input type="text" id="customerPhone">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" id="customerEmail">
+        </div>
+
+        <div class="full">
+            <label>Address</label>
+            <textarea id="customerAddress"></textarea>
         </div>
 
     </div>
 
-</div>
+    <h2>Invoice Items</h2>
 
-<!-- CUSTOMER -->
+    <table>
 
-<h2>Customer Details</h2>
+        <thead>
+            <tr>
+                <th style="width:80px;">Qty</th>
+                <th style="width:120px;">Code</th>
+                <th>Description</th>
+                <th style="width:150px;">Unit Price</th>
+                <th style="width:150px;">Total</th>
+                <th style="width:70px;">Remove</th>
+            </tr>
+        </thead>
 
-<div class="customer-controls">
+        <tbody id="itemsBody"></tbody>
 
-    <div>
-        <label>Saved Customer</label>
+    </table>
 
-        <select id="customerSelect">
-            <option value="">-- New Customer --</option>
-        </select>
-    </div>
-
-    <button class="secondary" onclick="saveCustomer()">
-        Save Customer
+    <button
+        type="button"
+        class="secondary add-item"
+        onclick="addItem()"
+    >
+        + Add Item
     </button>
 
-    <button class="danger" onclick="deleteCustomer()">
-        Delete
-    </button>
+    <div class="totals">
 
-</div>
+        <div class="total-row">
+            <span>Subtotal</span>
+            <span id="subtotal">R 0.00</span>
+        </div>
 
-<div class="grid">
+        <div class="total-row grand-total">
+            <span>Total</span>
+            <span id="grandTotal">R 0.00</span>
+        </div>
 
-    <div>
-        <label>Customer / Contact Name</label>
-        <input type="text" id="customerName">
     </div>
 
-    <div>
-        <label>Company</label>
-        <input type="text" id="customerCompany">
-    </div>
+    <div class="actions">
 
-    <div>
-        <label>Contact Number</label>
-        <input type="text" id="customerPhone">
-    </div>
+        <button
+            type="button"
+            class="primary"
+            onclick="generatePDF()"
+        >
+            Generate PDF
+        </button>
 
-    <div>
-        <label>Email</label>
-        <input type="email" id="customerEmail">
-    </div>
+        <button
+            type="button"
+            class="secondary"
+            onclick="newInvoice()"
+        >
+            New Invoice
+        </button>
 
-    <div class="full">
-        <label>Address</label>
-        <textarea id="customerAddress"></textarea>
-    </div>
-
-</div>
-
-<!-- ITEMS -->
-
-<h2>Invoice Items</h2>
-
-<table>
-
-    <thead>
-
-        <tr>
-            <th style="width:80px;">Qty</th>
-            <th style="width:120px;">Code</th>
-            <th>Description</th>
-            <th style="width:150px;">Unit Price</th>
-            <th style="width:150px;">Total</th>
-            <th style="width:70px;"></th>
-        </tr>
-
-    </thead>
-
-    <tbody id="itemsBody"></tbody>
-
-</table>
-
-<button class="secondary add-item" onclick="addItem()">
-    + Add Item
-</button>
-
-<div class="totals">
-
-    <div class="total-row">
-        <span>Subtotal</span>
-        <span id="subtotal">R 0.00</span>
-    </div>
-
-    <div class="total-row grand-total">
-        <span>Total</span>
-        <span id="grandTotal">R 0.00</span>
     </div>
 
 </div>
 
-<div class="actions">
 
-    <button class="primary" onclick="generatePDF()">
-        Generate PDF
-    </button>
-
-    <button class="secondary" onclick="newInvoice()">
-        New Invoice
-    </button>
-
-</div>
-```
-
-</div>
-
-<!-- =========================
-     PRINTABLE INVOICE
-========================= -->
+<!-- PRINTABLE INVOICE -->
 
 <div class="print-invoice" id="printInvoice">
 
-```
-<div class="print-header">
+    <div class="print-header">
 
-    <div class="print-company">
+        <div class="print-company">
 
-        <img src="icon.png"
-             alt="Impression Solutions"
-             class="print-company-logo">
+            <img
+                src="icon.png"
+                alt="Impression Solutions"
+                class="print-company-logo"
+            >
 
-        <div class="print-company-content">
+            <div class="print-company-content">
 
-            <h1>IMPRESSION SOLUTIONS</h1>
+                <h1>IMPRESSION SOLUTIONS</h1>
 
-            <div class="print-company-details">
+                <div class="print-company-details">
+                    <strong>Impression Solutions (PTY) LTD</strong><br>
+                    17 Park Drive, Mulbarton, Johannesburg<br>
+                    Tel: 071 895 1445
+                </div>
 
-                <strong>Impression Solutions (PTY) LTD</strong><br>
-                17 Park Drive, Mulbarton, Johannesburg<br>
-                Tel: 071 895 1445
+            </div>
+
+        </div>
+
+        <div class="print-invoice-title">
+
+            <h2>INVOICE</h2>
+
+            <div class="print-meta">
+
+                <strong>Invoice No:</strong>
+                <span id="printInvoiceNumber"></span>
+                <br>
+
+                <strong>Date:</strong>
+                <span id="printInvoiceDate"></span>
+                <br>
+
+                <strong>Due Date:</strong>
+                <span id="printDueDate"></span>
 
             </div>
 
@@ -750,120 +733,92 @@ td input {
 
     </div>
 
-    <div class="print-invoice-title">
+    <div class="print-customer">
 
-        <h2>INVOICE</h2>
+        <div class="print-section-title">
+            BILL TO
+        </div>
 
-        <div class="print-meta">
+        <div class="print-customer-details">
 
-            <strong>Invoice No:</strong>
-            <span id="printInvoiceNumber"></span>
-            <br>
+            <strong id="printCustomerName"></strong><br>
 
-            <strong>Date:</strong>
-            <span id="printInvoiceDate"></span>
-            <br>
+            <span id="printCustomerCompany"></span><br>
 
-            <strong>Due Date:</strong>
-            <span id="printDueDate"></span>
+            <span id="printCustomerAddress"></span><br>
+
+            <span id="printCustomerPhone"></span><br>
+
+            <span id="printCustomerEmail"></span>
 
         </div>
 
     </div>
 
-</div>
+    <table class="print-items">
 
-<div class="print-customer">
+        <thead>
 
-    <div class="print-section-title">
-        BILL TO
+            <tr>
+                <th>Qty</th>
+                <th>Code</th>
+                <th>Description</th>
+                <th class="right">Unit Price</th>
+                <th class="right">Total</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="printItemsBody"></tbody>
+
+    </table>
+
+    <div class="print-totals">
+
+        <div class="print-total-row">
+            <span>Subtotal</span>
+            <span id="printSubtotal"></span>
+        </div>
+
+        <div class="print-total-row print-grand-total">
+            <span>TOTAL</span>
+            <span id="printGrandTotal"></span>
+        </div>
+
     </div>
 
-    <div class="print-customer-details">
+    <div class="print-bank">
 
-        <strong id="printCustomerName"></strong>
-        <span id="printCustomerCompany"></span>
-        <br>
+        <strong>Banking Details</strong><br>
 
-        <span id="printCustomerAddress"></span>
-        <br>
+        Account Name:
+        IMS - Impression Marketing Solutions<br>
 
-        <span id="printCustomerPhone"></span>
-        <br>
+        Bank:
+        FNB<br>
 
-        <span id="printCustomerEmail"></span>
+        Account Number:
+        62471385346<br>
 
+        Branch Code:
+        00259605
+
+    </div>
+
+    <div class="print-footer">
+        Impression Solutions (PTY) LTD
     </div>
 
 </div>
 
-<table class="print-items">
-
-    <thead>
-
-        <tr>
-            <th>Qty</th>
-            <th>Code</th>
-            <th>Description</th>
-            <th class="right">Unit Price</th>
-            <th class="right">Total</th>
-        </tr>
-
-    </thead>
-
-    <tbody id="printItemsBody"></tbody>
-
-</table>
-
-<div class="print-totals">
-
-    <div class="print-total-row">
-        <span>Subtotal</span>
-        <span id="printSubtotal"></span>
-    </div>
-
-    <div class="print-total-row print-grand-total">
-        <span>TOTAL</span>
-        <span id="printGrandTotal"></span>
-    </div>
-
-</div>
-
-<div class="print-bank">
-
-    <strong>Banking Details</strong><br>
-
-    Account Name:
-    IMS - Impression Marketing Solutions<br>
-
-    Bank:
-    FNB<br>
-
-    Account Number:
-    62471385346<br>
-
-    Branch Code:
-    00259605
-
-</div>
-
-<div class="print-footer">
-
-    Impression Solutions (PTY) LTD
-
-</div>
-```
-
-</div>
 
 <script>
 
-/* =========================
-   INVOICE NUMBER
-========================= */
+/* INVOICE NUMBER */
 
-let invoiceNumber =
-    parseInt(localStorage.getItem("invoiceNumber") || "10322");
+let invoiceNumber = parseInt(
+    localStorage.getItem("invoiceNumber") || "10322"
+);
 
 if (invoiceNumber < 10322) {
     invoiceNumber = 10322;
@@ -874,51 +829,45 @@ document.getElementById("invoiceNumber").textContent =
     String(invoiceNumber).padStart(5, "0");
 
 
-/* =========================
-   DATES
-========================= */
+/* DATES */
 
-const today =
-    new Date().toISOString().split("T")[0];
+const today = new Date().toISOString().split("T")[0];
 
 document.getElementById("invoiceDate").value = today;
-
 document.getElementById("dueDate").value = today;
 
 
-/* =========================
-   ADD ITEM
-========================= */
+/* ADD ITEM */
 
 function addItem() {
 
-    const tbody =
-        document.getElementById("itemsBody");
+    const tbody = document.getElementById("itemsBody");
 
-    const row =
-        document.createElement("tr");
+    const row = document.createElement("tr");
 
     row.innerHTML = `
-
         <td>
             <input
                 type="number"
                 class="qty"
                 value="1"
                 min="0"
-                oninput="calculateTotals()">
+                oninput="calculateTotals()"
+            >
         </td>
 
         <td>
             <input
                 type="text"
-                class="code">
+                class="code"
+            >
         </td>
 
         <td>
             <input
                 type="text"
-                class="description">
+                class="description"
+            >
         </td>
 
         <td>
@@ -928,7 +877,8 @@ function addItem() {
                 value="0"
                 min="0"
                 step="0.01"
-                oninput="calculateTotals()">
+                oninput="calculateTotals()"
+            >
         </td>
 
         <td class="amount">
@@ -937,12 +887,13 @@ function addItem() {
 
         <td>
             <button
+                type="button"
                 class="danger"
-                onclick="removeItem(this)">
-                X
+                onclick="removeItem(this)"
+            >
+                Remove
             </button>
         </td>
-
     `;
 
     tbody.appendChild(row);
@@ -951,49 +902,44 @@ function addItem() {
 }
 
 
-/* =========================
-   REMOVE ITEM
-========================= */
+/* REMOVE ITEM */
 
 function removeItem(button) {
 
-    button.closest("tr").remove();
+    const row = button.closest("tr");
+
+    if (row) {
+        row.remove();
+    }
 
     calculateTotals();
 }
 
 
-/* =========================
-   CALCULATE TOTALS
-========================= */
+/* CALCULATE TOTALS */
 
 function calculateTotals() {
 
     let total = 0;
 
-    const rows =
-        document.querySelectorAll("#itemsBody tr");
+    const rows = document.querySelectorAll("#itemsBody tr");
 
     rows.forEach(row => {
 
-        const qty =
-            parseFloat(
-                row.querySelector(".qty").value
-            ) || 0;
+        const qty = parseFloat(
+            row.querySelector(".qty").value
+        ) || 0;
 
-        const price =
-            parseFloat(
-                row.querySelector(".price").value
-            ) || 0;
+        const price = parseFloat(
+            row.querySelector(".price").value
+        ) || 0;
 
-        const amount =
-            qty * price;
+        const amount = qty * price;
 
         row.querySelector(".amount").textContent =
             "R " + amount.toFixed(2);
 
         total += amount;
-
     });
 
     document.getElementById("subtotal").textContent =
@@ -1004,59 +950,40 @@ function calculateTotals() {
 }
 
 
-/* =========================
-   CUSTOMER STORAGE
-========================= */
+/* SAVE CUSTOMER */
 
 function saveCustomer() {
 
-    const name =
-        document.getElementById("customerName").value.trim();
+    const name = document
+        .getElementById("customerName")
+        .value
+        .trim();
 
     if (!name) {
-
         alert("Please enter a customer name.");
-
         return;
     }
 
     const customer = {
-
-        name:
-            name,
-
-        company:
-            document.getElementById("customerCompany").value,
-
-        phone:
-            document.getElementById("customerPhone").value,
-
-        email:
-            document.getElementById("customerEmail").value,
-
-        address:
-            document.getElementById("customerAddress").value
-
+        name: name,
+        company: document.getElementById("customerCompany").value,
+        phone: document.getElementById("customerPhone").value,
+        email: document.getElementById("customerEmail").value,
+        address: document.getElementById("customerAddress").value
     };
 
-    let customers =
-        JSON.parse(
-            localStorage.getItem("customers") || "[]"
-        );
+    let customers = JSON.parse(
+        localStorage.getItem("customers") || "[]"
+    );
 
-    const existing =
-        customers.findIndex(
-            c => c.name.toLowerCase() === name.toLowerCase()
-        );
+    const existing = customers.findIndex(
+        c => c.name.toLowerCase() === name.toLowerCase()
+    );
 
     if (existing >= 0) {
-
         customers[existing] = customer;
-
     } else {
-
         customers.push(customer);
-
     }
 
     localStorage.setItem(
@@ -1067,13 +994,10 @@ function saveCustomer() {
     loadCustomers();
 
     alert("Customer saved.");
-
 }
 
 
-/* =========================
-   LOAD CUSTOMERS
-========================= */
+/* LOAD CUSTOMERS */
 
 function loadCustomers() {
 
@@ -1083,10 +1007,9 @@ function loadCustomers() {
     select.innerHTML =
         '<option value="">-- New Customer --</option>';
 
-    const customers =
-        JSON.parse(
-            localStorage.getItem("customers") || "[]"
-        );
+    const customers = JSON.parse(
+        localStorage.getItem("customers") || "[]"
+    );
 
     customers.forEach((customer, index) => {
 
@@ -1104,53 +1027,48 @@ function loadCustomers() {
             );
 
         select.appendChild(option);
-
     });
-
 }
 
 
-/* =========================
-   SELECT CUSTOMER
-========================= */
+/* SELECT CUSTOMER */
 
 document
-.getElementById("customerSelect")
-.addEventListener("change", function() {
+    .getElementById("customerSelect")
+    .addEventListener("change", function() {
 
-    if (this.value === "") {
-        return;
-    }
+        if (this.value === "") {
+            return;
+        }
 
-    const customers =
-        JSON.parse(
+        const customers = JSON.parse(
             localStorage.getItem("customers") || "[]"
         );
 
-    const customer =
-        customers[this.value];
+        const customer = customers[this.value];
 
-    document.getElementById("customerName").value =
-        customer.name || "";
+        if (!customer) {
+            return;
+        }
 
-    document.getElementById("customerCompany").value =
-        customer.company || "";
+        document.getElementById("customerName").value =
+            customer.name || "";
 
-    document.getElementById("customerPhone").value =
-        customer.phone || "";
+        document.getElementById("customerCompany").value =
+            customer.company || "";
 
-    document.getElementById("customerEmail").value =
-        customer.email || "";
+        document.getElementById("customerPhone").value =
+            customer.phone || "";
 
-    document.getElementById("customerAddress").value =
-        customer.address || "";
+        document.getElementById("customerEmail").value =
+            customer.email || "";
 
-});
+        document.getElementById("customerAddress").value =
+            customer.address || "";
+    });
 
 
-/* =========================
-   DELETE CUSTOMER
-========================= */
+/* DELETE CUSTOMER */
 
 function deleteCustomer() {
 
@@ -1164,10 +1082,9 @@ function deleteCustomer() {
         return;
     }
 
-    let customers =
-        JSON.parse(
-            localStorage.getItem("customers") || "[]"
-        );
+    let customers = JSON.parse(
+        localStorage.getItem("customers") || "[]"
+    );
 
     customers.splice(
         parseInt(select.value),
@@ -1186,13 +1103,10 @@ function deleteCustomer() {
     document.getElementById("customerPhone").value = "";
     document.getElementById("customerEmail").value = "";
     document.getElementById("customerAddress").value = "";
-
 }
 
 
-/* =========================
-   PREPARE PRINT INVOICE
-========================= */
+/* PREPARE PRINT */
 
 function preparePrintInvoice() {
 
@@ -1212,11 +1126,8 @@ function preparePrintInvoice() {
     document.getElementById("printCustomerName").textContent =
         document.getElementById("customerName").value;
 
-    const company =
-        document.getElementById("customerCompany").value;
-
     document.getElementById("printCustomerCompany").textContent =
-        company ? company : "";
+        document.getElementById("customerCompany").value;
 
     document.getElementById("printCustomerAddress").textContent =
         document.getElementById("customerAddress").value;
@@ -1258,42 +1169,25 @@ function preparePrintInvoice() {
             document.createElement("tr");
 
         printRow.innerHTML = `
-
             <td>${escapeHtml(qty)}</td>
-
             <td>${escapeHtml(code)}</td>
-
             <td>${escapeHtml(description)}</td>
-
-            <td class="right">
-                R ${price.toFixed(2)}
-            </td>
-
-            <td class="right">
-                R ${amount.toFixed(2)}
-            </td>
-
+            <td class="right">R ${price.toFixed(2)}</td>
+            <td class="right">R ${amount.toFixed(2)}</td>
         `;
 
         printBody.appendChild(printRow);
-
     });
-
-    const total =
-        document.getElementById("grandTotal").textContent;
 
     document.getElementById("printSubtotal").textContent =
         document.getElementById("subtotal").textContent;
 
     document.getElementById("printGrandTotal").textContent =
-        total;
-
+        document.getElementById("grandTotal").textContent;
 }
 
 
-/* =========================
-   DATE FORMAT
-========================= */
+/* DATE FORMAT */
 
 function formatDate(dateString) {
 
@@ -1301,8 +1195,7 @@ function formatDate(dateString) {
         return "";
     }
 
-    const parts =
-        dateString.split("-");
+    const parts = dateString.split("-");
 
     return parts[2] + "/" +
            parts[1] + "/" +
@@ -1310,9 +1203,7 @@ function formatDate(dateString) {
 }
 
 
-/* =========================
-   BASIC HTML SAFETY
-========================= */
+/* HTML SAFETY */
 
 function escapeHtml(value) {
 
@@ -1322,26 +1213,20 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
 }
 
 
-/* =========================
-   GENERATE PDF
-========================= */
+/* GENERATE PDF */
 
 function generatePDF() {
 
     preparePrintInvoice();
 
     window.print();
-
 }
 
 
-/* =========================
-   NEW INVOICE
-========================= */
+/* NEW INVOICE */
 
 function newInvoice() {
 
@@ -1360,13 +1245,10 @@ function newInvoice() {
     );
 
     location.reload();
-
 }
 
 
-/* =========================
-   STARTUP
-========================= */
+/* STARTUP */
 
 loadCustomers();
 
