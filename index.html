@@ -4,712 +4,409 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Impression Solutions - Invoice</title>
 
-<link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#17263a">
-
 <style>
-* {
-    box-sizing: border-box;
-}
-
-:root {
-    --navy: #17263a;
-    --blue: #2474b8;
-    --blue-light: #eaf3fb;
-    --grey: #f4f6f8;
-    --border: #d9dee5;
-    --text: #202832;
-    --muted: #6b7280;
-}
-
-body {
-    margin: 0;
-    padding: 25px;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eef1f5;
-    color: var(--text);
-}
-
-.container {
-    max-width: 1050px;
-    margin: auto;
-    background: white;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
-}
-
-/* TRADING COMPANY SELECTOR */
-
-.company-switcher {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    padding: 12px 15px;
-    background: var(--grey);
-    border-radius: 7px;
-    border: 1px solid var(--border);
-}
-
-.company-switcher label {
-    margin: 0;
-    white-space: nowrap;
-}
-
-.company-switcher select {
-    max-width: 280px;
-    font-weight: bold;
-    color: var(--navy);
-}
-
-/* HEADER */
-
-.form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 35px;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
-    border-bottom: 4px solid var(--blue);
-}
-
-.company {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-}
-
-.company-logo {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-.company-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.company h1 {
-    margin: 0 0 8px 0;
-    font-size: 30px;
-    letter-spacing: 1px;
-    color: var(--navy);
-}
-
-.company-details {
-    line-height: 1.6;
-    font-size: 14px;
-    color: var(--muted);
-}
-
-.company-details strong {
-    color: var(--navy);
-}
-
-.invoice-meta {
-    min-width: 260px;
-    background: var(--blue-light);
-    padding: 15px 18px;
-    border-radius: 8px;
-    border-left: 4px solid var(--blue);
-}
-
-.invoice-meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.invoice-meta-row:last-child {
-    margin-bottom: 0;
-}
-
-.invoice-meta-row strong {
-    white-space: nowrap;
-    color: var(--navy);
-}
-
-#invoiceNumber {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--blue);
-}
-
-/* SECTIONS */
-
-h2 {
-    font-size: 17px;
-    color: var(--navy);
-    margin-top: 30px;
-    margin-bottom: 15px;
-    padding: 10px 14px;
-    background: var(--blue-light);
-    border-left: 4px solid var(--blue);
-    border-radius: 4px;
-}
-
-/* INPUTS */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.full {
-    grid-column: 1 / -1;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: var(--navy);
-}
-
-input,
-textarea,
-select {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    font-size: 14px;
-    background: white;
-    color: var(--text);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(36, 116, 184, 0.12);
-}
-
-textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-/* CUSTOMER CONTROLS */
-
-.customer-controls {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    margin-bottom: 18px;
-    padding: 15px;
-    background: var(--grey);
-    border-radius: 7px;
-}
-
-.customer-controls > div {
-    flex: 1;
-}
-
-/* BUTTONS */
-
-button {
-    border: none;
-    padding: 11px 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.primary {
-    background: var(--blue);
-    color: white;
-}
-
-.secondary {
-    background: #e4e8ed;
-    color: var(--navy);
-}
-
-.danger {
-    background: #b4232c;
-    color: white;
-}
-
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-/* TABLE */
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 15px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    overflow: hidden;
-}
-
-th {
-    background: var(--navy);
-    color: white;
-    text-align: left;
-    padding: 11px 9px;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-td {
-    border-top: 1px solid var(--border);
-    padding: 8px;
-    background: white;
-}
-
-.amount {
-    text-align: right;
-    white-space: nowrap;
-    font-weight: bold;
-    color: var(--navy);
-}
-
-.add-item {
-    margin-top: 15px;
-}
-
-/* TOTALS */
-
-.totals {
-    width: 320px;
-    margin-left: auto;
-    margin-top: 25px;
-    padding: 15px 18px;
-    background: var(--grey);
-    border-radius: 7px;
-}
-
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-}
-
-.grand-total {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--navy);
-    border-top: 2px solid var(--blue);
-    margin-top: 6px;
-    padding-top: 12px;
-}
-
-#grandTotal {
-    color: var(--blue);
-}
-
-/* ACTIONS */
-
-.actions {
-    text-align: center;
-    margin-top: 35px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-}
-
-/* MODE BANNER */
-
-.invoice-mode-banner {
-    display: none;
-    margin: 15px 0;
-    padding: 12px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    background: #fff3cd;
-    color: #664d03;
-    border: 1px solid #ffecb5;
-}
-
-.invoice-mode-banner.active {
-    display: block;
-}
-
-.invoice-mode-banner.credit {
-    background: #f5dddd;
-    color: #8a2222;
-    border-color: #e9bcbc;
-}
-
-/* HISTORY */
-
-#invoiceHistoryPanel {
-    margin-top: 30px;
-    padding: 20px;
-    background: #f7f9fc;
-    border: 1px solid #dfe5ec;
-    border-radius: 12px;
-}
-
-#invoiceHistoryPanel h2 {
-    margin-top: 0;
-    margin-bottom: 6px;
-}
-
-.history-subtitle {
-    color: #666;
-    margin-bottom: 15px;
-    font-size: 14px;
-}
-
-#invoiceHistorySearch {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    border: 1px solid #ccd3dc;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 15px;
-}
-
-.history-item {
-    background: white;
-    border: 1px solid #e0e4e9;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 10px;
-}
-
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
-}
-
-.history-reference {
-    font-weight: bold;
-    font-size: 17px;
-}
-
-.history-customer {
-    font-weight: 600;
-}
-
-.history-meta {
-    color: #666;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.history-total {
-    font-weight: bold;
-    margin-top: 7px;
-}
-
-.history-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-
-.history-actions button {
-    border: 0;
-    border-radius: 7px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.history-open {
-    background: #17365d;
-    color: white;
-}
-
-.history-credit {
-    background: #9d2c2c;
-    color: white;
-}
-
-.history-disabled {
-    background: #ddd;
-    color: #777;
-}
-
-.history-status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.history-status-issued {
-    background: #dcefdc;
-    color: #246624;
-}
-
-.history-status-credited {
-    background: #f5dddd;
-    color: #8a2222;
-}
-
-.history-status-credit {
-    background: #e4e4f7;
-    color: #41418a;
-}
-
-.history-empty {
-    padding: 20px;
-    text-align: center;
-    color: #777;
-}
-
-/* PRINT VERSION */
-
-.print-invoice {
-    display: none;
-}
-
-/* MOBILE */
-
-@media (max-width: 700px) {
+    * {
+        box-sizing: border-box;
+    }
 
     body {
-        padding: 5px;
+        margin: 0;
+        padding: 20px;
+        background: #f2f4f7;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #222;
     }
 
     .container {
-        padding: 15px;
-        border-radius: 5px;
+        max-width: 1000px;
+        margin: auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 
     .company-switcher {
-        display: block;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
     }
 
-    .company-switcher select {
-        max-width: none;
-        margin-top: 7px;
+    .company-switcher button {
+        flex: 1;
+        max-width: 280px;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
     }
 
-    .form-header {
-        display: block;
+    .company-switcher button.active {
+        background: #222;
+        color: white;
+        border-color: #222;
     }
 
-    .invoice-meta {
-        margin-top: 20px;
+    .mode-banner {
+        display: none;
+        margin-bottom: 20px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #fff3cd;
+        border: 1px solid #ffe69c;
+        color: #664d03;
+        font-weight: bold;
+        text-align: center;
     }
 
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .full {
-        grid-column: auto;
-    }
-
-    .customer-controls {
-        display: block;
-    }
-
-    .customer-controls button {
-        margin-top: 10px;
-        margin-right: 5px;
-    }
-
-    .totals {
-        width: 100%;
-    }
-
-    table {
-        font-size: 12px;
-    }
-
-    #invoiceHistoryPanel {
-        padding: 15px;
-    }
-}
-
-/* PRINT */
-
-@media print {
-
-    @page {
-        size: A4;
-        margin: 15mm;
-    }
-
-    body {
-        background: white;
-        padding: 0;
-        margin: 0;
-    }
-
-    .container,
-    #invoiceHistoryPanel {
-        display: none !important;
-    }
-
-    .print-invoice {
-        display: block !important;
-        width: 100%;
-        font-family: Arial, Helvetica, sans-serif;
-        color: black;
-    }
-
-    .print-header {
+    .company-header {
         display: flex;
         justify-content: space-between;
-        border-bottom: 4px solid #2474b8;
-        padding-bottom: 15px;
-        margin-bottom: 25px;
-    }
-
-    .print-company {
-        display: flex;
         align-items: flex-start;
-        gap: 12px;
+        gap: 20px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #222;
+        margin-bottom: 20px;
     }
 
-    .print-company-logo {
-        width: 60px;
-        height: 60px;
+    .company-info {
+        flex: 1;
+    }
+
+    .company-info h1 {
+        margin: 0 0 5px;
+        font-size: 28px;
+    }
+
+    .company-info p {
+        margin: 4px 0;
+        color: #555;
+    }
+
+    .company-logo {
+        width: 120px;
+        max-height: 90px;
         object-fit: contain;
     }
 
-    .print-company-content {
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 25px 0 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .form-group {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
     }
 
-    .print-company h1 {
-        margin: 0 0 8px 0;
-        font-size: 25px;
-        color: #17263a;
+    .form-group label {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
     }
 
-    .print-company-details {
-        font-size: 12px;
-        line-height: 1.5;
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
     }
 
-    .print-invoice-title {
+    textarea {
+        resize: vertical;
+        min-height: 70px;
+    }
+
+    .customer-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        border: none;
+        border-radius: 6px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: #222;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #e9ecef;
+        color: #222;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-success {
+        background: #198754;
+        color: white;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #222;
+    }
+
+    .items-wrapper {
+        overflow-x: auto;
+    }
+
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 650px;
+    }
+
+    .items-table th,
+    .items-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        vertical-align: middle;
+    }
+
+    .items-table th {
+        background: #f1f3f5;
+        text-align: left;
+    }
+
+    .items-table th:nth-child(1),
+    .items-table td:nth-child(1) {
+        width: 90px;
+    }
+
+    .items-table th:nth-child(3),
+    .items-table td:nth-child(3) {
+        width: 150px;
+    }
+
+    .items-table th:nth-child(4),
+    .items-table td:nth-child(4) {
+        width: 150px;
         text-align: right;
     }
 
-    .print-invoice-title h2 {
-        background: none;
+    .items-table input {
         border: none;
-        margin: 0 0 10px 0;
-        padding: 0;
-        font-size: 28px;
-        color: #17263a;
+        padding: 7px;
+        border-radius: 3px;
     }
 
-    .print-meta {
-        font-size: 12px;
-        line-height: 1.8;
+    .items-table input:focus {
+        outline: 1px solid #888;
     }
 
-    .print-customer {
-        border: 1px solid #d9dee5;
-        border-left: 4px solid #2474b8;
-        padding: 12px;
-        margin-bottom: 25px;
-    }
-
-    .print-section-title {
+    .amount {
         font-weight: bold;
-        font-size: 13px;
-        color: #17263a;
-        margin-bottom: 8px;
+        white-space: nowrap;
     }
 
-    .print-customer-details {
-        font-size: 12px;
-        line-height: 1.6;
+    .remove-btn {
+        background: #dc3545;
+        color: white;
+        padding: 6px 10px;
     }
 
-    .print-items {
-        width: 100%;
-        border-collapse: collapse;
+    .items-actions {
         margin-top: 10px;
     }
 
-    .print-items th {
-        background: #17263a !important;
-        color: white !important;
-        border: 1px solid #17263a;
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .print-items td {
-        border: 1px solid #d9dee5;
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .print-items .right {
-        text-align: right;
-    }
-
-    .print-totals {
-        width: 280px;
-        margin-left: auto;
+    .totals {
         margin-top: 20px;
+        margin-left: auto;
+        max-width: 350px;
     }
 
-    .print-total-row {
+    .total-row {
         display: flex;
         justify-content: space-between;
-        padding: 6px;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .total-row.grand {
+        font-size: 20px;
+        font-weight: bold;
+        border-bottom: 2px solid #222;
+        padding-top: 12px;
+    }
+
+    .invoice-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .invoice-actions button {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .history-panel {
+        margin-top: 35px;
+        border-top: 2px solid #222;
+        padding-top: 20px;
+    }
+
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .history-header h2 {
+        margin: 0;
+    }
+
+    .history-table-wrapper {
+        overflow-x: auto;
+        margin-top: 15px;
+    }
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .history-table th,
+    .history-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .history-table th {
+        background: #f1f3f5;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 4px 7px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .status-issued {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .status-edited {
+        background: #cff4fc;
+        color: #055160;
+    }
+
+    .status-credited {
+        background: #f8d7da;
+        color: #842029;
+    }
+
+    .status-credit {
+        background: #e2e3e5;
+        color: #41464b;
+    }
+
+    .history-actions {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .history-actions button {
+        padding: 6px 9px;
         font-size: 12px;
     }
 
-    .print-grand-total {
-        border-top: 3px solid #2474b8;
-        color: #17263a;
-        font-size: 16px;
-        font-weight: bold;
-        padding-top: 10px;
+    .print-document {
+        display: none;
     }
 
-    .print-bank {
-        margin-top: 45px;
-        border-top: 1px solid #d9dee5;
-        padding-top: 12px;
-        font-size: 11px;
-        line-height: 1.6;
+    @media (max-width: 700px) {
+        body {
+            padding: 8px;
+        }
+
+        .container {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .company-header {
+            flex-direction: column-reverse;
+        }
+
+        .company-logo {
+            align-self: center;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .company-switcher {
+            flex-direction: column;
+        }
+
+        .company-switcher button {
+            max-width: none;
+        }
+
+        .invoice-actions {
+            flex-direction: column;
+        }
+
+        .invoice-actions button {
+            width: 100%;
+        }
     }
 
-    .print-footer {
-        margin-top: 35px;
-        text-align: center;
-        font-size: 10px;
-        color: #6b7280;
-    }
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+        }
 
-    .credit-note-print {
-        color: #8a2222;
+        .container {
+            display: none !important;
+        }
+
+        .print-document {
+            display: block !important;
+        }
     }
-}
 </style>
 
 </head>
@@ -718,775 +415,469 @@ td {
 
 <div class="container">
 
-
+```
 <div class="company-switcher">
-
-    <label for="companySelect">
-        Invoice As:
-    </label>
-
-    <select
-        id="companySelect"
-        onchange="switchCompany(this.value)"
-    >
-        <option value="impression">
-            Impression Solutions
-        </option>
-
-        <option value="weekend">
-            The Weekend Detailer
-        </option>
-    </select>
-
-</div>
-
-<div
-    id="invoiceModeBanner"
-    class="invoice-mode-banner"
-></div>
-
-<div class="form-header">
-
-    <div class="company">
-
-        <img
-            id="companyLogo"
-            src="icon.png"
-            alt="Impression Solutions"
-            class="company-logo"
-        >
-
-        <div class="company-content">
-
-            <h1 id="companyName">
-                Impression Solutions
-            </h1>
-
-            <div class="company-details">
-
-                <strong id="companyLegalName">
-                    Impression Solutions (PTY) LTD
-                </strong>
-
-                <br>
-
-                <span id="companyAddress">
-                    17 Park Drive, Mulbarton, Johannesburg
-                </span>
-
-                <br>
-
-                <span id="companyPhone">
-                    Tel: 071 895 1445
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="invoice-meta">
-
-        <div class="invoice-meta-row">
-
-            <strong>
-                Document No:
-            </strong>
-
-            <span id="invoiceNumber"></span>
-
-        </div>
-
-        <div class="invoice-meta-row">
-
-            <strong>
-                Date:
-            </strong>
-
-            <input
-                type="date"
-                id="invoiceDate"
-            >
-
-        </div>
-
-        <div
-            class="invoice-meta-row"
-            id="dueDateRow"
-        >
-
-            <strong>
-                Due Date:
-            </strong>
-
-            <input
-                type="date"
-                id="dueDate"
-            >
-
-        </div>
-
-    </div>
-
-</div>
-
-<h2>
-    Customer Details
-</h2>
-
-<div class="customer-controls">
-
-    <div>
-
-        <label>
-            Saved Customer
-        </label>
-
-        <select id="customerSelect">
-
-            <option value="">
-                -- New Customer --
-            </option>
-
-        </select>
-
-    </div>
-
-    <button
-        type="button"
-        class="secondary"
-        onclick="saveCustomer()"
-    >
-        Save Customer
+    <button id="companyImpression" onclick="switchCompany('impression')">
+        Impression Solutions
     </button>
 
-    <button
-        type="button"
-        class="danger"
-        onclick="deleteCustomer()"
-    >
-        Delete
+    <button id="companyWeekend" onclick="switchCompany('weekend')">
+        The Weekend Detailer
     </button>
+</div>
+
+<div id="modeBanner" class="mode-banner"></div>
+
+<div class="company-header">
+    <div class="company-info">
+        <h1 id="companyName">IMPRESSION SOLUTIONS</h1>
+        <p id="companyLegalName">Impression Solutions (PTY) LTD</p>
+        <p id="companyAddress">17 Park Drive, Mulbarton, Johannesburg</p>
+        <p id="companyPhone">Tel: 071 895 1445</p>
+    </div>
+
+    <img id="companyLogo" class="company-logo" src="icon.png" alt="Company Logo">
+</div>
+
+<div class="form-grid">
+
+    <div class="form-group">
+        <label>Invoice Number</label>
+        <input type="text" id="invoiceNumber" readonly>
+    </div>
+
+    <div class="form-group">
+        <label>Invoice Date</label>
+        <input type="date" id="invoiceDate">
+    </div>
+
+    <div class="form-group" id="dueDateGroup">
+        <label>Due Date</label>
+        <input type="date" id="dueDate">
+    </div>
 
 </div>
 
-<div class="grid">
+<div class="section-title">Customer Details</div>
 
-    <div>
+<div class="form-grid">
 
-        <label>
-            Customer / Contact Name
-        </label>
-
-        <input
-            type="text"
-            id="customerName"
-        >
-
+    <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="customerName">
     </div>
 
-    <div>
-
-        <label>
-            Company
-        </label>
-
-        <input
-            type="text"
-            id="customerCompany"
-        >
-
+    <div class="form-group">
+        <label>Customer Phone</label>
+        <input type="text" id="customerPhone">
     </div>
 
-    <div>
-
-        <label>
-            Contact Number
-        </label>
-
-        <input
-            type="text"
-            id="customerPhone"
-        >
-
+    <div class="form-group">
+        <label>Customer Email</label>
+        <input type="email" id="customerEmail">
     </div>
 
-    <div>
-
-        <label>
-            Email
-        </label>
-
-        <input
-            type="email"
-            id="customerEmail"
-        >
-
-    </div>
-
-    <div class="full">
-
-        <label>
-            Address
-        </label>
-
+    <div class="form-group">
+        <label>Customer Address</label>
         <textarea id="customerAddress"></textarea>
-
     </div>
 
 </div>
 
-<h2 id="itemsHeading">
-    Invoice Items
-</h2>
+<div class="customer-actions">
+    <button class="btn-success" onclick="saveCustomer()">Save Customer</button>
+    <button class="btn-secondary" onclick="loadCustomerSelector()">Load Customer</button>
+    <button class="btn-danger" onclick="deleteSelectedCustomer()">Delete Customer</button>
+</div>
 
-<table>
+<div id="customerSelectorContainer" style="display:none; margin-top:10px;">
+    <div class="form-group">
+        <label>Select Saved Customer</label>
+        <select id="customerSelector" onchange="selectCustomer(this.value)">
+            <option value="">Select customer...</option>
+        </select>
+    </div>
+</div>
 
-    <thead>
+<div class="section-title">Items</div>
 
-        <tr>
+<div class="items-wrapper">
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th class="no-print">Remove</th>
+            </tr>
+        </thead>
 
-            <th style="width:80px;">
-                Qty
-            </th>
+        <tbody id="itemsBody"></tbody>
+    </table>
+</div>
 
-            <th style="width:120px;">
-                Code
-            </th>
-
-            <th>
-                Description
-            </th>
-
-            <th style="width:150px;">
-                Unit Price
-            </th>
-
-            <th style="width:150px;">
-                Total
-            </th>
-
-            <th style="width:70px;">
-                Remove
-            </th>
-
-        </tr>
-
-    </thead>
-
-    <tbody id="itemsBody"></tbody>
-
-</table>
-
-<button
-    type="button"
-    class="secondary add-item"
-    onclick="addItem()"
->
-    + Add Item
-</button>
+<div class="items-actions">
+    <button class="btn-secondary" onclick="addItem()">+ Add Item</button>
+</div>
 
 <div class="totals">
-
     <div class="total-row">
-
-        <span>
-            Subtotal
-        </span>
-
-        <span id="subtotal">
-            R 0.00
-        </span>
-
+        <span>Subtotal</span>
+        <span id="subtotal"></span>
     </div>
 
-    <div class="total-row grand-total">
-
-        <span id="screenTotalLabel">
-            Total
-        </span>
-
-        <span id="grandTotal">
-            R 0.00
-        </span>
-
+    <div class="total-row grand">
+        <span>Total</span>
+        <span id="grandTotal"></span>
     </div>
-
 </div>
 
-<div class="actions">
+<div class="invoice-actions">
 
-    <button
-        type="button"
-        class="primary"
-        onclick="generatePDF()"
-    >
+    <button class="btn-primary" onclick="generatePDF()">
         Generate PDF
     </button>
 
-    <button
-        type="button"
-        class="secondary"
-        onclick="newInvoice()"
-    >
+    <button class="btn-secondary" onclick="newInvoice()">
         New Invoice
+    </button>
+
+    <button class="btn-warning" onclick="creditCurrentInvoice()">
+        Credit Invoice
     </button>
 
 </div>
 
-<section id="invoiceHistoryPanel">
+<div class="history-panel">
 
-    <h2>
-        Invoice History
+    <div class="history-header">
+        <h2>Invoice History</h2>
+
+        <button class="btn-secondary" onclick="updateInvoiceHistory()">
+            Refresh History
+        </button>
+    </div>
+
+    <div class="history-table-wrapper">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Company</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="historyBody"></tbody>
+        </table>
+    </div>
+
+</div>
+```
+
+</div>
+
+<div id="printDocument" class="print-document">
+
+```
+<div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #222; padding-bottom:15px;">
+
+    <div>
+        <h1 id="printCompanyName" style="margin:0 0 5px;"></h1>
+        <div id="printCompanyLegalName"></div>
+        <div id="printCompanyAddress"></div>
+        <div id="printCompanyPhone"></div>
+    </div>
+
+    <img id="printCompanyLogo"
+         style="width:120px; max-height:90px; object-fit:contain;"
+         alt="Company Logo">
+
+</div>
+
+<div style="margin-top:20px;">
+
+    <h2 id="printDocumentTitle" style="margin-bottom:10px;">
+        INVOICE
     </h2>
 
-    <div class="history-subtitle">
-        Saved invoices and credit notes on this device.
+    <div>
+        <strong id="printReferenceLabel">Invoice Number:</strong>
+        <span id="printInvoiceNumber"></span>
     </div>
 
-    <input
-        type="search"
-        id="invoiceHistorySearch"
-        placeholder="Search invoice number, customer or company..."
-        oninput="updateInvoiceHistory()"
-    >
-
-    <div id="invoiceHistoryList"></div>
-
-</section>
-
-
-</div>
-
-<!-- PRINTABLE DOCUMENT -->
-
-<div
-    class="print-invoice"
-    id="printInvoice"
->
-
-
-<div class="print-header">
-
-    <div class="print-company">
-
-        <img
-            id="printCompanyLogo"
-            src="icon.png"
-            alt="Impression Solutions"
-            class="print-company-logo"
-        >
-
-        <div class="print-company-content">
-
-            <h1 id="printCompanyName">
-                IMPRESSION SOLUTIONS
-            </h1>
-
-            <div class="print-company-details">
-
-                <strong id="printCompanyLegalName">
-                    Impression Solutions (PTY) LTD
-                </strong>
-
-                <br>
-
-                <span id="printCompanyAddress">
-                    17 Park Drive, Mulbarton, Johannesburg
-                </span>
-
-                <br>
-
-                <span id="printCompanyPhone">
-                    Tel: 071 895 1445
-                </span>
-
-            </div>
-
-        </div>
-
+    <div>
+        <strong>Date:</strong>
+        <span id="printInvoiceDate"></span>
     </div>
 
-    <div class="print-invoice-title">
+    <div id="printOriginalInvoiceContainer" style="display:none;">
+        <strong>Original Invoice:</strong>
+        <span id="printOriginalInvoice"></span>
+    </div>
 
-        <h2 id="printDocumentTitle">
-            INVOICE
-        </h2>
-
-        <div class="print-meta">
-
-            <strong id="printReferenceLabel">
-                Invoice No:
-            </strong>
-
-            <span id="printInvoiceNumber"></span>
-
-            <br>
-
-            <strong>
-                Date:
-            </strong>
-
-            <span id="printInvoiceDate"></span>
-
-            <br id="printDueDateBreak">
-
-            <span id="printDueDateContainer">
-
-                <strong>
-                    Due Date:
-                </strong>
-
-                <span id="printDueDate"></span>
-
-            </span>
-
-            <span
-                id="printOriginalInvoiceRow"
-                style="display:none;"
-            >
-
-                <br>
-
-                <strong>
-                    Original Invoice:
-                </strong>
-
-                <span id="printOriginalInvoice"></span>
-
-            </span>
-
-        </div>
-
+    <div id="printDueDateContainer">
+        <strong>Due Date:</strong>
+        <span id="printDueDate"></span>
     </div>
 
 </div>
 
-<div class="print-customer">
+<div style="margin-top:25px;">
 
-    <div class="print-section-title">
-        BILL TO
-    </div>
+    <h3>Bill To</h3>
 
-    <div class="print-customer-details">
-
-        <strong id="printCustomerName"></strong>
-
-        <br>
-
-        <span id="printCustomerCompany"></span>
-
-        <br>
-
-        <span id="printCustomerAddress"></span>
-
-        <br>
-
-        <span id="printCustomerPhone"></span>
-
-        <br>
-
-        <span id="printCustomerEmail"></span>
-
-    </div>
+    <div id="printCustomerName"></div>
+    <div id="printCustomerPhone"></div>
+    <div id="printCustomerEmail"></div>
+    <div id="printCustomerAddress" style="white-space:pre-line;"></div>
 
 </div>
 
-<table class="print-items">
+<table style="width:100%; border-collapse:collapse; margin-top:25px;">
 
     <thead>
-
         <tr>
-
-            <th>
-                Qty
-            </th>
-
-            <th>
-                Code
-            </th>
-
-            <th>
-                Description
-            </th>
-
-            <th class="right">
-                Unit Price
-            </th>
-
-            <th class="right">
-                Total
-            </th>
-
+            <th style="border:1px solid #ccc; padding:8px; text-align:left;">Qty</th>
+            <th style="border:1px solid #ccc; padding:8px; text-align:left;">Description</th>
+            <th style="border:1px solid #ccc; padding:8px; text-align:right;">Price</th>
+            <th style="border:1px solid #ccc; padding:8px; text-align:right;">Amount</th>
         </tr>
-
     </thead>
 
     <tbody id="printItemsBody"></tbody>
 
 </table>
 
-<div class="print-totals">
+<div style="margin-top:20px; margin-left:auto; width:300px;">
 
-    <div class="print-total-row">
-
-        <span>
-            Subtotal
-        </span>
-
+    <div style="display:flex; justify-content:space-between; padding:7px 0;">
+        <strong>Subtotal:</strong>
         <span id="printSubtotal"></span>
-
     </div>
 
-    <div class="print-total-row print-grand-total">
-
-        <span id="printGrandTotalLabel">
-            TOTAL
-        </span>
-
-        <span id="printGrandTotal"></span>
-
+    <div style="display:flex; justify-content:space-between; padding:10px 0; border-top:2px solid #222; font-size:18px;">
+        <strong id="printTotalLabel">TOTAL:</strong>
+        <strong id="printGrandTotal"></strong>
     </div>
 
 </div>
 
-<div class="print-bank">
+<div style="margin-top:40px; border-top:1px solid #ccc; padding-top:15px; font-size:13px;">
 
-    <strong>
-        Banking Details
-    </strong>
+    <strong>Banking Details</strong>
 
-    <br>
+    <div style="margin-top:5px;">
+        Account Name: IMS - Impression Marketing Solutions
+    </div>
 
-    Account Name:
-    IMS - Impression Marketing Solutions
+    <div>
+        Bank: FNB
+    </div>
 
-    <br>
+    <div>
+        Account Number: 62471385346
+    </div>
 
-    Bank:
-    FNB
-
-    <br>
-
-    Account Number:
-    62471385346
-
-    <br>
-
-    Branch Code:
-    00259605
+    <div>
+        Branch Code: 00259605
+    </div>
 
 </div>
 
-<div class="print-footer">
-
-    <span id="printFooterCompany">
-        Impression Solutions (PTY) LTD
-    </span>
-
+<div id="printFooter"
+     style="margin-top:30px; text-align:center; font-size:12px; color:#666;">
 </div>
-
+```
 
 </div>
 
 <script>
 
-/* =========================================================
-   TRADING COMPANIES
-========================================================= */
-
 const companies = {
-
     impression: {
-
         name: "Impression Solutions",
-
         displayName: "IMPRESSION SOLUTIONS",
-
-        legalName:
-            "Impression Solutions (PTY) LTD",
-
+        legalName: "Impression Solutions (PTY) LTD",
         logo: "icon.png",
-
-        address:
-            "17 Park Drive, Mulbarton, Johannesburg",
-
-        phone:
-            "Tel: 071 895 1445",
-
-        footer:
-            "Impression Solutions (PTY) LTD"
-
+        address: "17 Park Drive, Mulbarton, Johannesburg",
+        phone: "Tel: 071 895 1445",
+        footer: "Impression Solutions (PTY) LTD"
     },
 
     weekend: {
-
         name: "The Weekend Detailer",
-
-        displayName:
-            "THE WEEKEND DETAILER",
-
-        legalName:
-            "The Weekend Detailer",
-
-        logo:
-            "weekend-detailer.png",
-
-        address:
-            "17 Park Drive, Mulbarton, Johannesburg",
-
-        phone:
-            "Tel: 071 895 1445",
-
-        footer:
-            "The Weekend Detailer"
-
+        displayName: "THE WEEKEND DETAILER",
+        legalName: "The Weekend Detailer",
+        logo: "weekend-detailer.png",
+        address: "17 Park Drive, Mulbarton, Johannesburg",
+        phone: "Tel: 071 895 1445",
+        footer: "The Weekend Detailer"
     }
-
 };
 
 
-/* =========================================================
-   CONSTANTS
-========================================================= */
-
 const STARTING_INVOICE_NUMBER = 11260;
+const INVOICE_STORAGE_KEY = "invoiceRecords";
+const COMPANY_STORAGE_KEY = "invoiceCompany";
+const INVOICE_NUMBER_STORAGE_KEY = "invoiceNumber";
+const CUSTOMER_STORAGE_KEY = "invoiceCustomers";
 
-const INVOICE_STORAGE_KEY =
-    "invoiceRecords";
 
-let currentCompany =
-    localStorage.getItem("currentCompany") ||
-    "impression";
+let currentCompany = localStorage.getItem(COMPANY_STORAGE_KEY) || "impression";
+
+let currentDocumentType = "invoice";
 
 let editingInvoiceNumber = null;
-
-let currentDocumentType =
-    "invoice";
 
 let creditingInvoiceNumber = null;
 
 
-/* =========================================================
-   COMPANY SWITCHING
-========================================================= */
+/* ---------------------------------------------------------
+   GENERAL HELPERS
+--------------------------------------------------------- */
 
-function switchCompany(companyKey) {
+function escapeHtml(value) {
 
-    if (!companies[companyKey]) {
-        companyKey = "impression";
+    if (value === null || value === undefined) {
+        return "";
     }
 
-    currentCompany =
-        companyKey;
-
-    localStorage.setItem(
-        "currentCompany",
-        currentCompany
-    );
-
-    const company =
-        companies[currentCompany];
-
-
-    document.getElementById(
-        "companySelect"
-    ).value =
-        currentCompany;
-
-
-    document.getElementById(
-        "companyLogo"
-    ).src =
-        company.logo;
-
-    document.getElementById(
-        "companyLogo"
-    ).alt =
-        company.name;
-
-    document.getElementById(
-        "companyName"
-    ).textContent =
-        company.name;
-
-    document.getElementById(
-        "companyLegalName"
-    ).textContent =
-        company.legalName;
-
-    document.getElementById(
-        "companyAddress"
-    ).textContent =
-        company.address;
-
-    document.getElementById(
-        "companyPhone"
-    ).textContent =
-        company.phone;
-
-
-    document.getElementById(
-        "printCompanyLogo"
-    ).src =
-        company.logo;
-
-    document.getElementById(
-        "printCompanyLogo"
-    ).alt =
-        company.name;
-
-    document.getElementById(
-        "printCompanyName"
-    ).textContent =
-        company.displayName;
-
-    document.getElementById(
-        "printCompanyLegalName"
-    ).textContent =
-        company.legalName;
-
-    document.getElementById(
-        "printCompanyAddress"
-    ).textContent =
-        company.address;
-
-    document.getElementById(
-        "printCompanyPhone"
-    ).textContent =
-        company.phone;
-
-    document.getElementById(
-        "printFooterCompany"
-    ).textContent =
-        company.footer;
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-/* =========================================================
-   INVOICE HISTORY STORAGE
-========================================================= */
+function escapeAttribute(value) {
+    return escapeHtml(value);
+}
+
+
+function formatMoney(value) {
+
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+        return "R 0.00";
+    }
+
+    return "R " + number.toFixed(2);
+}
+
+
+function todayString() {
+
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "";
+    }
+
+    const parts = dateString.split("-");
+
+    if (parts.length !== 3) {
+        return dateString;
+    }
+
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+
+/* ---------------------------------------------------------
+   COMPANY
+--------------------------------------------------------- */
+
+function switchCompany(companyId) {
+
+    if (!companies[companyId]) {
+        companyId = "impression";
+    }
+
+    currentCompany = companyId;
+
+    localStorage.setItem(
+        COMPANY_STORAGE_KEY,
+        currentCompany
+    );
+
+    const company = companies[currentCompany];
+
+    document.getElementById("companyName").textContent =
+        company.displayName;
+
+    document.getElementById("companyLegalName").textContent =
+        company.legalName;
+
+    document.getElementById("companyAddress").textContent =
+        company.address;
+
+    document.getElementById("companyPhone").textContent =
+        company.phone;
+
+    document.getElementById("companyLogo").src =
+        company.logo;
+
+    document.getElementById("companyImpression").classList.toggle(
+        "active",
+        currentCompany === "impression"
+    );
+
+    document.getElementById("companyWeekend").classList.toggle(
+        "active",
+        currentCompany === "weekend"
+    );
+
+    updateInvoiceModeDisplay();
+
+    updateInvoiceHistory();
+}
+
+
+/* ---------------------------------------------------------
+   INVOICE NUMBERING
+--------------------------------------------------------- */
 
 function getInvoiceRecords() {
 
     try {
 
-        return JSON.parse(
-            localStorage.getItem(
-                INVOICE_STORAGE_KEY
-            ) || "[]"
-        );
+        const stored =
+            localStorage.getItem(INVOICE_STORAGE_KEY);
+
+        if (!stored) {
+            return [];
+        }
+
+        const records = JSON.parse(stored);
+
+        return Array.isArray(records)
+            ? records
+            : [];
 
     } catch (error) {
 
-        console.error(
-            "Unable to read invoice records:",
-            error
-        );
+        console.error("Could not read invoice records:", error);
 
         return [];
-
     }
 }
 
@@ -1500,414 +891,431 @@ function saveInvoiceRecords(records) {
 }
 
 
-/* =========================================================
-   INVOICE NUMBERING
-========================================================= */
-
 function getHighestInvoiceNumber() {
 
-    const records =
-        getInvoiceRecords();
+    const records = getInvoiceRecords();
 
-    let highest =
-        STARTING_INVOICE_NUMBER - 1;
-
+    let highest = STARTING_INVOICE_NUMBER - 1;
 
     records.forEach(record => {
 
-        if (
-            record.type !== "credit_note" &&
-            record.invoiceNumber
-        ) {
-
-            const number =
-                parseInt(
-                    String(
-                        record.invoiceNumber
-                    ).replace(
-                        /[^0-9]/g,
-                        ""
-                    )
-                );
-
-
-            if (
-                !isNaN(number) &&
-                number > highest
-            ) {
-
-                highest = number;
-
-            }
-
+        if (!record) {
+            return;
         }
 
-    });
+        if (record.type !== "invoice") {
+            return;
+        }
 
+        const number = Number(record.invoiceNumber);
+
+        if (
+            Number.isInteger(number) &&
+            number > highest
+        ) {
+            highest = number;
+        }
+    });
 
     return highest;
 }
 
 
-function getNextInvoiceNumber() {
+function getNextAvailableInvoiceNumber() {
 
-    const stored =
-        parseInt(
+    const storedNumber =
+        Number(
             localStorage.getItem(
-                "invoiceNumber"
-            ) || "0"
-        );
+                INVOICE_NUMBER_STORAGE_KEY
+            )
+        ) || 0;
 
-
-    const highest =
-        getHighestInvoiceNumber();
-
-
-    return Math.max(
+    let nextNumber = Math.max(
         STARTING_INVOICE_NUMBER,
-        stored,
-        highest
+        storedNumber,
+        getHighestInvoiceNumber() + 1
     );
+
+    const records = getInvoiceRecords();
+
+    while (
+        records.some(record =>
+            record &&
+            record.type === "invoice" &&
+            Number(record.invoiceNumber) === nextNumber
+        )
+    ) {
+        nextNumber++;
+    }
+
+    return nextNumber;
 }
 
 
 let invoiceNumber =
-    getNextInvoiceNumber();
+    getNextAvailableInvoiceNumber();
 
 
-localStorage.setItem(
-    "invoiceNumber",
-    invoiceNumber
-);
+function setInvoiceNumber(number) {
+
+    invoiceNumber = Number(number);
+
+    localStorage.setItem(
+        INVOICE_NUMBER_STORAGE_KEY,
+        invoiceNumber
+    );
+
+    document.getElementById("invoiceNumber").textContent =
+        String(invoiceNumber);
+}
 
 
-document.getElementById(
-    "invoiceNumber"
-).textContent =
-    String(invoiceNumber)
-        .padStart(5, "0");
-
-
-/* =========================================================
-   DATES
-========================================================= */
-
-const today =
-    new Date()
-        .toISOString()
-        .split("T")[0];
-
-
-document.getElementById(
-    "invoiceDate"
-).value =
-    today;
-
-
-document.getElementById(
-    "dueDate"
-).value =
-    today;
-
-
-/* =========================================================
-   ADD ITEM
-========================================================= */
+/* ---------------------------------------------------------
+   ITEM ROWS
+--------------------------------------------------------- */
 
 function addItem(item = null) {
-const tbody = document.getElementById("itemsBody");
-const row = document.createElement("tr");
 
-```
-const hasSavedItem = item !== null;
+    const tbody =
+        document.getElementById("itemsBody");
 
-const qty = hasSavedItem && item.qty !== undefined && item.qty !== null
-    ? String(item.qty)
-    : "";
+    const row =
+        document.createElement("tr");
 
-const description = hasSavedItem && item.description !== undefined && item.description !== null
-    ? String(item.description)
-    : "";
+    const isSavedItem =
+        item !== null;
 
-const price = hasSavedItem && item.price !== undefined && item.price !== null
-    ? String(item.price)
-    : "";
+    let qty = "";
+    let description = "";
+    let price = "";
 
-row.innerHTML = `
-    <td>
-        <input
-            type="number"
-            class="qty"
-            min="0"
-            step="1"
-            value="${escapeAttribute(qty)}"
-            inputmode="numeric"
-        >
-    </td>
+    if (isSavedItem) {
 
-    <td>
-        <input
-            type="text"
-            class="description"
-            value="${escapeAttribute(description)}"
-        >
-    </td>
+        if (
+            item.qty !== undefined &&
+            item.qty !== null
+        ) {
+            qty = String(item.qty);
+        }
 
-    <td>
-        <input
-            type="number"
-            class="price"
-            min="0"
-            step="0.01"
-            value="${escapeAttribute(price)}"
-            inputmode="decimal"
-        >
-    </td>
+        if (
+            item.description !== undefined &&
+            item.description !== null
+        ) {
+            description = String(item.description);
+        }
 
-    <td class="amount"></td>
+        if (
+            item.price !== undefined &&
+            item.price !== null
+        ) {
+            price = String(item.price);
+        }
+    }
 
-    <td class="no-print">
-        <button type="button" class="remove-btn" onclick="removeItem(this)">
-            ×
-        </button>
-    </td>
-`;
+    row.innerHTML = `
+        <td>
+            <input
+                type="number"
+                class="qty"
+                min="0"
+                step="1"
+                inputmode="numeric"
+                value="${escapeAttribute(qty)}"
+            >
+        </td>
 
-tbody.appendChild(row);
+        <td>
+            <input
+                type="text"
+                class="description"
+                value="${escapeAttribute(description)}"
+            >
+        </td>
 
-const qtyInput = row.querySelector(".qty");
-const priceInput = row.querySelector(".price");
+        <td>
+            <input
+                type="number"
+                class="price"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+                value="${escapeAttribute(price)}"
+            >
+        </td>
 
-qtyInput.addEventListener("input", calculateTotals);
-priceInput.addEventListener("input", calculateTotals);
+        <td class="amount"></td>
 
-if (hasSavedItem) {
+        <td class="no-print">
+            <button
+                type="button"
+                class="remove-btn"
+                onclick="removeItem(this)"
+            >
+                ×
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+
+    const inputs =
+        row.querySelectorAll("input");
+
+    inputs.forEach(input => {
+
+        input.addEventListener(
+            "input",
+            calculateTotals
+        );
+    });
+
+    if (isSavedItem) {
+        calculateTotals();
+    }
+}
+
+
+function removeItem(button) {
+
+    const row =
+        button.closest("tr");
+
+    if (row) {
+        row.remove();
+    }
+
     calculateTotals();
 }
-```
 
-}
-
-function calculateTotals() {
-let total = 0;
-let hasAmount = false;
-
-```
-document.querySelectorAll("#itemsBody tr").forEach(row => {
-    const qtyInput = row.querySelector(".qty");
-    const priceInput = row.querySelector(".price");
-    const amountCell = row.querySelector(".amount");
-
-    const qtyValue = qtyInput ? qtyInput.value.trim() : "";
-    const priceValue = priceInput ? priceInput.value.trim() : "";
-
-    // Keep the amount completely blank until both fields contain values.
-    if (qtyValue === "" || priceValue === "") {
-        amountCell.textContent = "";
-        return;
-    }
-
-    const qty = parseFloat(qtyValue);
-    const price = parseFloat(priceValue);
-
-    if (!Number.isFinite(qty) || !Number.isFinite(price)) {
-        amountCell.textContent = "";
-        return;
-    }
-
-    const amount = qty * price;
-
-    amountCell.textContent = "R " + amount.toFixed(2);
-
-    total += amount;
-    hasAmount = true;
-});
-
-document.getElementById("subtotal").textContent =
-    hasAmount ? "R " + total.toFixed(2) : "";
-
-document.getElementById("grandTotal").textContent =
-    hasAmount ? "R " + total.toFixed(2) : "";
-```
-
-}
 
 function resetItems() {
-const tbody = document.getElementById("itemsBody");
 
-```
-// Completely remove every existing row.
-// This prevents mobile/browser cached values from surviving.
-tbody.innerHTML = "";
+    const tbody =
+        document.getElementById("itemsBody");
 
-// Create exactly one genuinely blank row.
-addItem();
+    /*
+       Completely destroy every existing row.
+       This prevents mobile browser autofill/cache
+       values from surviving into a new invoice.
+    */
 
-// Start with blank totals.
-document.getElementById("subtotal").textContent = "";
-document.getElementById("grandTotal").textContent = "";
-```
+    tbody.innerHTML = "";
 
+    /*
+       Create exactly one genuinely blank row.
+    */
+
+    addItem();
+
+    /*
+       New invoice totals must also start blank.
+    */
+
+    document.getElementById("subtotal").textContent = "";
+
+    document.getElementById("grandTotal").textContent = "";
 }
 
-/* =========================================================
-   COLLECT DOCUMENT
-========================================================= */
+
+function calculateTotals() {
+
+    let total = 0;
+    let hasAmount = false;
+
+    document
+        .querySelectorAll("#itemsBody tr")
+        .forEach(row => {
+
+            const qtyInput =
+                row.querySelector(".qty");
+
+            const priceInput =
+                row.querySelector(".price");
+
+            const amountCell =
+                row.querySelector(".amount");
+
+            const qtyValue =
+                qtyInput
+                    ? qtyInput.value.trim()
+                    : "";
+
+            const priceValue =
+                priceInput
+                    ? priceInput.value.trim()
+                    : "";
+
+            /*
+               If either Qty or Price is blank,
+               the Amount remains completely blank.
+            */
+
+            if (
+                qtyValue === "" ||
+                priceValue === ""
+            ) {
+
+                amountCell.textContent = "";
+
+                return;
+            }
+
+            const qty =
+                parseFloat(qtyValue);
+
+            const price =
+                parseFloat(priceValue);
+
+            if (
+                !Number.isFinite(qty) ||
+                !Number.isFinite(price)
+            ) {
+
+                amountCell.textContent = "";
+
+                return;
+            }
+
+            const amount =
+                qty * price;
+
+            amountCell.textContent =
+                formatMoney(amount);
+
+            total += amount;
+
+            hasAmount = true;
+        });
+
+
+    document.getElementById("subtotal").textContent =
+        hasAmount
+            ? formatMoney(total)
+            : "";
+
+
+    document.getElementById("grandTotal").textContent =
+        hasAmount
+            ? formatMoney(total)
+            : "";
+}
+
+
+/* ---------------------------------------------------------
+   DOCUMENT COLLECTION
+--------------------------------------------------------- */
 
 function collectCurrentDocument() {
 
     const items = [];
 
-
     document
-        .querySelectorAll(
-            "#itemsBody > tr"
-        )
+        .querySelectorAll("#itemsBody tr")
         .forEach(row => {
 
             const qtyInput =
-                row.querySelector(
-                    ".qty"
-                );
-
-
-            const priceInput =
-                row.querySelector(
-                    ".price"
-                );
-
-
-            const codeInput =
-                row.querySelector(
-                    ".code"
-                );
-
+                row.querySelector(".qty");
 
             const descriptionInput =
-                row.querySelector(
-                    ".description"
-                );
+                row.querySelector(".description");
 
+            const priceInput =
+                row.querySelector(".price");
+
+            const qtyValue =
+                qtyInput
+                    ? qtyInput.value.trim()
+                    : "";
+
+            const descriptionValue =
+                descriptionInput
+                    ? descriptionInput.value.trim()
+                    : "";
+
+            const priceValue =
+                priceInput
+                    ? priceInput.value.trim()
+                    : "";
+
+            /*
+               Do not save a completely empty row.
+            */
 
             if (
-                !qtyInput ||
-                !priceInput ||
-                !codeInput ||
-                !descriptionInput
+                qtyValue === "" &&
+                descriptionValue === "" &&
+                priceValue === ""
             ) {
                 return;
             }
 
-
-            const qty =
-                parseFloat(
-                    qtyInput.value
-                ) || 0;
-
-
-            const price =
-                Math.abs(
-                    parseFloat(
-                        priceInput.value
-                    ) || 0
-                );
-
-
-            const code =
-                codeInput.value;
-
-
-            const description =
-                descriptionInput.value;
-
-
             items.push({
-
-                qty:
-                    qty,
-
-                code:
-                    code,
-
-                description:
-                    description,
-
-                price:
-                    price,
-
-                amount:
-                    qty * price
-
+                qty: qtyValue,
+                description: descriptionValue,
+                price: priceValue
             });
-
         });
 
 
-    const total =
-        items.reduce(
-            (sum, item) =>
-                sum + item.amount,
-            0
-        );
+    let total = 0;
+
+    items.forEach(item => {
+
+        const qty =
+            parseFloat(item.qty) || 0;
+
+        const price =
+            parseFloat(item.price) || 0;
+
+        total += qty * price;
+    });
+
+
+    const reference =
+        document
+            .getElementById("invoiceNumber")
+            .textContent
+            .trim();
 
 
     return {
 
-        invoiceNumber:
-            document.getElementById(
-                "invoiceNumber"
-            ).textContent,
+        id:
+            Date.now().toString(),
 
         type:
             currentDocumentType,
 
-        company:
-            currentCompany,
+        invoiceNumber:
+            reference,
 
         invoiceDate:
-            document.getElementById(
-                "invoiceDate"
-            ).value,
+            document.getElementById("invoiceDate").value,
 
         dueDate:
-            document.getElementById(
-                "dueDate"
-            ).value,
+            document.getElementById("dueDate").value,
+
+        company:
+            currentCompany,
 
         customer: {
 
             name:
-                document.getElementById(
-                    "customerName"
-                ).value,
-
-            company:
-                document.getElementById(
-                    "customerCompany"
-                ).value,
+                document.getElementById("customerName").value.trim(),
 
             phone:
-                document.getElementById(
-                    "customerPhone"
-                ).value,
+                document.getElementById("customerPhone").value.trim(),
 
             email:
-                document.getElementById(
-                    "customerEmail"
-                ).value,
+                document.getElementById("customerEmail").value.trim(),
 
             address:
-                document.getElementById(
-                    "customerAddress"
-                ).value
-
+                document.getElementById("customerAddress").value.trim()
         },
 
         items:
             items,
-
-        subtotal:
-            total,
 
         total:
             total,
@@ -1915,36 +1323,62 @@ function collectCurrentDocument() {
         status:
             "issued",
 
+        creditOf:
+            creditingInvoiceNumber
+                ? String(creditingInvoiceNumber)
+                : null,
+
         createdAt:
             new Date().toISOString(),
 
         updatedAt:
             new Date().toISOString()
-
     };
 }
 
 
-/* =========================================================
-   SAVE CUSTOMER
-========================================================= */
+/* ---------------------------------------------------------
+   CUSTOMER STORAGE
+--------------------------------------------------------- */
+
+function getCustomers() {
+
+    try {
+
+        const stored =
+            localStorage.getItem(
+                CUSTOMER_STORAGE_KEY
+            );
+
+        if (!stored) {
+            return [];
+        }
+
+        const customers =
+            JSON.parse(stored);
+
+        return Array.isArray(customers)
+            ? customers
+            : [];
+
+    } catch (error) {
+
+        return [];
+    }
+}
+
 
 function saveCustomer() {
 
     const name =
         document
-            .getElementById(
-                "customerName"
-            )
+            .getElementById("customerName")
             .value
             .trim();
 
-
     if (!name) {
 
-        alert(
-            "Please enter a customer name."
-        );
+        alert("Please enter a customer name.");
 
         return;
     }
@@ -1955,329 +1389,445 @@ function saveCustomer() {
         name:
             name,
 
-        company:
-            document.getElementById(
-                "customerCompany"
-            ).value,
-
         phone:
-            document.getElementById(
-                "customerPhone"
-            ).value,
+            document
+                .getElementById("customerPhone")
+                .value
+                .trim(),
 
         email:
-            document.getElementById(
-                "customerEmail"
-            ).value,
+            document
+                .getElementById("customerEmail")
+                .value
+                .trim(),
 
         address:
-            document.getElementById(
-                "customerAddress"
-            ).value
-
+            document
+                .getElementById("customerAddress")
+                .value
+                .trim()
     };
 
 
-    let customers =
-        JSON.parse(
-            localStorage.getItem(
-                "customers"
-            ) || "[]"
-        );
+    const customers =
+        getCustomers();
 
-
-    const existing =
+    const existingIndex =
         customers.findIndex(
-            c =>
-                c.name.toLowerCase() ===
-                name.toLowerCase()
+            item =>
+                item.name.toLowerCase() ===
+                customer.name.toLowerCase()
         );
 
 
-    if (existing >= 0) {
+    if (existingIndex >= 0) {
 
-        customers[existing] =
+        customers[existingIndex] =
             customer;
 
     } else {
 
-        customers.push(
-            customer
-        );
-
+        customers.push(customer);
     }
 
 
     localStorage.setItem(
-        "customers",
-        JSON.stringify(
-            customers
-        )
+        CUSTOMER_STORAGE_KEY,
+        JSON.stringify(customers)
     );
 
 
-    loadCustomers();
+    loadCustomerSelector();
 
-
-    alert(
-        "Customer saved."
-    );
+    alert("Customer saved.");
 }
 
-
-/* =========================================================
-   LOAD CUSTOMERS
-========================================================= */
 
 function loadCustomers() {
 
-    const select =
-        document.getElementById(
-            "customerSelect"
-        );
-
-
-    select.innerHTML =
-        '<option value="">-- New Customer --</option>';
-
-
-    const customers =
-        JSON.parse(
-            localStorage.getItem(
-                "customers"
-            ) || "[]"
-        );
-
-
-    customers.forEach(
-        (
-            customer,
-            index
-        ) => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                index;
-
-
-            option.textContent =
-                customer.name +
-                (
-                    customer.company
-                        ? " - " +
-                          customer.company
-                        : ""
-                );
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
+    loadCustomerSelector();
 }
 
 
-/* =========================================================
-   SELECT CUSTOMER
-========================================================= */
+function loadCustomerSelector() {
 
-document
-    .getElementById(
-        "customerSelect"
-    )
-    .addEventListener(
-        "change",
-        function() {
-
-            if (
-                this.value === ""
-            ) {
-                return;
-            }
-
-
-            const customers =
-                JSON.parse(
-                    localStorage.getItem(
-                        "customers"
-                    ) || "[]"
-                );
-
-
-            const customer =
-                customers[
-                    this.value
-                ];
-
-
-            if (!customer) {
-                return;
-            }
-
-
-            document.getElementById(
-                "customerName"
-            ).value =
-                customer.name || "";
-
-
-            document.getElementById(
-                "customerCompany"
-            ).value =
-                customer.company || "";
-
-
-            document.getElementById(
-                "customerPhone"
-            ).value =
-                customer.phone || "";
-
-
-            document.getElementById(
-                "customerEmail"
-            ).value =
-                customer.email || "";
-
-
-            document.getElementById(
-                "customerAddress"
-            ).value =
-                customer.address || "";
-
-        }
-    );
-
-
-/* =========================================================
-   DELETE CUSTOMER
-========================================================= */
-
-function deleteCustomer() {
-
-    const select =
+    const container =
         document.getElementById(
-            "customerSelect"
+            "customerSelectorContainer"
         );
 
-
-    if (
-        select.value === ""
-    ) {
-
-        alert(
-            "Select a saved customer first."
+    const selector =
+        document.getElementById(
+            "customerSelector"
         );
+
+    const customers =
+        getCustomers();
+
+
+    selector.innerHTML =
+        `<option value="">Select customer...</option>`;
+
+
+    customers.forEach((customer, index) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            String(index);
+
+        option.textContent =
+            customer.name;
+
+        selector.appendChild(option);
+    });
+
+
+    container.style.display =
+        customers.length
+            ? "block"
+            : "none";
+}
+
+
+function selectCustomer(index) {
+
+    if (index === "") {
+        return;
+    }
+
+    const customers =
+        getCustomers();
+
+    const customer =
+        customers[Number(index)];
+
+    if (!customer) {
+        return;
+    }
+
+
+    document.getElementById("customerName").value =
+        customer.name || "";
+
+    document.getElementById("customerPhone").value =
+        customer.phone || "";
+
+    document.getElementById("customerEmail").value =
+        customer.email || "";
+
+    document.getElementById("customerAddress").value =
+        customer.address || "";
+}
+
+
+function deleteSelectedCustomer() {
+
+    const selector =
+        document.getElementById(
+            "customerSelector"
+        );
+
+    if (!selector.value) {
+
+        alert("Please select a saved customer first.");
 
         return;
     }
 
 
-    let customers =
-        JSON.parse(
-            localStorage.getItem(
-                "customers"
-            ) || "[]"
-        );
+    const customers =
+        getCustomers();
+
+    const index =
+        Number(selector.value);
 
 
-    customers.splice(
-        parseInt(
-            select.value
-        ),
-        1
-    );
+    if (
+        !Number.isInteger(index) ||
+        !customers[index]
+    ) {
+        return;
+    }
+
+
+    const customerName =
+        customers[index].name;
+
+
+    if (
+        !confirm(
+            `Delete saved customer "${customerName}"?`
+        )
+    ) {
+        return;
+    }
+
+
+    customers.splice(index, 1);
 
 
     localStorage.setItem(
-        "customers",
-        JSON.stringify(
-            customers
-        )
+        CUSTOMER_STORAGE_KEY,
+        JSON.stringify(customers)
     );
 
 
-    loadCustomers();
-
-
-    clearCustomerFields();
+    loadCustomerSelector();
 }
 
 
-function clearCustomerFields() {
+/* ---------------------------------------------------------
+   MODE DISPLAY
+--------------------------------------------------------- */
 
-    document.getElementById(
-        "customerSelect"
-    ).value = "";
+function updateInvoiceModeDisplay() {
 
+    const banner =
+        document.getElementById("modeBanner");
 
-    document.getElementById(
-        "customerName"
-    ).value = "";
+    const invoiceNumberElement =
+        document.getElementById("invoiceNumber");
 
+    const dueDateGroup =
+        document.getElementById("dueDateGroup");
 
-    document.getElementById(
-        "customerCompany"
-    ).value = "";
-
-
-    document.getElementById(
-        "customerPhone"
-    ).value = "";
-
-
-    document.getElementById(
-        "customerEmail"
-    ).value = "";
+    const creditButton =
+        document.querySelector(
+            ".btn-warning"
+        );
 
 
-    document.getElementById(
-        "customerAddress"
-    ).value = "";
+    if (currentDocumentType === "credit_note") {
+
+        banner.style.display = "block";
+
+        banner.textContent =
+            `CREDIT NOTE for Invoice ${creditingInvoiceNumber}`;
+
+        invoiceNumberElement.textContent =
+            `CN-${creditingInvoiceNumber}`;
+
+        dueDateGroup.style.display =
+            "none";
+
+        if (creditButton) {
+            creditButton.style.display = "none";
+        }
+
+        return;
+    }
+
+
+    if (editingInvoiceNumber) {
+
+        banner.style.display = "block";
+
+        banner.textContent =
+            `EDITING INVOICE ${editingInvoiceNumber}`;
+
+    } else {
+
+        banner.style.display = "none";
+
+        banner.textContent = "";
+    }
+
+
+    dueDateGroup.style.display =
+        "flex";
+
+
+    if (creditButton) {
+        creditButton.style.display = "";
+    }
+
+
+    invoiceNumberElement.textContent =
+        String(invoiceNumber);
 }
 
 
-/* =========================================================
-   PREPARE PRINT DOCUMENT
-========================================================= */
+/* ---------------------------------------------------------
+   SAVE NORMAL INVOICE
+--------------------------------------------------------- */
 
-function preparePrintDocument(
-    documentData
-) {
+function saveIssuedInvoice(documentData) {
 
-    const isCredit =
-        documentData.type ===
-        "credit_note";
+    const records =
+        getInvoiceRecords();
+
+
+    const existingIndex =
+        records.findIndex(record =>
+            record &&
+            record.type === "invoice" &&
+            String(record.invoiceNumber) ===
+            String(documentData.invoiceNumber)
+        );
+
+
+    if (existingIndex >= 0) {
+
+        const existing =
+            records[existingIndex];
+
+        documentData.id =
+            existing.id;
+
+        documentData.createdAt =
+            existing.createdAt ||
+            documentData.createdAt;
+
+        documentData.updatedAt =
+            new Date().toISOString();
+
+        /*
+           Preserve a credited status if this invoice
+           was already credited.
+        */
+
+        if (existing.status === "credited") {
+            documentData.status = "credited";
+        }
+
+        records[existingIndex] =
+            documentData;
+
+    } else {
+
+        records.push(documentData);
+    }
+
+
+    saveInvoiceRecords(records);
+
+    updateInvoiceHistory();
+}
+
+
+/* ---------------------------------------------------------
+   SAVE CREDIT NOTE
+--------------------------------------------------------- */
+
+function saveCreditNote(documentData) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const originalIndex =
+        records.findIndex(record =>
+            record &&
+            record.type === "invoice" &&
+            String(record.invoiceNumber) ===
+            String(documentData.creditOf)
+        );
+
+
+    if (originalIndex >= 0) {
+
+        records[originalIndex].status =
+            "credited";
+
+        records[originalIndex].updatedAt =
+            new Date().toISOString();
+    }
+
+
+    const existingCreditIndex =
+        records.findIndex(record =>
+            record &&
+            record.type === "credit_note" &&
+            String(record.invoiceNumber) ===
+            String(documentData.invoiceNumber)
+        );
+
+
+    if (existingCreditIndex >= 0) {
+
+        documentData.id =
+            records[existingCreditIndex].id;
+
+        documentData.createdAt =
+            records[existingCreditIndex].createdAt ||
+            documentData.createdAt;
+
+        records[existingCreditIndex] =
+            documentData;
+
+    } else {
+
+        records.push(documentData);
+    }
+
+
+    saveInvoiceRecords(records);
+
+    updateInvoiceHistory();
+}
+
+
+/* ---------------------------------------------------------
+   PRINT PREPARATION
+--------------------------------------------------------- */
+
+function preparePrintDocument(documentData) {
+
+    const company =
+        companies[documentData.company] ||
+        companies.impression;
+
+
+    const isCreditNote =
+        documentData.type === "credit_note";
+
+
+    document.getElementById(
+        "printCompanyName"
+    ).textContent =
+        company.displayName;
+
+
+    document.getElementById(
+        "printCompanyLegalName"
+    ).textContent =
+        company.legalName;
+
+
+    document.getElementById(
+        "printCompanyAddress"
+    ).textContent =
+        company.address;
+
+
+    document.getElementById(
+        "printCompanyPhone"
+    ).textContent =
+        company.phone;
+
+
+    document.getElementById(
+        "printCompanyLogo"
+    ).src =
+        company.logo;
 
 
     document.getElementById(
         "printDocumentTitle"
     ).textContent =
-        isCredit
+        isCreditNote
             ? "CREDIT NOTE"
             : "INVOICE";
 
 
     document.getElementById(
-        "printDocumentTitle"
-    ).classList.toggle(
-        "credit-note-print",
-        isCredit
-    );
-
-
-    document.getElementById(
         "printReferenceLabel"
     ).textContent =
-        isCredit
-            ? "Credit Note No:"
-            : "Invoice No:";
+        isCreditNote
+            ? "Credit Note Number:"
+            : "Invoice Number:";
 
 
     document.getElementById(
@@ -2289,27 +1839,59 @@ function preparePrintDocument(
     document.getElementById(
         "printInvoiceDate"
     ).textContent =
-        formatDate(
-            documentData.invoiceDate
+        formatDate(documentData.invoiceDate);
+
+
+    const originalContainer =
+        document.getElementById(
+            "printOriginalInvoiceContainer"
         );
+
+
+    if (isCreditNote) {
+
+        originalContainer.style.display =
+            "block";
+
+        document.getElementById(
+            "printOriginalInvoice"
+        ).textContent =
+            documentData.creditOf;
+
+    } else {
+
+        originalContainer.style.display =
+            "none";
+    }
+
+
+    const dueDateContainer =
+        document.getElementById(
+            "printDueDateContainer"
+        );
+
+
+    if (isCreditNote) {
+
+        dueDateContainer.style.display =
+            "none";
+
+    } else {
+
+        dueDateContainer.style.display =
+            "block";
+
+        document.getElementById(
+            "printDueDate"
+        ).textContent =
+            formatDate(documentData.dueDate);
+    }
 
 
     document.getElementById(
         "printCustomerName"
     ).textContent =
         documentData.customer.name;
-
-
-    document.getElementById(
-        "printCustomerCompany"
-    ).textContent =
-        documentData.customer.company;
-
-
-    document.getElementById(
-        "printCustomerAddress"
-    ).textContent =
-        documentData.customer.address;
 
 
     document.getElementById(
@@ -2324,292 +1906,95 @@ function preparePrintDocument(
         documentData.customer.email;
 
 
-    const dueContainer =
-        document.getElementById(
-            "printDueDateContainer"
-        );
+    document.getElementById(
+        "printCustomerAddress"
+    ).textContent =
+        documentData.customer.address;
 
 
-    const dueBreak =
-        document.getElementById(
-            "printDueDateBreak"
-        );
-
-
-    if (isCredit) {
-
-        dueContainer.style.display =
-            "none";
-
-        dueBreak.style.display =
-            "none";
-
-    } else {
-
-        dueContainer.style.display =
-            "inline";
-
-        dueBreak.style.display =
-            "inline";
-
-        document.getElementById(
-            "printDueDate"
-        ).textContent =
-            formatDate(
-                documentData.dueDate
-            );
-
-    }
-
-
-    const originalRow =
-        document.getElementById(
-            "printOriginalInvoiceRow"
-        );
-
-
-    if (isCredit) {
-
-        originalRow.style.display =
-            "inline";
-
-        document.getElementById(
-            "printOriginalInvoice"
-        ).textContent =
-            documentData.creditOf;
-
-    } else {
-
-        originalRow.style.display =
-            "none";
-
-    }
-
-
-    const printBody =
+    const printItemsBody =
         document.getElementById(
             "printItemsBody"
         );
 
 
-    printBody.innerHTML = "";
+    printItemsBody.innerHTML = "";
 
 
-    documentData.items.forEach(
-        item => {
-
-            const printRow =
-                document.createElement(
-                    "tr"
-                );
+    let total = 0;
 
 
-            printRow.innerHTML = `
+    documentData.items.forEach(item => {
 
-                <td>
-                    ${escapeHtml(item.qty)}
-                </td>
+        const qty =
+            parseFloat(item.qty) || 0;
 
-                <td>
-                    ${escapeHtml(item.code)}
-                </td>
+        const price =
+            parseFloat(item.price) || 0;
 
-                <td>
-                    ${escapeHtml(item.description)}
-                </td>
+        const amount =
+            qty * price;
 
-                <td class="right">
-                    R ${Number(
-                        item.price
-                    ).toFixed(2)}
-                </td>
-
-                <td class="right">
-                    R ${Number(
-                        item.amount
-                    ).toFixed(2)}
-                </td>
-
-            `;
+        total += amount;
 
 
-            printBody.appendChild(
-                printRow
-            );
+        const row =
+            document.createElement("tr");
 
-        }
-    );
+
+        row.innerHTML = `
+            <td style="border:1px solid #ccc; padding:8px;">
+                ${escapeHtml(item.qty)}
+            </td>
+
+            <td style="border:1px solid #ccc; padding:8px;">
+                ${escapeHtml(item.description)}
+            </td>
+
+            <td style="border:1px solid #ccc; padding:8px; text-align:right;">
+                ${formatMoney(price)}
+            </td>
+
+            <td style="border:1px solid #ccc; padding:8px; text-align:right;">
+                ${formatMoney(amount)}
+            </td>
+        `;
+
+
+        printItemsBody.appendChild(row);
+    });
 
 
     document.getElementById(
         "printSubtotal"
     ).textContent =
-        "R " +
-        Number(
-            documentData.subtotal
-        ).toFixed(2);
+        formatMoney(total);
+
+
+    document.getElementById(
+        "printTotalLabel"
+    ).textContent =
+        isCreditNote
+            ? "TOTAL CREDIT:"
+            : "TOTAL:";
 
 
     document.getElementById(
         "printGrandTotal"
     ).textContent =
-        "R " +
-        Number(
-            documentData.total
-        ).toFixed(2);
+        formatMoney(total);
 
 
     document.getElementById(
-        "printGrandTotalLabel"
+        "printFooter"
     ).textContent =
-        isCredit
-            ? "TOTAL CREDIT"
-            : "TOTAL";
+        company.footer;
 }
 
 
-/* =========================================================
-   SAVE ISSUED INVOICE
-========================================================= */
-
-function saveIssuedInvoice(
-    invoice
-) {
-
-    const records =
-        getInvoiceRecords();
-
-
-    const existingIndex =
-        records.findIndex(
-            record =>
-                record.type ===
-                    "invoice" &&
-                record.invoiceNumber ===
-                    invoice.invoiceNumber
-        );
-
-
-    if (
-        existingIndex >= 0
-    ) {
-
-        const existing =
-            records[
-                existingIndex
-            ];
-
-
-        invoice.createdAt =
-            existing.createdAt ||
-            invoice.createdAt;
-
-
-        invoice.updatedAt =
-            new Date().toISOString();
-
-
-        invoice.status =
-            existing.status ||
-            "issued";
-
-
-        records[
-            existingIndex
-        ] =
-            invoice;
-
-    } else {
-
-        records.push(
-            invoice
-        );
-
-    }
-
-
-    saveInvoiceRecords(
-        records
-    );
-
-
-    updateInvoiceHistory();
-
-
-    return invoice;
-}
-
-
-/* =========================================================
-   SAVE CREDIT NOTE
-========================================================= */
-
-function saveCreditNote(
-    creditNote
-) {
-
-    const records =
-        getInvoiceRecords();
-
-
-    const existing =
-        records.find(
-            record =>
-                record.type ===
-                    "credit_note" &&
-                record.invoiceNumber ===
-                    creditNote.invoiceNumber
-        );
-
-
-    if (existing) {
-
-        return false;
-
-    }
-
-
-    records.push(
-        creditNote
-    );
-
-
-    const original =
-        records.find(
-            record =>
-                record.type ===
-                    "invoice" &&
-                record.invoiceNumber ===
-                    creditNote.creditOf
-        );
-
-
-    if (original) {
-
-        original.status =
-            "credited";
-
-        original.updatedAt =
-            new Date().toISOString();
-
-    }
-
-
-    saveInvoiceRecords(
-        records
-    );
-
-
-    updateInvoiceHistory();
-
-
-    return true;
-}
-
-
-/* =========================================================
+/* ---------------------------------------------------------
    GENERATE PDF
-========================================================= */
+--------------------------------------------------------- */
 
 function generatePDF() {
 
@@ -2617,143 +2002,172 @@ function generatePDF() {
         collectCurrentDocument();
 
 
-    if (
-        editingInvoiceNumber &&
-        currentDocumentType ===
-            "invoice"
-    ) {
-
-        documentData.invoiceNumber =
-            editingInvoiceNumber;
-
-    }
-
+    /*
+       If this is a brand-new invoice and somehow
+       the selected number already exists, move to
+       the next genuinely unused number.
+    */
 
     if (
-        currentDocumentType ===
-        "credit_note"
+        currentDocumentType === "invoice" &&
+        !editingInvoiceNumber
     ) {
 
-        documentData.type =
-            "credit_note";
-
-        documentData.invoiceNumber =
-            "CN-" +
-            creditingInvoiceNumber;
-
-        documentData.creditOf =
-            creditingInvoiceNumber;
-
-    } else {
-
-        documentData.type =
-            "invoice";
-
-    }
+        const records =
+            getInvoiceRecords();
 
 
-    if (
-        documentData.type ===
-        "credit_note"
-    ) {
-
-        const existingCredit =
-            getInvoiceRecords().find(
-                record =>
-                    record.type ===
-                        "credit_note" &&
-                    record.invoiceNumber ===
-                        documentData.invoiceNumber
+        const alreadyExists =
+            records.some(record =>
+                record &&
+                record.type === "invoice" &&
+                String(record.invoiceNumber) ===
+                String(documentData.invoiceNumber)
             );
 
 
-        if (
-            !existingCredit
-        ) {
+        if (alreadyExists) {
 
-            const saved =
-                saveCreditNote(
-                    documentData
-                );
+            const nextNumber =
+                getNextAvailableInvoiceNumber();
 
+            setInvoiceNumber(nextNumber);
 
-            if (!saved) {
-                return;
-            }
-
+            documentData.invoiceNumber =
+                String(nextNumber);
         }
-
-    } else {
-
-        saveIssuedInvoice(
-            documentData
-        );
-
     }
 
 
-    preparePrintDocument(
-        documentData
-    );
+    if (
+        !documentData.invoiceDate
+    ) {
+
+        documentData.invoiceDate =
+            todayString();
+
+        document.getElementById(
+            "invoiceDate"
+        ).value =
+            documentData.invoiceDate;
+    }
+
+
+    if (
+        currentDocumentType === "invoice" &&
+        !documentData.dueDate
+    ) {
+
+        documentData.dueDate =
+            documentData.invoiceDate;
+
+        document.getElementById(
+            "dueDate"
+        ).value =
+            documentData.dueDate;
+    }
+
+
+    if (
+        currentDocumentType === "invoice"
+    ) {
+
+        saveIssuedInvoice(documentData);
+
+    } else {
+
+        documentData.invoiceNumber =
+            `CN-${creditingInvoiceNumber}`;
+
+        saveCreditNote(documentData);
+    }
+
+
+    preparePrintDocument(documentData);
 
 
     const company =
-        companies[
-            currentCompany
-        ];
+        companies[documentData.company] ||
+        companies.impression;
 
 
-    const originalTitle =
+    const oldTitle =
         document.title;
 
 
     document.title =
-        company.displayName +
-        " - " +
-        documentData.invoiceNumber;
+        `${company.displayName} - ${documentData.invoiceNumber}`;
 
 
-    window.print();
+    setTimeout(() => {
 
+        window.print();
 
-    setTimeout(
-        function() {
+        setTimeout(() => {
 
             document.title =
-                originalTitle;
+                oldTitle;
 
-        },
-        1000
-    );
+        }, 1000);
+
+    }, 100);
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    CREDIT INVOICE
-========================================================= */
+--------------------------------------------------------- */
 
-function creditInvoice(
-    invoiceNumberToCredit
-) {
+function creditCurrentInvoice() {
+
+    const reference =
+        document
+            .getElementById("invoiceNumber")
+            .textContent
+            .trim();
+
+
+    if (!reference) {
+
+        alert("There is no invoice to credit.");
+
+        return;
+    }
+
+
+    creditInvoice(reference);
+}
+
+
+function creditInvoice(invoiceNumberToCredit) {
 
     const records =
         getInvoiceRecords();
 
 
-    const invoice =
-        records.find(
-            record =>
-                record.type ===
-                    "invoice" &&
-                record.invoiceNumber ===
-                    invoiceNumberToCredit
+    const original =
+        records.find(record =>
+            record &&
+            record.type === "invoice" &&
+            String(record.invoiceNumber) ===
+            String(invoiceNumberToCredit)
         );
 
 
-    if (!invoice) {
+    if (!original) {
 
         alert(
-            "Invoice could not be found."
+            `Invoice ${invoiceNumberToCredit} was not found in Invoice History.`
+        );
+
+        return;
+    }
+
+
+    if (original.status === "credited") {
+
+        alert(
+            `Invoice ${invoiceNumberToCredit} has already been credited.`
         );
 
         return;
@@ -2761,98 +2175,37 @@ function creditInvoice(
 
 
     if (
-        invoice.status ===
-        "credited"
+        !confirm(
+            `Create credit note CN-${invoiceNumberToCredit} for invoice ${invoiceNumberToCredit}?`
+        )
     ) {
-
-        alert(
-            "This invoice has already been credited."
-        );
-
         return;
     }
 
 
-    const existingCredit =
-        records.find(
-            record =>
-                record.type ===
-                    "credit_note" &&
-                record.creditOf ===
-                    invoiceNumberToCredit
-        );
-
-
-    if (existingCredit) {
-
-        alert(
-            "A credit note already exists for this invoice."
-        );
-
-        return;
-    }
-
-
-    const confirmed =
-        confirm(
-            "Create a full credit note for invoice " +
-            invoiceNumberToCredit +
-            "?\n\n" +
-            "The original invoice will remain in your history."
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    loadInvoiceIntoForm(
-        invoice
-    );
-
-
-    creditingInvoiceNumber =
-        invoiceNumberToCredit;
-
-
-    editingInvoiceNumber =
-        null;
+    loadInvoiceIntoForm(original);
 
 
     currentDocumentType =
         "credit_note";
 
+    creditingInvoiceNumber =
+        String(invoiceNumberToCredit);
 
-    document
-        .querySelectorAll(
-            "#itemsBody > tr"
-        )
-        .forEach(
-            row => {
-
-                const price =
-                    row.querySelector(
-                        ".price"
-                    );
+    editingInvoiceNumber =
+        null;
 
 
-                if (price) {
-
-                    price.value =
-                        Math.abs(
-                            parseFloat(
-                                price.value
-                            ) || 0
-                        );
-
-                }
-
-            }
-        );
+    document.getElementById(
+        "invoiceDate"
+    ).value =
+        todayString();
 
 
-    calculateTotals();
+    document.getElementById(
+        "dueDate"
+    ).value =
+        "";
 
 
     updateInvoiceModeDisplay();
@@ -2862,239 +2215,180 @@ function creditInvoice(
         top: 0,
         behavior: "smooth"
     });
-
-
-    alert(
-        "Credit note prepared. Review it, then click Generate PDF."
-    );
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    LOAD SAVED DOCUMENT
-========================================================= */
+--------------------------------------------------------- */
 
-function loadInvoiceIntoForm(
-    invoice
-) {
+function loadInvoiceIntoForm(record) {
 
-    currentCompany =
-        invoice.company ||
-        "impression";
+    if (!record) {
+        return;
+    }
 
 
     switchCompany(
-        currentCompany
+        record.company || "impression"
     );
 
 
     document.getElementById(
         "invoiceDate"
     ).value =
-        invoice.invoiceDate ||
-        today;
+        record.invoiceDate || "";
 
 
     document.getElementById(
         "dueDate"
     ).value =
-        invoice.dueDate ||
-        today;
+        record.dueDate || "";
 
 
     document.getElementById(
         "customerName"
     ).value =
-        invoice.customer?.name ||
-        "";
-
-
-    document.getElementById(
-        "customerCompany"
-    ).value =
-        invoice.customer?.company ||
-        "";
+        record.customer?.name || "";
 
 
     document.getElementById(
         "customerPhone"
     ).value =
-        invoice.customer?.phone ||
-        "";
+        record.customer?.phone || "";
 
 
     document.getElementById(
         "customerEmail"
     ).value =
-        invoice.customer?.email ||
-        "";
+        record.customer?.email || "";
 
 
     document.getElementById(
         "customerAddress"
     ).value =
-        invoice.customer?.address ||
-        "";
+        record.customer?.address || "";
 
 
     const tbody =
-        document.getElementById(
-            "itemsBody"
-        );
+        document.getElementById("itemsBody");
 
+
+    /*
+       Important:
+       completely clear existing rows before
+       loading saved rows.
+    */
 
     tbody.innerHTML = "";
 
 
     if (
-        invoice.items &&
-        invoice.items.length
+        Array.isArray(record.items) &&
+        record.items.length
     ) {
 
-        invoice.items.forEach(
-            item => {
+        record.items.forEach(item => {
 
-                addItem(
-                    item
-                );
+            addItem({
+                qty:
+                    item.qty,
 
-            }
-        );
+                description:
+                    item.description,
+
+                price:
+                    item.price
+            });
+        });
 
     } else {
 
-resetItems();
-
-
-/* =========================================================
-   EDIT INVOICE
-========================================================= */
-
-function editInvoice(
-    invoiceNumberToEdit
-) {
-
-    const records =
-        getInvoiceRecords();
-
-
-    const invoice =
-        records.find(
-            record =>
-                record.type ===
-                    "invoice" &&
-                record.invoiceNumber ===
-                    invoiceNumberToEdit
-        );
-
-
-    if (!invoice) {
-
-        alert(
-            "Invoice could not be found."
-        );
-
-        return;
+        addItem();
     }
+
+
+    calculateTotals();
 
 
     if (
-        invoice.status ===
-        "credited"
+        record.type === "credit_note"
     ) {
 
-        alert(
-            "This invoice has already been credited and cannot be edited."
-        );
+        currentDocumentType =
+            "credit_note";
 
-        return;
+        creditingInvoiceNumber =
+            record.creditOf;
+
+        editingInvoiceNumber =
+            null;
+
+    } else {
+
+        currentDocumentType =
+            "invoice";
+
+        editingInvoiceNumber =
+            String(record.invoiceNumber);
+
+        creditingInvoiceNumber =
+            null;
+
+        invoiceNumber =
+            Number(record.invoiceNumber);
+
+        localStorage.setItem(
+            INVOICE_NUMBER_STORAGE_KEY,
+            invoiceNumber
+        );
     }
 
 
-    loadInvoiceIntoForm(
-        invoice
-    );
-
-
-    editingInvoiceNumber =
-        invoiceNumberToEdit;
-
-
-    currentDocumentType =
-        "invoice";
-
-
     updateInvoiceModeDisplay();
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 }
 
 
-/* =========================================================
-   OPEN SAVED DOCUMENT
-========================================================= */
+/* ---------------------------------------------------------
+   EDIT INVOICE
+--------------------------------------------------------- */
 
-function openSavedDocument(
-    documentNumber
-) {
+function editInvoice(invoiceNumberToEdit) {
 
     const records =
         getInvoiceRecords();
 
 
     const record =
-        records.find(
-            item =>
-                item.invoiceNumber ===
-                documentNumber
+        records.find(item =>
+            item &&
+            item.type === "invoice" &&
+            String(item.invoiceNumber) ===
+            String(invoiceNumberToEdit)
         );
 
 
     if (!record) {
 
         alert(
-            "Document could not be found."
+            `Invoice ${invoiceNumberToEdit} was not found.`
         );
 
         return;
     }
 
 
-    loadInvoiceIntoForm(
-        record
-    );
+    loadInvoiceIntoForm(record);
 
 
-    if (
-        record.type ===
-        "credit_note"
-    ) {
+    currentDocumentType =
+        "invoice";
 
-        editingInvoiceNumber =
-            null;
+    editingInvoiceNumber =
+        String(invoiceNumberToEdit);
 
-        creditingInvoiceNumber =
-            record.creditOf;
-
-        currentDocumentType =
-            "credit_note";
-
-    } else {
-
-        editingInvoiceNumber =
-            record.invoiceNumber;
-
-        creditingInvoiceNumber =
-            null;
-
-        currentDocumentType =
-            "invoice";
-
-    }
+    creditingInvoiceNumber =
+        null;
 
 
     updateInvoiceModeDisplay();
@@ -3107,621 +2401,360 @@ function openSavedDocument(
 }
 
 
-/* =========================================================
-   NEW INVOICE
-========================================================= */
+/* ---------------------------------------------------------
+   OPEN SAVED DOCUMENT
+--------------------------------------------------------- */
 
-function newInvoice() {
+function openSavedDocument(invoiceNumberToOpen) {
 
-    if (
-        !confirm(
-            "Start a new invoice?"
-        )
-    ) {
+    const records =
+        getInvoiceRecords();
+
+
+    const record =
+        records.find(item =>
+            item &&
+            String(item.invoiceNumber) ===
+            String(invoiceNumberToOpen)
+        );
+
+
+    if (!record) {
+
+        alert(
+            `Document ${invoiceNumberToOpen} was not found.`
+        );
+
         return;
     }
 
 
-    const highest =
-        getHighestInvoiceNumber();
+    loadInvoiceIntoForm(record);
 
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* ---------------------------------------------------------
+   NEW INVOICE
+--------------------------------------------------------- */
+
+function newInvoice() {
 
     const nextNumber =
         Math.max(
             STARTING_INVOICE_NUMBER,
-            highest + 1
+            getHighestInvoiceNumber() + 1
         );
 
 
     localStorage.setItem(
-        "invoiceNumber",
+        INVOICE_NUMBER_STORAGE_KEY,
         nextNumber
     );
 
 
-    location.reload();
+    /*
+       Reloading gives us a genuinely clean form,
+       while resetItems() below ensures no browser-
+       cached item values survive.
+    */
+
+    currentDocumentType =
+        "invoice";
+
+    editingInvoiceNumber =
+        null;
+
+    creditingInvoiceNumber =
+        null;
+
+
+    window.location.reload();
 }
 
 
-/* =========================================================
-   MODE DISPLAY
-========================================================= */
-
-function updateInvoiceModeDisplay() {
-
-    const banner =
-        document.getElementById(
-            "invoiceModeBanner"
-        );
-
-
-    const numberElement =
-        document.getElementById(
-            "invoiceNumber"
-        );
-
-
-    const itemsHeading =
-        document.getElementById(
-            "itemsHeading"
-        );
-
-
-    const totalLabel =
-        document.getElementById(
-            "screenTotalLabel"
-        );
-
-
-    banner.classList.remove(
-        "credit"
-    );
-
-
-    if (
-        currentDocumentType ===
-        "credit_note"
-    ) {
-
-        banner.textContent =
-            "CREDIT NOTE MODE - Credit for invoice " +
-            creditingInvoiceNumber;
-
-        banner.classList.add(
-            "active",
-            "credit"
-        );
-
-
-        numberElement.textContent =
-            "CN-" +
-            creditingInvoiceNumber;
-
-
-        itemsHeading.textContent =
-            "Credit Note Items";
-
-
-        totalLabel.textContent =
-            "Total Credit";
-
-
-        return;
-    }
-
-
-    if (
-        editingInvoiceNumber
-    ) {
-
-        banner.textContent =
-            "EDITING INVOICE " +
-            editingInvoiceNumber +
-            " - The invoice number will remain unchanged.";
-
-        banner.classList.add(
-            "active"
-        );
-
-
-        numberElement.textContent =
-            editingInvoiceNumber;
-
-
-        itemsHeading.textContent =
-            "Invoice Items";
-
-
-        totalLabel.textContent =
-            "Total";
-
-
-        return;
-    }
-
-
-    banner.classList.remove(
-        "active"
-    );
-
-
-    numberElement.textContent =
-        String(
-            invoiceNumber
-        ).padStart(
-            5,
-            "0"
-        );
-
-
-    itemsHeading.textContent =
-        "Invoice Items";
-
-
-    totalLabel.textContent =
-        "Total";
-}
-
-
-/* =========================================================
+/* ---------------------------------------------------------
    HISTORY
-========================================================= */
+--------------------------------------------------------- */
 
 function updateInvoiceHistory() {
 
-    const list =
+    const tbody =
         document.getElementById(
-            "invoiceHistoryList"
+            "historyBody"
         );
 
 
-    if (!list) {
-        return;
-    }
-
-
-    const search =
-        (
-            document.getElementById(
-                "invoiceHistorySearch"
-            )?.value ||
-            ""
-        )
-        .toLowerCase()
-        .trim();
-
-
-    let records =
+    const records =
         getInvoiceRecords();
 
 
-    records =
+    tbody.innerHTML = "";
+
+
+    const companyRecords =
         records
-            .filter(record => {
-
-                if (!search) {
-                    return true;
-                }
-
-
-                const customer =
-                    record.customer?.name ||
-                    "";
-
-
-                const company =
-                    companies[
-                        record.company
-                    ]?.name ||
-                    "";
-
-
-                const invoiceNumber =
-                    String(
-                        record.invoiceNumber ||
-                        ""
-                    );
-
-
-                return (
-
-                    invoiceNumber
-                        .toLowerCase()
-                        .includes(search)
-
-                    ||
-
-                    customer
-                        .toLowerCase()
-                        .includes(search)
-
-                    ||
-
-                    company
-                        .toLowerCase()
-                        .includes(search)
-
-                );
-
-            })
-            .sort(
-                (
-                    a,
-                    b
-                ) =>
-                    new Date(
-                        b.updatedAt ||
-                        b.createdAt
-                    ) -
-                    new Date(
-                        a.updatedAt ||
-                        a.createdAt
-                    )
+            .filter(record =>
+                record &&
+                record.company === currentCompany
+            )
+            .sort((a, b) =>
+                new Date(b.createdAt || 0) -
+                new Date(a.createdAt || 0)
             );
 
 
-    if (
-        records.length ===
-        0
-    ) {
+    if (!companyRecords.length) {
 
-        list.innerHTML = `
+        const row =
+            document.createElement("tr");
 
-            <div class="history-empty">
 
-                No saved invoices found.
-
-            </div>
-
+        row.innerHTML = `
+            <td colspan="7" style="text-align:center; color:#777;">
+                No invoices saved for this company yet.
+            </td>
         `;
+
+
+        tbody.appendChild(row);
 
         return;
     }
 
 
-    list.innerHTML =
-        records
-            .map(
-                record =>
-                    renderHistoryItem(
-                        record
-                    )
-            )
-            .join("");
-}
+    companyRecords.forEach(record => {
+
+        const row =
+            document.createElement("tr");
 
 
-/* =========================================================
-   HISTORY ITEM
-========================================================= */
+        let statusClass =
+            "status-issued";
 
-function renderHistoryItem(
-    record
-) {
-
-    const company =
-        companies[
-            record.company
-        ] ||
-        companies.impression;
+        let statusText =
+            "ISSUED";
 
 
-    const isCredit =
-        record.type ===
-        "credit_note";
+        if (
+            record.type === "credit_note"
+        ) {
+
+            statusClass =
+                "status-credit";
+
+            statusText =
+                "CREDIT NOTE";
+
+        } else if (
+            record.status === "credited"
+        ) {
+
+            statusClass =
+                "status-credited";
+
+            statusText =
+                "CREDITED";
+
+        } else if (
+            record.status === "edited"
+        ) {
+
+            statusClass =
+                "status-edited";
+
+            statusText =
+                "EDITED";
+        }
 
 
-    const status =
-        record.status ||
-        "issued";
+        const total =
+            formatMoney(record.total || 0);
 
 
-    let statusClass =
-        "history-status-issued";
+        const escapedReference =
+            escapeAttribute(
+                record.invoiceNumber
+            );
 
 
-    let statusText =
-        "Issued";
+        let actionButtons = "";
 
 
-    if (
-        status ===
-        "credited"
-    ) {
+        if (
+            record.type === "invoice"
+        ) {
 
-        statusClass =
-            "history-status-credited";
-
-        statusText =
-            "Credited";
-
-    }
-
-
-    if (isCredit) {
-
-        statusClass =
-            "history-status-credit";
-
-        statusText =
-            "Credit Note";
-
-    }
-
-
-    const customer =
-        record.customer?.name ||
-        "No customer";
-
-
-    const total =
-        Number(
-            record.total ||
-            0
-        );
-
-
-    return `
-
-        <div class="history-item">
-
-            <div class="history-header">
-
-                <div>
-
-                    <div class="history-reference">
-
-                        ${escapeHtml(
-                            record.invoiceNumber
-                        )}
-
-                    </div>
-
-                    <div class="history-customer">
-
-                        ${escapeHtml(
-                            customer
-                        )}
-
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <span
-                        class="history-status ${statusClass}"
-                    >
-                        ${statusText}
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="history-meta">
-
-                ${escapeHtml(
-                    company.name
-                )}
-
-                &nbsp; • &nbsp;
-
-                ${formatDate(
-                    record.invoiceDate
-                )}
-
-            </div>
-
-
-            ${
-                isCredit
-                    ? `
-                        <div class="history-meta">
-
-                            Credit for invoice
-                            ${escapeHtml(
-                                record.creditOf
-                            )}
-
-                        </div>
-                    `
-                    : ""
-            }
-
-
-            <div class="history-total">
-
-                R ${total.toFixed(2)}
-
-            </div>
-
-
-            <div class="history-actions">
-
+            actionButtons += `
                 <button
-                    type="button"
-                    class="history-open"
-                    onclick="openSavedDocument('${escapeAttribute(record.invoiceNumber)}')"
+                    class="btn-secondary"
+                    onclick="editInvoice('${escapedReference}')"
+                >
+                    Edit
+                </button>
+            `;
+
+
+            actionButtons += `
+                <button
+                    class="btn-primary"
+                    onclick="openSavedDocument('${escapedReference}')"
                 >
                     Open
                 </button>
+            `;
 
 
-                ${
-                    isCredit
-                        ? ""
-                        : status ===
-                          "credited"
-                            ? `
-                                <button
-                                    type="button"
-                                    class="history-disabled"
-                                    disabled
-                                >
-                                    Already Credited
-                                </button>
-                            `
-                            : `
-                                <button
-                                    type="button"
-                                    class="history-open"
-                                    onclick="editInvoice('${escapeAttribute(record.invoiceNumber)}')"
-                                >
-                                    Edit
-                                </button>
+            if (
+                record.status !== "credited"
+            ) {
 
-                                <button
-                                    type="button"
-                                    class="history-credit"
-                                    onclick="creditInvoice('${escapeAttribute(record.invoiceNumber)}')"
-                                >
-                                    Credit Invoice
-                                </button>
-                            `
-                }
+                actionButtons += `
+                    <button
+                        class="btn-warning"
+                        onclick="creditInvoice('${escapedReference}')"
+                    >
+                        Credit
+                    </button>
+                `;
+            }
 
-            </div>
+        } else {
 
-        </div>
+            actionButtons += `
+                <button
+                    class="btn-primary"
+                    onclick="openSavedDocument('${escapedReference}')"
+                >
+                    Open
+                </button>
+            `;
+        }
 
-    `;
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHtml(record.invoiceNumber)}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    formatDate(record.invoiceDate)
+                )}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    record.customer?.name || ""
+                )}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    companies[record.company]?.displayName ||
+                    record.company ||
+                    ""
+                )}
+            </td>
+
+            <td>
+                ${total}
+            </td>
+
+            <td>
+                <span class="status ${statusClass}">
+                    ${statusText}
+                </span>
+            </td>
+
+            <td>
+                <div class="history-actions">
+                    ${actionButtons}
+                </div>
+            </td>
+        `;
+
+
+        tbody.appendChild(row);
+    });
 }
 
 
-/* =========================================================
-   DATE FORMAT
-========================================================= */
-
-function formatDate(
-    dateString
-) {
-
-    if (!dateString) {
-        return "";
-    }
-
-
-    const parts =
-        dateString.split("-");
-
-
-    if (
-        parts.length !==
-        3
-    ) {
-        return dateString;
-    }
-
-
-    return (
-        parts[2] +
-        "/" +
-        parts[1] +
-        "/" +
-        parts[0]
-    );
-}
-
-
-/* =========================================================
-   HTML SAFETY
-========================================================= */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-}
-
-
-function escapeAttribute(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        );
-}
-
-
-/* =========================================================
+/* ---------------------------------------------------------
    STARTUP
-========================================================= */
+--------------------------------------------------------- */
 
-/*
-    Always start with a completely clean
-    item table.
+function initialiseInvoice() {
 
-    This prevents an old/stale row from
-    becoming part of a brand-new invoice.
-*/
-
-document.getElementById(
-    "itemsBody"
-).innerHTML = "";
+    switchCompany(
+        currentCompany
+    );
 
 
-document.getElementById(
-    "companySelect"
-).value =
-    currentCompany;
+    /*
+       Make absolutely certain that no HTML,
+       browser autofill or previous DOM state
+       creates an unwanted item row.
+    */
+
+    document.getElementById(
+        "itemsBody"
+    ).innerHTML = "";
 
 
-switchCompany(
-    currentCompany
+    /*
+       Brand-new invoice:
+       Qty      = blank
+       Description = blank
+       Price    = blank
+       Amount   = blank
+       Totals   = blank
+    */
+
+    resetItems();
+
+
+    const today =
+        todayString();
+
+
+    document.getElementById(
+        "invoiceDate"
+    ).value =
+        today;
+
+
+    document.getElementById(
+        "dueDate"
+    ).value =
+        today;
+
+
+    setInvoiceNumber(
+        invoiceNumber
+    );
+
+
+    loadCustomers();
+
+
+    updateInvoiceModeDisplay();
+
+
+    updateInvoiceHistory();
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialiseInvoice
 );
-
-
-loadCustomers();
-
-
-addItem();
-
-
-calculateTotals();
-
-
-updateInvoiceHistory();
-
-
-updateInvoiceModeDisplay();
 
 </script>
 
