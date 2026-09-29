@@ -43,6 +43,30 @@ body {
     box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
 }
 
+/* TRADING COMPANY SELECTOR */
+
+.company-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px 15px;
+    background: var(--grey);
+    border-radius: 7px;
+    border: 1px solid var(--border);
+}
+
+.company-switcher label {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.company-switcher select {
+    max-width: 280px;
+    font-weight: bold;
+    color: var(--navy);
+}
+
 /* HEADER */
 
 .form-header {
@@ -318,6 +342,15 @@ td {
         border-radius: 5px;
     }
 
+    .company-switcher {
+        display: block;
+    }
+
+    .company-switcher select {
+        max-width: none;
+        margin-top: 7px;
+    }
+
     .form-header {
         display: block;
     }
@@ -519,11 +552,20 @@ td {
 
 <div class="container">
 
+    <div class="company-switcher">
+        <label for="companySelect">Invoice As:</label>
+        <select id="companySelect" onchange="switchCompany(this.value)">
+            <option value="impression">Impression Solutions</option>
+            <option value="weekend">The Weekend Detailer</option>
+        </select>
+    </div>
+
     <div class="form-header">
 
         <div class="company">
 
             <img
+                id="companyLogo"
                 src="icon.png"
                 alt="Impression Solutions"
                 class="company-logo"
@@ -531,12 +573,12 @@ td {
 
             <div class="company-content">
 
-                <h1>Impression Solutions</h1>
+                <h1 id="companyName">Impression Solutions</h1>
 
                 <div class="company-details">
-                    <strong>Impression Solutions (PTY) LTD</strong><br>
-                    17 Park Drive, Mulbarton, Johannesburg<br>
-                    Tel: 071 895 1445
+                    <strong id="companyLegalName">Impression Solutions (PTY) LTD</strong><br>
+                    <span id="companyAddress">17 Park Drive, Mulbarton, Johannesburg</span><br>
+                    <span id="companyPhone">Tel: 071 895 1445</span>
                 </div>
 
             </div>
@@ -696,6 +738,7 @@ td {
         <div class="print-company">
 
             <img
+                id="printCompanyLogo"
                 src="icon.png"
                 alt="Impression Solutions"
                 class="print-company-logo"
@@ -703,12 +746,12 @@ td {
 
             <div class="print-company-content">
 
-                <h1>IMPRESSION SOLUTIONS</h1>
+                <h1 id="printCompanyName">IMPRESSION SOLUTIONS</h1>
 
                 <div class="print-company-details">
-                    <strong>Impression Solutions (PTY) LTD</strong><br>
-                    17 Park Drive, Mulbarton, Johannesburg<br>
-                    Tel: 071 895 1445
+                    <strong id="printCompanyLegalName">Impression Solutions (PTY) LTD</strong><br>
+                    <span id="printCompanyAddress">17 Park Drive, Mulbarton, Johannesburg</span><br>
+                    <span id="printCompanyPhone">Tel: 071 895 1445</span>
                 </div>
 
             </div>
@@ -811,13 +854,66 @@ td {
     </div>
 
     <div class="print-footer">
-        Impression Solutions (PTY) LTD
+        <span id="printFooterCompany">Impression Solutions (PTY) LTD</span>
     </div>
 
 </div>
 
 
 <script>
+
+/* TRADING COMPANIES */
+
+const companies = {
+    impression: {
+        name: "Impression Solutions",
+        displayName: "IMPRESSION SOLUTIONS",
+        legalName: "Impression Solutions (PTY) LTD",
+        logo: "icon.png",
+        address: "17 Park Drive, Mulbarton, Johannesburg",
+        phone: "Tel: 071 895 1445",
+        footer: "Impression Solutions (PTY) LTD"
+    },
+    weekend: {
+        name: "The Weekend Detailer",
+        displayName: "THE WEEKEND DETAILER",
+        legalName: "The Weekend Detailer",
+        logo: "weekend-detailer.png",
+        address: "17 Park Drive, Mulbarton, Johannesburg",
+        phone: "Tel: 071 895 1445",
+        footer: "The Weekend Detailer"
+    }
+};
+
+let currentCompany = localStorage.getItem("currentCompany") || "impression";
+
+function switchCompany(companyKey) {
+    if (!companies[companyKey]) {
+        companyKey = "impression";
+    }
+
+    currentCompany = companyKey;
+    localStorage.setItem("currentCompany", currentCompany);
+
+    const company = companies[currentCompany];
+
+    document.getElementById("companySelect").value = currentCompany;
+
+    document.getElementById("companyLogo").src = company.logo;
+    document.getElementById("companyLogo").alt = company.name;
+    document.getElementById("companyName").textContent = company.name;
+    document.getElementById("companyLegalName").textContent = company.legalName;
+    document.getElementById("companyAddress").textContent = company.address;
+    document.getElementById("companyPhone").textContent = company.phone;
+
+    document.getElementById("printCompanyLogo").src = company.logo;
+    document.getElementById("printCompanyLogo").alt = company.name;
+    document.getElementById("printCompanyName").textContent = company.displayName;
+    document.getElementById("printCompanyLegalName").textContent = company.legalName;
+    document.getElementById("printCompanyAddress").textContent = company.address;
+    document.getElementById("printCompanyPhone").textContent = company.phone;
+    document.getElementById("printFooterCompany").textContent = company.footer;
+}
 
 /* INVOICE NUMBER */
 
@@ -1254,6 +1350,9 @@ function newInvoice() {
 
 
 /* STARTUP */
+
+document.getElementById("companySelect").value = currentCompany;
+switchCompany(currentCompany);
 
 loadCustomers();
 
