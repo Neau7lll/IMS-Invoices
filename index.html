@@ -1,4 +1,1270 @@
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Impression Solutions - Invoice</title>
+
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#17263a">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --navy: #17263a;
+    --blue: #2474b8;
+    --blue-light: #eaf3fb;
+    --grey: #f4f6f8;
+    --border: #d9dee5;
+    --text: #202832;
+    --muted: #6b7280;
+}
+
+body {
+    margin: 0;
+    padding: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef1f5;
+    color: var(--text);
+}
+
+.container {
+    max-width: 1050px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
+}
+
+/* TRADING COMPANY SELECTOR */
+
+.company-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px 15px;
+    background: var(--grey);
+    border-radius: 7px;
+    border: 1px solid var(--border);
+}
+
+.company-switcher label {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.company-switcher select {
+    max-width: 280px;
+    font-weight: bold;
+    color: var(--navy);
+}
+
+/* HEADER */
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 35px;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 4px solid var(--blue);
+}
+
+.company {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.company-logo {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.company-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.company h1 {
+    margin: 0 0 8px 0;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: var(--navy);
+}
+
+.company-details {
+    line-height: 1.6;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.company-details strong {
+    color: var(--navy);
+}
+
+.invoice-meta {
+    min-width: 260px;
+    background: var(--blue-light);
+    padding: 15px 18px;
+    border-radius: 8px;
+    border-left: 4px solid var(--blue);
+}
+
+.invoice-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.invoice-meta-row:last-child {
+    margin-bottom: 0;
+}
+
+.invoice-meta-row strong {
+    white-space: nowrap;
+    color: var(--navy);
+}
+
+#invoiceNumber {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--blue);
+}
+
+/* SECTIONS */
+
+h2 {
+    font-size: 17px;
+    color: var(--navy);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding: 10px 14px;
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+}
+
+/* INPUTS */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--navy);
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 14px;
+    background: white;
+    color: var(--text);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(36, 116, 184, 0.12);
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* CUSTOMER CONTROLS */
+
+.customer-controls {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-bottom: 18px;
+    padding: 15px;
+    background: var(--grey);
+    border-radius: 7px;
+}
+
+.customer-controls > div {
+    flex: 1;
+}
+
+/* BUTTONS */
+
+button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.primary {
+    background: var(--blue);
+    color: white;
+}
+
+.secondary {
+    background: #e4e8ed;
+    color: var(--navy);
+}
+
+.danger {
+    background: #b4232c;
+    color: white;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* TABLE */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+th {
+    background: var(--navy);
+    color: white;
+    text-align: left;
+    padding: 11px 9px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+td {
+    border-top: 1px solid var(--border);
+    padding: 8px;
+    background: white;
+}
+
+.amount {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: bold;
+    color: var(--navy);
+}
+
+.add-item {
+    margin-top: 15px;
+}
+
+/* TOTALS */
+
+.totals {
+    width: 320px;
+    margin-left: auto;
+    margin-top: 25px;
+    padding: 15px 18px;
+    background: var(--grey);
+    border-radius: 7px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+}
+
+.grand-total {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--navy);
+    border-top: 2px solid var(--blue);
+    margin-top: 6px;
+    padding-top: 12px;
+}
+
+#grandTotal {
+    color: var(--blue);
+}
+
+/* ACTIONS */
+
+.actions {
+    text-align: center;
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+/* MODE BANNER */
+
+.invoice-mode-banner {
+    display: none;
+    margin: 15px 0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    background: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+}
+
+.invoice-mode-banner.active {
+    display: block;
+}
+
+.invoice-mode-banner.credit {
+    background: #f5dddd;
+    color: #8a2222;
+    border-color: #e9bcbc;
+}
+
+/* HISTORY */
+
+#invoiceHistoryPanel {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f7f9fc;
+    border: 1px solid #dfe5ec;
+    border-radius: 12px;
+}
+
+#invoiceHistoryPanel h2 {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.history-subtitle {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+#invoiceHistorySearch {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #ccd3dc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.history-item {
+    background: white;
+    border: 1px solid #e0e4e9;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.history-reference {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.history-customer {
+    font-weight: 600;
+}
+
+.history-meta {
+    color: #666;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.history-total {
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+.history-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.history-actions button {
+    border: 0;
+    border-radius: 7px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.history-open {
+    background: #17365d;
+    color: white;
+}
+
+.history-credit {
+    background: #9d2c2c;
+    color: white;
+}
+
+.history-disabled {
+    background: #ddd;
+    color: #777;
+}
+
+.history-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.history-status-issued {
+    background: #dcefdc;
+    color: #246624;
+}
+
+.history-status-credited {
+    background: #f5dddd;
+    color: #8a2222;
+}
+
+.history-status-credit {
+    background: #e4e4f7;
+    color: #41418a;
+}
+
+.history-empty {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+/* PRINT VERSION */
+
+.print-invoice {
+    display: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .company-switcher {
+        display: block;
+    }
+
+    .company-switcher select {
+        max-width: none;
+        margin-top: 7px;
+    }
+
+    .form-header {
+        display: block;
+    }
+
+    .invoice-meta {
+        margin-top: 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .customer-controls {
+        display: block;
+    }
+
+    .customer-controls button {
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+
+    .totals {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    #invoiceHistoryPanel {
+        padding: 15px;
+    }
+}
+
+/* PRINT */
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .container,
+    #invoiceHistoryPanel {
+        display: none !important;
+    }
+
+    .print-invoice {
+        display: block !important;
+        width: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        color: black;
+    }
+
+    .print-header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 4px solid #2474b8;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .print-company {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .print-company-logo {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
+
+    .print-company-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .print-company h1 {
+        margin: 0 0 8px 0;
+        font-size: 25px;
+        color: #17263a;
+    }
+
+    .print-company-details {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .print-invoice-title {
+        text-align: right;
+    }
+
+    .print-invoice-title h2 {
+        background: none;
+        border: none;
+        margin: 0 0 10px 0;
+        padding: 0;
+        font-size: 28px;
+        color: #17263a;
+    }
+
+    .print-meta {
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    .print-customer {
+        border: 1px solid #d9dee5;
+        border-left: 4px solid #2474b8;
+        padding: 12px;
+        margin-bottom: 25px;
+    }
+
+    .print-section-title {
+        font-weight: bold;
+        font-size: 13px;
+        color: #17263a;
+        margin-bottom: 8px;
+    }
+
+    .print-customer-details {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .print-items {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .print-items th {
+        background: #17263a !important;
+        color: white !important;
+        border: 1px solid #17263a;
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .print-items td {
+        border: 1px solid #d9dee5;
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .print-items .right {
+        text-align: right;
+    }
+
+    .print-totals {
+        width: 280px;
+        margin-left: auto;
+        margin-top: 20px;
+    }
+
+    .print-total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .print-grand-total {
+        border-top: 3px solid #2474b8;
+        color: #17263a;
+        font-size: 16px;
+        font-weight: bold;
+        padding-top: 10px;
+    }
+
+    .print-bank {
+        margin-top: 45px;
+        border-top: 1px solid #d9dee5;
+        padding-top: 12px;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .print-footer {
+        margin-top: 35px;
+        text-align: center;
+        font-size: 10px;
+        color: #6b7280;
+    }
+
+    .credit-note-print {
+        color: #8a2222;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="company-switcher">
+        <label for="companySelect">Invoice As:</label>
+
+        <select
+            id="companySelect"
+            onchange="switchCompany(this.value)"
+        >
+            <option value="impression">
+                Impression Solutions
+            </option>
+
+            <option value="weekend">
+                The Weekend Detailer
+            </option>
+        </select>
+    </div>
+
+    <div
+        id="invoiceModeBanner"
+        class="invoice-mode-banner"
+    ></div>
+
+    <div class="form-header">
+
+        <div class="company">
+
+            <img
+                id="companyLogo"
+                src="icon.png"
+                alt="Impression Solutions"
+                class="company-logo"
+            >
+
+            <div class="company-content">
+
+                <h1 id="companyName">
+                    Impression Solutions
+                </h1>
+
+                <div class="company-details">
+
+                    <strong id="companyLegalName">
+                        Impression Solutions (PTY) LTD
+                    </strong>
+
+                    <br>
+
+                    <span id="companyAddress">
+                        17 Park Drive, Mulbarton, Johannesburg
+                    </span>
+
+                    <br>
+
+                    <span id="companyPhone">
+                        Tel: 071 895 1445
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="invoice-meta">
+
+            <div class="invoice-meta-row">
+                <strong>Document No:</strong>
+
+                <span id="invoiceNumber"></span>
+            </div>
+
+            <div class="invoice-meta-row">
+                <strong>Date:</strong>
+
+                <input
+                    type="date"
+                    id="invoiceDate"
+                >
+            </div>
+
+            <div
+                class="invoice-meta-row"
+                id="dueDateRow"
+            >
+                <strong>Due Date:</strong>
+
+                <input
+                    type="date"
+                    id="dueDate"
+                >
+            </div>
+
+        </div>
+
+    </div>
+
+    <h2>Customer Details</h2>
+
+    <div class="customer-controls">
+
+        <div>
+
+            <label>Saved Customer</label>
+
+            <select id="customerSelect">
+                <option value="">
+                    -- New Customer --
+                </option>
+            </select>
+
+        </div>
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="saveCustomer()"
+        >
+            Save Customer
+        </button>
+
+        <button
+            type="button"
+            class="danger"
+            onclick="deleteCustomer()"
+        >
+            Delete
+        </button>
+
+    </div>
+
+    <div class="grid">
+
+        <div>
+
+            <label>
+                Customer / Contact Name
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+            >
+
+        </div>
+
+        <div>
+
+            <label>
+                Company
+            </label>
+
+            <input
+                type="text"
+                id="customerCompany"
+            >
+
+        </div>
+
+        <div>
+
+            <label>
+                Contact Number
+            </label>
+
+            <input
+                type="text"
+                id="customerPhone"
+            >
+
+        </div>
+
+        <div>
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="customerEmail"
+            >
+
+        </div>
+
+        <div class="full">
+
+            <label>
+                Address
+            </label>
+
+            <textarea id="customerAddress"></textarea>
+
+        </div>
+
+    </div>
+
+    <h2 id="itemsHeading">
+        Invoice Items
+    </h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th style="width:80px;">
+                    Qty
+                </th>
+
+                <th style="width:120px;">
+                    Code
+                </th>
+
+                <th>
+                    Description
+                </th>
+
+                <th style="width:150px;">
+                    Unit Price
+                </th>
+
+                <th style="width:150px;">
+                    Total
+                </th>
+
+                <th style="width:70px;">
+                    Remove
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="itemsBody"></tbody>
+
+    </table>
+
+    <button
+        type="button"
+        class="secondary add-item"
+        onclick="addItem()"
+    >
+        + Add Item
+    </button>
+
+    <div class="totals">
+
+        <div class="total-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <span id="subtotal">
+                R 0.00
+            </span>
+
+        </div>
+
+        <div class="total-row grand-total">
+
+            <span id="screenTotalLabel">
+                Total
+            </span>
+
+            <span id="grandTotal">
+                R 0.00
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <button
+            type="button"
+            class="primary"
+            onclick="generatePDF()"
+        >
+            Generate PDF
+        </button>
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="newInvoice()"
+        >
+            New Invoice
+        </button>
+
+    </div>
+
+    <section id="invoiceHistoryPanel">
+
+        <h2>
+            Invoice History
+        </h2>
+
+        <div class="history-subtitle">
+            Saved invoices and credit notes on this device.
+        </div>
+
+        <input
+            type="search"
+            id="invoiceHistorySearch"
+            placeholder="Search invoice number, customer or company..."
+            oninput="updateInvoiceHistory()"
+        >
+
+        <div id="invoiceHistoryList"></div>
+
+    </section>
+
+</div>
+
+
+<!-- PRINTABLE DOCUMENT -->
+
+<div
+    class="print-invoice"
+    id="printInvoice"
+>
+
+    <div class="print-header">
+
+        <div class="print-company">
+
+            <img
+                id="printCompanyLogo"
+                src="icon.png"
+                alt="Impression Solutions"
+                class="print-company-logo"
+            >
+
+            <div class="print-company-content">
+
+                <h1 id="printCompanyName">
+                    IMPRESSION SOLUTIONS
+                </h1>
+
+                <div class="print-company-details">
+
+                    <strong id="printCompanyLegalName">
+                        Impression Solutions (PTY) LTD
+                    </strong>
+
+                    <br>
+
+                    <span id="printCompanyAddress">
+                        17 Park Drive, Mulbarton, Johannesburg
+                    </span>
+
+                    <br>
+
+                    <span id="printCompanyPhone">
+                        Tel: 071 895 1445
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="print-invoice-title">
+
+            <h2 id="printDocumentTitle">
+                INVOICE
+            </h2>
+
+            <div class="print-meta">
+
+                <strong id="printReferenceLabel">
+                    Invoice No:
+                </strong>
+
+                <span id="printInvoiceNumber"></span>
+
+                <br>
+
+                <strong>
+                    Date:
+                </strong>
+
+                <span id="printInvoiceDate"></span>
+
+                <br
+                    id="printDueDateBreak"
+                >
+
+                <span id="printDueDateContainer">
+                    <strong>
+                        Due Date:
+                    </strong>
+
+                    <span id="printDueDate"></span>
+                </span>
+
+                <span
+                    id="printOriginalInvoiceRow"
+                    style="display:none;"
+                >
+
+                    <br>
+
+                    <strong>
+                        Original Invoice:
+                    </strong>
+
+                    <span id="printOriginalInvoice"></span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="print-customer">
+
+        <div class="print-section-title">
+            BILL TO
+        </div>
+
+        <div class="print-customer-details">
+
+            <strong id="printCustomerName"></strong>
+
+            <br>
+
+            <span id="printCustomerCompany"></span>
+
+            <br>
+
+            <span id="printCustomerAddress"></span>
+
+            <br>
+
+            <span id="printCustomerPhone"></span>
+
+            <br>
+
+            <span id="printCustomerEmail"></span>
+
+        </div>
+
+    </div>
+
+    <table class="print-items">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Qty
+                </th>
+
+                <th>
+                    Code
+                </th>
+
+                <th>
+                    Description
+                </th>
+
+                <th class="right">
+                    Unit Price
+                </th>
+
+                <th class="right">
+                    Total
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="printItemsBody"></tbody>
+
+    </table>
+
+    <div class="print-totals">
+
+        <div class="print-total-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <span id="printSubtotal"></span>
+
+        </div>
+
+        <div class="print-total-row print-grand-total">
+
+            <span id="printGrandTotalLabel">
+                TOTAL
+            </span>
+
+            <span id="printGrandTotal"></span>
+
+        </div>
+
+    </div>
+
+    <div class="print-bank">
+
+        <strong>
+            Banking Details
+        </strong>
+
+        <br>
+
+        Account Name:
+        IMS - Impression Marketing Solutions
+
+        <br>
+
+        Bank:
+        FNB
+
+        <br>
+
+        Account Number:
+        62471385346
+
+        <br>
+
+        Branch Code:
+        00259605
+
+    </div>
+
+    <div class="print-footer">
+
+        <span id="printFooterCompany">
+            Impression Solutions (PTY) LTD
+        </span>
+
+    </div>
+
+</div>
+
+
 <script>
 
 /* =========================================================
@@ -6,25 +1272,53 @@
 ========================================================= */
 
 const companies = {
+
     impression: {
+
         name: "Impression Solutions",
+
         displayName: "IMPRESSION SOLUTIONS",
-        legalName: "Impression Solutions (PTY) LTD",
+
+        legalName:
+            "Impression Solutions (PTY) LTD",
+
         logo: "icon.png",
-        address: "17 Park Drive, Mulbarton, Johannesburg",
-        phone: "Tel: 071 895 1445",
-        footer: "Impression Solutions (PTY) LTD"
+
+        address:
+            "17 Park Drive, Mulbarton, Johannesburg",
+
+        phone:
+            "Tel: 071 895 1445",
+
+        footer:
+            "Impression Solutions (PTY) LTD"
+
     },
 
     weekend: {
+
         name: "The Weekend Detailer",
-        displayName: "THE WEEKEND DETAILER",
-        legalName: "The Weekend Detailer",
-        logo: "weekend-detailer.png",
-        address: "17 Park Drive, Mulbarton, Johannesburg",
-        phone: "Tel: 071 895 1445",
-        footer: "The Weekend Detailer"
+
+        displayName:
+            "THE WEEKEND DETAILER",
+
+        legalName:
+            "The Weekend Detailer",
+
+        logo:
+            "weekend-detailer.png",
+
+        address:
+            "17 Park Drive, Mulbarton, Johannesburg",
+
+        phone:
+            "Tel: 071 895 1445",
+
+        footer:
+            "The Weekend Detailer"
+
     }
+
 };
 
 
@@ -34,14 +1328,17 @@ const companies = {
 
 const STARTING_INVOICE_NUMBER = 11260;
 
-const INVOICE_STORAGE_KEY = "invoiceRecords";
+const INVOICE_STORAGE_KEY =
+    "invoiceRecords";
 
 let currentCompany =
-    localStorage.getItem("currentCompany") || "impression";
+    localStorage.getItem("currentCompany") ||
+    "impression";
 
 let editingInvoiceNumber = null;
 
-let currentDocumentType = "invoice";
+let currentDocumentType =
+    "invoice";
 
 let creditingInvoiceNumber = null;
 
@@ -56,61 +1353,64 @@ function switchCompany(companyKey) {
         companyKey = "impression";
     }
 
-    currentCompany = companyKey;
+    currentCompany =
+        companyKey;
 
     localStorage.setItem(
         "currentCompany",
         currentCompany
     );
 
-    const company = companies[currentCompany];
+    const company =
+        companies[currentCompany];
 
 
-    /* Screen */
-
-    const companySelect =
-        document.getElementById("companySelect");
-
-    if (companySelect) {
-        companySelect.value =
-            currentCompany;
-    }
+    document.getElementById(
+        "companySelect"
+    ).value =
+        currentCompany;
 
 
     document.getElementById(
         "companyLogo"
-    ).src = company.logo;
+    ).src =
+        company.logo;
 
     document.getElementById(
         "companyLogo"
-    ).alt = company.name;
+    ).alt =
+        company.name;
 
     document.getElementById(
         "companyName"
-    ).textContent = company.name;
+    ).textContent =
+        company.name;
 
     document.getElementById(
         "companyLegalName"
-    ).textContent = company.legalName;
+    ).textContent =
+        company.legalName;
 
     document.getElementById(
         "companyAddress"
-    ).textContent = company.address;
+    ).textContent =
+        company.address;
 
     document.getElementById(
         "companyPhone"
-    ).textContent = company.phone;
+    ).textContent =
+        company.phone;
 
-
-    /* Printable invoice */
 
     document.getElementById(
         "printCompanyLogo"
-    ).src = company.logo;
+    ).src =
+        company.logo;
 
     document.getElementById(
         "printCompanyLogo"
-    ).alt = company.name;
+    ).alt =
+        company.name;
 
     document.getElementById(
         "printCompanyName"
@@ -140,7 +1440,7 @@ function switchCompany(companyKey) {
 
 
 /* =========================================================
-   INVOICE NUMBER
+   INVOICE HISTORY STORAGE
 ========================================================= */
 
 function getInvoiceRecords() {
@@ -175,10 +1475,9 @@ function saveInvoiceRecords(records) {
 }
 
 
-/*
-    Determine the highest actual invoice number
-    already saved in history.
-*/
+/* =========================================================
+   INVOICE NUMBERING
+========================================================= */
 
 function getHighestInvoiceNumber() {
 
@@ -198,7 +1497,12 @@ function getHighestInvoiceNumber() {
 
             const number =
                 parseInt(
-                    record.invoiceNumber
+                    String(
+                        record.invoiceNumber
+                    ).replace(
+                        /[^0-9]/g,
+                        ""
+                    )
                 );
 
 
@@ -210,6 +1514,7 @@ function getHighestInvoiceNumber() {
                 highest = number;
 
             }
+
         }
 
     });
@@ -233,25 +1538,17 @@ function getNextInvoiceNumber() {
         getHighestInvoiceNumber();
 
 
-    let next =
-        Math.max(
-            STARTING_INVOICE_NUMBER,
-            stored,
-            highest
-        );
-
-
-    return next;
+    return Math.max(
+        STARTING_INVOICE_NUMBER,
+        stored,
+        highest
+    );
 }
 
 
 let invoiceNumber =
     getNextInvoiceNumber();
 
-
-/*
-    Store the current invoice number.
-*/
 
 localStorage.setItem(
     "invoiceNumber",
@@ -278,21 +1575,21 @@ const today =
 
 document.getElementById(
     "invoiceDate"
-).value = today;
+).value =
+    today;
 
 
 document.getElementById(
     "dueDate"
-).value = today;
+).value =
+    today;
 
 
 /* =========================================================
    ADD ITEM
 ========================================================= */
 
-function addItem(
-    item = null
-) {
+function addItem(item = null) {
 
     const tbody =
         document.getElementById(
@@ -307,41 +1604,68 @@ function addItem(
 
 
     row.innerHTML = `
+
         <td>
+
             <input
                 type="number"
                 class="qty"
-                value="${item ? escapeAttribute(item.qty) : "1"}"
+                value="${
+                    item
+                        ? escapeAttribute(item.qty)
+                        : "1"
+                }"
                 min="0"
                 oninput="calculateTotals()"
             >
+
         </td>
 
         <td>
+
             <input
                 type="text"
                 class="code"
-                value="${item ? escapeAttribute(item.code) : ""}"
+                value="${
+                    item
+                        ? escapeAttribute(item.code)
+                        : ""
+                }"
             >
+
         </td>
 
         <td>
+
             <input
                 type="text"
                 class="description"
-                value="${item ? escapeAttribute(item.description) : ""}"
+                value="${
+                    item
+                        ? escapeAttribute(
+                            item.description
+                        )
+                        : ""
+                }"
             >
+
         </td>
 
         <td>
+
             <input
                 type="number"
                 class="price"
-                value="${item ? escapeAttribute(item.price) : "0"}"
+                value="${
+                    item
+                        ? escapeAttribute(item.price)
+                        : "0"
+                }"
                 min="0"
                 step="0.01"
                 oninput="calculateTotals()"
             >
+
         </td>
 
         <td class="amount">
@@ -349,6 +1673,7 @@ function addItem(
         </td>
 
         <td>
+
             <button
                 type="button"
                 class="danger"
@@ -356,11 +1681,15 @@ function addItem(
             >
                 Remove
             </button>
+
         </td>
+
     `;
 
 
-    tbody.appendChild(row);
+    tbody.appendChild(
+        row
+    );
 
 
     calculateTotals();
@@ -451,10 +1780,10 @@ function calculateTotals() {
 
 
 /* =========================================================
-   COLLECT CURRENT INVOICE
+   COLLECT DOCUMENT
 ========================================================= */
 
-function collectCurrentInvoice() {
+function collectCurrentDocument() {
 
     const items = [];
 
@@ -474,11 +1803,13 @@ function collectCurrentInvoice() {
 
 
             const price =
-                parseFloat(
-                    row.querySelector(
-                        ".price"
-                    ).value
-                ) || 0;
+                Math.abs(
+                    parseFloat(
+                        row.querySelector(
+                            ".price"
+                        ).value
+                    ) || 0
+                );
 
 
             const code =
@@ -499,7 +1830,8 @@ function collectCurrentInvoice() {
 
                 code: code,
 
-                description: description,
+                description:
+                    description,
 
                 price: price,
 
@@ -573,9 +1905,11 @@ function collectCurrentInvoice() {
 
         items: items,
 
-        subtotal: total,
+        subtotal:
+            total,
 
-        total: total,
+        total:
+            total,
 
         status:
             "issued",
@@ -638,6 +1972,7 @@ function saveCustomer() {
             document.getElementById(
                 "customerAddress"
             ).value
+
     };
 
 
@@ -664,7 +1999,9 @@ function saveCustomer() {
 
     } else {
 
-        customers.push(customer);
+        customers.push(
+            customer
+        );
 
     }
 
@@ -871,11 +2208,12 @@ function deleteCustomer() {
 }
 
 
-/* =========================================================
-   CLEAR CUSTOMER
-========================================================= */
-
 function clearCustomerFields() {
+
+    document.getElementById(
+        "customerSelect"
+    ).value = "";
+
 
     document.getElementById(
         "customerName"
@@ -904,68 +2242,144 @@ function clearCustomerFields() {
 
 
 /* =========================================================
-   PREPARE PRINT INVOICE
+   PREPARE PRINT DOCUMENT
 ========================================================= */
 
-function preparePrintInvoice(
-    documentOverride = null
-) {
+function preparePrintDocument(documentData) {
 
-    const invoice =
-        documentOverride ||
-        collectCurrentInvoice();
+    const isCredit =
+        documentData.type ===
+        "credit_note";
+
+
+    document.getElementById(
+        "printDocumentTitle"
+    ).textContent =
+        isCredit
+            ? "CREDIT NOTE"
+            : "INVOICE";
+
+
+    document.getElementById(
+        "printDocumentTitle"
+    ).classList.toggle(
+        "credit-note-print",
+        isCredit
+    );
+
+
+    document.getElementById(
+        "printReferenceLabel"
+    ).textContent =
+        isCredit
+            ? "Credit Note No:"
+            : "Invoice No:";
 
 
     document.getElementById(
         "printInvoiceNumber"
     ).textContent =
-        invoice.invoiceNumber;
+        documentData.invoiceNumber;
 
 
     document.getElementById(
         "printInvoiceDate"
     ).textContent =
         formatDate(
-            invoice.invoiceDate
-        );
-
-
-    document.getElementById(
-        "printDueDate"
-    ).textContent =
-        formatDate(
-            invoice.dueDate
+            documentData.invoiceDate
         );
 
 
     document.getElementById(
         "printCustomerName"
     ).textContent =
-        invoice.customer.name;
+        documentData.customer.name;
 
 
     document.getElementById(
         "printCustomerCompany"
     ).textContent =
-        invoice.customer.company;
+        documentData.customer.company;
 
 
     document.getElementById(
         "printCustomerAddress"
     ).textContent =
-        invoice.customer.address;
+        documentData.customer.address;
 
 
     document.getElementById(
         "printCustomerPhone"
     ).textContent =
-        invoice.customer.phone;
+        documentData.customer.phone;
 
 
     document.getElementById(
         "printCustomerEmail"
     ).textContent =
-        invoice.customer.email;
+        documentData.customer.email;
+
+
+    const dueContainer =
+        document.getElementById(
+            "printDueDateContainer"
+        );
+
+
+    const dueBreak =
+        document.getElementById(
+            "printDueDateBreak"
+        );
+
+
+    if (isCredit) {
+
+        dueContainer.style.display =
+            "none";
+
+        dueBreak.style.display =
+            "none";
+
+    } else {
+
+        dueContainer.style.display =
+            "inline";
+
+        dueBreak.style.display =
+            "inline";
+
+        document.getElementById(
+            "printDueDate"
+        ).textContent =
+            formatDate(
+                documentData.dueDate
+            );
+
+    }
+
+
+    const originalRow =
+        document.getElementById(
+            "printOriginalInvoiceRow"
+        );
+
+
+    if (isCredit) {
+
+        originalRow.style.display =
+            "inline";
+
+        document.getElementById(
+            "printOriginalInvoice"
+        ).textContent =
+            documentData.creditOf;
+
+    } else {
+
+        originalRow.style.display =
+            "none";
+
+    }
 
 
     const printBody =
@@ -977,7 +2391,7 @@ function preparePrintInvoice(
     printBody.innerHTML = "";
 
 
-    invoice.items.forEach(
+    documentData.items.forEach(
         item => {
 
             const printRow =
@@ -987,6 +2401,7 @@ function preparePrintInvoice(
 
 
             printRow.innerHTML = `
+
                 <td>
                     ${escapeHtml(item.qty)}
                 </td>
@@ -1000,12 +2415,17 @@ function preparePrintInvoice(
                 </td>
 
                 <td class="right">
-                    R ${Number(item.price).toFixed(2)}
+                    R ${Number(
+                        item.price
+                    ).toFixed(2)}
                 </td>
 
                 <td class="right">
-                    R ${Number(item.amount).toFixed(2)}
+                    R ${Number(
+                        item.amount
+                    ).toFixed(2)}
                 </td>
+
             `;
 
 
@@ -1022,7 +2442,7 @@ function preparePrintInvoice(
     ).textContent =
         "R " +
         Number(
-            invoice.subtotal
+            documentData.subtotal
         ).toFixed(2);
 
 
@@ -1031,8 +2451,17 @@ function preparePrintInvoice(
     ).textContent =
         "R " +
         Number(
-            invoice.total
+            documentData.total
         ).toFixed(2);
+
+
+    document.getElementById(
+        "printGrandTotalLabel"
+    ).textContent =
+        isCredit
+            ? "TOTAL CREDIT"
+            : "TOTAL";
+
 }
 
 
@@ -1051,7 +2480,8 @@ function saveIssuedInvoice(
     const existingIndex =
         records.findIndex(
             record =>
-                record.type === "invoice" &&
+                record.type ===
+                    "invoice" &&
                 record.invoiceNumber ===
                     invoice.invoiceNumber
         );
@@ -1077,15 +2507,14 @@ function saveIssuedInvoice(
 
 
         invoice.status =
-            existing.status ===
-            "credited"
-                ? "credited"
-                : "issued";
+            existing.status ||
+            "issued";
 
 
         records[
             existingIndex
-        ] = invoice;
+        ] =
+            invoice;
 
     } else {
 
@@ -1105,120 +2534,6 @@ function saveIssuedInvoice(
 
 
     return invoice;
-}
-
-
-/* =========================================================
-   GENERATE PDF
-========================================================= */
-
-function generatePDF() {
-
-    let invoice =
-        collectCurrentInvoice();
-
-
-    /*
-        Editing an existing invoice means
-        the original reference must be preserved.
-    */
-
-    if (
-        editingInvoiceNumber
-    ) {
-
-        invoice.invoiceNumber =
-            editingInvoiceNumber;
-
-    }
-
-
-    /*
-        Credit note mode.
-    */
-
-    if (
-        currentDocumentType ===
-        "credit_note"
-    ) {
-
-        invoice.type =
-            "credit_note";
-
-        invoice.invoiceNumber =
-            "CN-" +
-            creditingInvoiceNumber;
-
-        invoice.status =
-            "issued";
-
-        invoice.creditOf =
-            creditingInvoiceNumber;
-
-    } else {
-
-        invoice.type =
-            "invoice";
-
-    }
-
-
-    preparePrintInvoice(
-        invoice
-    );
-
-
-    /*
-        Save invoice before opening
-        the browser print dialog.
-    */
-
-    if (
-        invoice.type ===
-        "invoice"
-    ) {
-
-        saveIssuedInvoice(
-            invoice
-        );
-
-    } else {
-
-        saveCreditNote(
-            invoice
-        );
-
-    }
-
-
-    const company =
-        companies[
-            currentCompany
-        ];
-
-
-    const originalTitle =
-        document.title;
-
-
-    document.title =
-        company.displayName +
-        " - " +
-        invoice.invoiceNumber;
-
-
-    window.print();
-
-
-    setTimeout(
-        function() {
-
-            document.title =
-                originalTitle;
-
-        },
-        1000
-    );
 }
 
 
@@ -1246,11 +2561,7 @@ function saveCreditNote(
 
     if (existing) {
 
-        alert(
-            "A credit note already exists for this invoice."
-        );
-
-        return;
+        return false;
 
     }
 
@@ -1259,10 +2570,6 @@ function saveCreditNote(
         creditNote
     );
 
-
-    /*
-        Mark original invoice as credited.
-    */
 
     const original =
         records.find(
@@ -1291,15 +2598,155 @@ function saveCreditNote(
 
 
     updateInvoiceHistory();
+
+
+    return true;
 }
 
 
 /* =========================================================
-   CREDIT AN INVOICE
+   GENERATE PDF
+========================================================= */
+
+function generatePDF() {
+
+    let documentData =
+        collectCurrentDocument();
+
+
+    /*
+        Editing an existing invoice keeps
+        its original invoice number.
+    */
+
+    if (
+        editingInvoiceNumber &&
+        currentDocumentType ===
+            "invoice"
+    ) {
+
+        documentData.invoiceNumber =
+            editingInvoiceNumber;
+
+    }
+
+
+    /*
+        Credit note gets its own
+        document number.
+    */
+
+    if (
+        currentDocumentType ===
+        "credit_note"
+    ) {
+
+        documentData.type =
+            "credit_note";
+
+        documentData.invoiceNumber =
+            "CN-" +
+            creditingInvoiceNumber;
+
+        documentData.creditOf =
+            creditingInvoiceNumber;
+
+    } else {
+
+        documentData.type =
+            "invoice";
+
+    }
+
+
+    /*
+        A credit note already in history
+        can be reprinted without creating
+        a duplicate record.
+    */
+
+    if (
+        documentData.type ===
+        "credit_note"
+    ) {
+
+        const existingCredit =
+            getInvoiceRecords().find(
+                record =>
+                    record.type ===
+                        "credit_note" &&
+                    record.invoiceNumber ===
+                        documentData.invoiceNumber
+            );
+
+
+        if (
+            !existingCredit
+        ) {
+
+            const saved =
+                saveCreditNote(
+                    documentData
+                );
+
+
+            if (!saved) {
+                return;
+            }
+
+        }
+
+    } else {
+
+        saveIssuedInvoice(
+            documentData
+        );
+
+    }
+
+
+    preparePrintDocument(
+        documentData
+    );
+
+
+    const company =
+        companies[
+            currentCompany
+        ];
+
+
+    const originalTitle =
+        document.title;
+
+
+    document.title =
+        company.displayName +
+        " - " +
+        documentData.invoiceNumber;
+
+
+    window.print();
+
+
+    setTimeout(
+        function() {
+
+            document.title =
+                originalTitle;
+
+        },
+        1000
+    );
+}
+
+
+/* =========================================================
+   CREDIT INVOICE
 ========================================================= */
 
 function creditInvoice(
-    invoiceNumber
+    invoiceNumberToCredit
 ) {
 
     const records =
@@ -1312,7 +2759,7 @@ function creditInvoice(
                 record.type ===
                     "invoice" &&
                 record.invoiceNumber ===
-                    invoiceNumber
+                    invoiceNumberToCredit
         );
 
 
@@ -1339,10 +2786,30 @@ function creditInvoice(
     }
 
 
+    const existingCredit =
+        records.find(
+            record =>
+                record.type ===
+                    "credit_note" &&
+                record.creditOf ===
+                    invoiceNumberToCredit
+        );
+
+
+    if (existingCredit) {
+
+        alert(
+            "A credit note already exists for this invoice."
+        );
+
+        return;
+    }
+
+
     const confirmed =
         confirm(
             "Create a full credit note for invoice " +
-            invoiceNumber +
+            invoiceNumberToCredit +
             "?\n\n" +
             "The original invoice will remain in your history."
         );
@@ -1353,17 +2820,17 @@ function creditInvoice(
     }
 
 
-    /*
-        Load the invoice into the form.
-    */
-
     loadInvoiceIntoForm(
         invoice
     );
 
 
     creditingInvoiceNumber =
-        invoiceNumber;
+        invoiceNumberToCredit;
+
+
+    editingInvoiceNumber =
+        null;
 
 
     currentDocumentType =
@@ -1371,8 +2838,9 @@ function creditInvoice(
 
 
     /*
-        Negative values are used on
-        the credit note.
+        Keep prices positive.
+        The document type itself establishes
+        that this is a credit.
     */
 
     document
@@ -1391,7 +2859,7 @@ function creditInvoice(
                 if (price) {
 
                     price.value =
-                        -Math.abs(
+                        Math.abs(
                             parseFloat(
                                 price.value
                             ) || 0
@@ -1422,7 +2890,7 @@ function creditInvoice(
 
 
 /* =========================================================
-   LOAD INVOICE INTO FORM
+   LOAD SAVED DOCUMENT
 ========================================================= */
 
 function loadInvoiceIntoForm(
@@ -1440,51 +2908,52 @@ function loadInvoiceIntoForm(
 
 
     document.getElementById(
-        "invoiceNumber"
-    ).textContent =
-        invoice.invoiceNumber;
-
-
-    document.getElementById(
         "invoiceDate"
     ).value =
-        invoice.invoiceDate || today;
+        invoice.invoiceDate ||
+        today;
 
 
     document.getElementById(
         "dueDate"
     ).value =
-        invoice.dueDate || today;
+        invoice.dueDate ||
+        today;
 
 
     document.getElementById(
         "customerName"
     ).value =
-        invoice.customer.name || "";
+        invoice.customer?.name ||
+        "";
 
 
     document.getElementById(
         "customerCompany"
     ).value =
-        invoice.customer.company || "";
+        invoice.customer?.company ||
+        "";
 
 
     document.getElementById(
         "customerPhone"
     ).value =
-        invoice.customer.phone || "";
+        invoice.customer?.phone ||
+        "";
 
 
     document.getElementById(
         "customerEmail"
     ).value =
-        invoice.customer.email || "";
+        invoice.customer?.email ||
+        "";
 
 
     document.getElementById(
         "customerAddress"
     ).value =
-        invoice.customer.address || "";
+        invoice.customer?.address ||
+        "";
 
 
     const tbody =
@@ -1527,7 +2996,7 @@ function loadInvoiceIntoForm(
 ========================================================= */
 
 function editInvoice(
-    invoiceNumber
+    invoiceNumberToEdit
 ) {
 
     const records =
@@ -1540,7 +3009,7 @@ function editInvoice(
                 record.type ===
                     "invoice" &&
                 record.invoiceNumber ===
-                    invoiceNumber
+                    invoiceNumberToEdit
         );
 
 
@@ -1573,11 +3042,84 @@ function editInvoice(
 
 
     editingInvoiceNumber =
-        invoiceNumber;
+        invoiceNumberToEdit;
 
 
     currentDocumentType =
         "invoice";
+
+
+    updateInvoiceModeDisplay();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   OPEN SAVED DOCUMENT
+========================================================= */
+
+function openSavedDocument(
+    documentNumber
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const record =
+        records.find(
+            item =>
+                item.invoiceNumber ===
+                documentNumber
+        );
+
+
+    if (!record) {
+
+        alert(
+            "Document could not be found."
+        );
+
+        return;
+    }
+
+
+    loadInvoiceIntoForm(
+        record
+    );
+
+
+    if (
+        record.type ===
+        "credit_note"
+    ) {
+
+        editingInvoiceNumber =
+            null;
+
+        creditingInvoiceNumber =
+            record.creditOf;
+
+        currentDocumentType =
+            "credit_note";
+
+    } else {
+
+        editingInvoiceNumber =
+            record.invoiceNumber;
+
+        creditingInvoiceNumber =
+            null;
+
+        currentDocumentType =
+            "invoice";
+
+    }
 
 
     updateInvoiceModeDisplay();
@@ -1605,11 +3147,6 @@ function newInvoice() {
     }
 
 
-    /*
-        Determine the next unused invoice number
-        from the saved history.
-    */
-
     const highest =
         getHighestInvoiceNumber();
 
@@ -1632,246 +3169,127 @@ function newInvoice() {
 
 
 /* =========================================================
-   INVOICE HISTORY UI
+   MODE DISPLAY
 ========================================================= */
 
-function createInvoiceHistoryUI() {
+function updateInvoiceModeDisplay() {
+
+    const banner =
+        document.getElementById(
+            "invoiceModeBanner"
+        );
+
+
+    const numberElement =
+        document.getElementById(
+            "invoiceNumber"
+        );
+
+
+    const itemsHeading =
+        document.getElementById(
+            "itemsHeading"
+        );
+
+
+    const totalLabel =
+        document.getElementById(
+            "screenTotalLabel"
+        );
+
+
+    banner.classList.remove(
+        "credit"
+    );
+
 
     if (
-        document.getElementById(
-            "invoiceHistoryPanel"
-        )
+        currentDocumentType ===
+        "credit_note"
     ) {
+
+        banner.textContent =
+            "CREDIT NOTE MODE - Credit for invoice " +
+            creditingInvoiceNumber;
+
+        banner.classList.add(
+            "active",
+            "credit"
+        );
+
+
+        numberElement.textContent =
+            "CN-" +
+            creditingInvoiceNumber;
+
+
+        itemsHeading.textContent =
+            "Credit Note Items";
+
+
+        totalLabel.textContent =
+            "Total Credit";
+
+
         return;
     }
 
 
-    const style =
-        document.createElement(
-            "style"
-        );
-
-
-    style.id =
-        "invoiceHistoryStyles";
-
-
-    style.textContent = `
-
-        #invoiceHistoryPanel {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f7f9fc;
-            border: 1px solid #dfe5ec;
-            border-radius: 12px;
-        }
-
-        #invoiceHistoryPanel h2 {
-            margin-top: 0;
-            margin-bottom: 6px;
-        }
-
-        .history-subtitle {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        #invoiceHistorySearch {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ccd3dc;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-
-        .history-item {
-            background: white;
-            border: 1px solid #e0e4e9;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-
-        .history-reference {
-            font-weight: bold;
-            font-size: 17px;
-        }
-
-        .history-customer {
-            font-weight: 600;
-        }
-
-        .history-meta {
-            color: #666;
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .history-total {
-            font-weight: bold;
-            margin-top: 7px;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-
-        .history-actions button {
-            border: 0;
-            border-radius: 7px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .history-open {
-            background: #17365d;
-            color: white;
-        }
-
-        .history-credit {
-            background: #9d2c2c;
-            color: white;
-        }
-
-        .history-disabled {
-            background: #ddd;
-            color: #777;
-        }
-
-        .history-status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .history-status-issued {
-            background: #dcefdc;
-            color: #246624;
-        }
-
-        .history-status-credited {
-            background: #f5dddd;
-            color: #8a2222;
-        }
-
-        .history-status-credit {
-            background: #e4e4f7;
-            color: #41418a;
-        }
-
-        .history-empty {
-            padding: 20px;
-            text-align: center;
-            color: #777;
-        }
-
-        .invoice-mode-banner {
-            display: none;
-            margin: 15px 0;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            background: #fff3cd;
-            color: #664d03;
-            border: 1px solid #ffecb5;
-        }
-
-        .invoice-mode-banner.active {
-            display: block;
-        }
-
-    `;
-
-
-    document.head.appendChild(
-        style
-    );
-
-
-    const panel =
-        document.createElement(
-            "section"
-        );
-
-
-    panel.id =
-        "invoiceHistoryPanel";
-
-
-    panel.innerHTML = `
-
-        <h2>Invoice History</h2>
-
-        <div class="history-subtitle">
-            Saved invoices and credit notes on this device.
-        </div>
-
-        <input
-            type="search"
-            id="invoiceHistorySearch"
-            placeholder="Search invoice number, customer or company..."
-            oninput="updateInvoiceHistory()"
-        >
-
-        <div id="invoiceHistoryList"></div>
-
-    `;
-
-
-    /*
-        Put the history immediately before
-        the printable invoice section if possible.
-    */
-
-    const printInvoice =
-        document.getElementById(
-            "printInvoice"
-        );
-
-
     if (
-        printInvoice &&
-        printInvoice.parentNode
+        editingInvoiceNumber
     ) {
 
-        printInvoice.parentNode.insertBefore(
-            panel,
-            printInvoice
+        banner.textContent =
+            "EDITING INVOICE " +
+            editingInvoiceNumber +
+            " - The invoice number will remain unchanged.";
+
+        banner.classList.add(
+            "active"
         );
 
-    } else {
 
-        document.body.appendChild(
-            panel
-        );
+        numberElement.textContent =
+            editingInvoiceNumber;
 
+
+        itemsHeading.textContent =
+            "Invoice Items";
+
+
+        totalLabel.textContent =
+            "Total";
+
+
+        return;
     }
 
 
-    updateInvoiceHistory();
+    banner.classList.remove(
+        "active"
+    );
+
+
+    numberElement.textContent =
+        String(
+            invoiceNumber
+        ).padStart(
+            5,
+            "0"
+        );
+
+
+    itemsHeading.textContent =
+        "Invoice Items";
+
+
+    totalLabel.textContent =
+        "Total";
 }
 
 
 /* =========================================================
-   UPDATE HISTORY
+   HISTORY
 ========================================================= */
 
 function updateInvoiceHistory() {
@@ -1891,7 +3309,8 @@ function updateInvoiceHistory() {
         (
             document.getElementById(
                 "invoiceHistorySearch"
-            )?.value || ""
+            )?.value ||
+            ""
         )
         .toLowerCase()
         .trim();
@@ -1922,13 +3341,18 @@ function updateInvoiceHistory() {
                     "";
 
 
+                const invoiceNumber =
+                    String(
+                        record.invoiceNumber ||
+                        ""
+                    );
+
+
                 return (
 
-                    String(
-                        record.invoiceNumber
-                    )
-                    .toLowerCase()
-                    .includes(search)
+                    invoiceNumber
+                        .toLowerCase()
+                        .includes(search)
 
                     ||
 
@@ -1949,31 +3373,31 @@ function updateInvoiceHistory() {
                 (
                     a,
                     b
-                ) => {
-
-                    return (
-                        new Date(
-                            b.updatedAt ||
-                            b.createdAt
-                        ) -
-                        new Date(
-                            a.updatedAt ||
-                            a.createdAt
-                        )
-                    );
-
-                }
+                ) =>
+                    new Date(
+                        b.updatedAt ||
+                        b.createdAt
+                    ) -
+                    new Date(
+                        a.updatedAt ||
+                        a.createdAt
+                    )
             );
 
 
     if (
-        records.length === 0
+        records.length ===
+        0
     ) {
 
         list.innerHTML = `
+
             <div class="history-empty">
+
                 No saved invoices found.
+
             </div>
+
         `;
 
         return;
@@ -1993,7 +3417,7 @@ function updateInvoiceHistory() {
 
 
 /* =========================================================
-   RENDER HISTORY ITEM
+   HISTORY ITEM
 ========================================================= */
 
 function renderHistoryItem(
@@ -2057,7 +3481,8 @@ function renderHistoryItem(
 
     const total =
         Number(
-            record.total || 0
+            record.total ||
+            0
         );
 
 
@@ -2070,25 +3495,31 @@ function renderHistoryItem(
                 <div>
 
                     <div class="history-reference">
+
                         ${escapeHtml(
                             record.invoiceNumber
                         )}
+
                     </div>
 
                     <div class="history-customer">
+
                         ${escapeHtml(
                             customer
                         )}
+
                     </div>
 
                 </div>
 
                 <div>
+
                     <span
                         class="history-status ${statusClass}"
                     >
                         ${statusText}
                     </span>
+
                 </div>
 
             </div>
@@ -2113,10 +3544,12 @@ function renderHistoryItem(
                 isCredit
                     ? `
                         <div class="history-meta">
+
                             Credit for invoice
                             ${escapeHtml(
                                 record.creditOf
                             )}
+
                         </div>
                     `
                     : ""
@@ -2132,49 +3565,46 @@ function renderHistoryItem(
 
             <div class="history-actions">
 
+                <button
+                    type="button"
+                    class="history-open"
+                    onclick="openSavedDocument('${escapeAttribute(record.invoiceNumber)}')"
+                >
+                    Open
+                </button>
+
+
                 ${
                     isCredit
-                        ? `
-                            <button
-                                type="button"
-                                class="history-open"
-                                onclick="openSavedDocument('${escapeAttribute(record.invoiceNumber)}')"
-                            >
-                                Open
-                            </button>
-                        `
-                        : `
-                            <button
-                                type="button"
-                                class="history-open"
-                                onclick="editInvoice('${escapeAttribute(record.invoiceNumber)}')"
-                            >
-                                Edit
-                            </button>
+                        ? ""
+                        : status ===
+                          "credited"
+                            ? `
+                                <button
+                                    type="button"
+                                    class="history-disabled"
+                                    disabled
+                                >
+                                    Already Credited
+                                </button>
+                            `
+                            : `
+                                <button
+                                    type="button"
+                                    class="history-open"
+                                    onclick="editInvoice('${escapeAttribute(record.invoiceNumber)}')"
+                                >
+                                    Edit
+                                </button>
 
-                            ${
-                                status ===
-                                "credited"
-                                    ? `
-                                        <button
-                                            type="button"
-                                            class="history-disabled"
-                                            disabled
-                                        >
-                                            Already Credited
-                                        </button>
-                                    `
-                                    : `
-                                        <button
-                                            type="button"
-                                            class="history-credit"
-                                            onclick="creditInvoice('${escapeAttribute(record.invoiceNumber)}')"
-                                        >
-                                            Credit Invoice
-                                        </button>
-                                    `
-                            }
-                        `
+                                <button
+                                    type="button"
+                                    class="history-credit"
+                                    onclick="creditInvoice('${escapeAttribute(record.invoiceNumber)}')"
+                                >
+                                    Credit Invoice
+                                </button>
+                            `
                 }
 
             </div>
@@ -2182,183 +3612,6 @@ function renderHistoryItem(
         </div>
 
     `;
-}
-
-
-/* =========================================================
-   OPEN SAVED DOCUMENT
-========================================================= */
-
-function openSavedDocument(
-    documentNumber
-) {
-
-    const records =
-        getInvoiceRecords();
-
-
-    const record =
-        records.find(
-            item =>
-                item.invoiceNumber ===
-                documentNumber
-        );
-
-
-    if (!record) {
-
-        alert(
-            "Document could not be found."
-        );
-
-        return;
-    }
-
-
-    loadInvoiceIntoForm(
-        record
-    );
-
-
-    editingInvoiceNumber =
-        record.type ===
-            "invoice"
-            ? record.invoiceNumber
-            : null;
-
-
-    currentDocumentType =
-        record.type;
-
-
-    updateInvoiceModeDisplay();
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-
-/* =========================================================
-   MODE DISPLAY
-========================================================= */
-
-function updateInvoiceModeDisplay() {
-
-    let banner =
-        document.getElementById(
-            "invoiceModeBanner"
-        );
-
-
-    if (!banner) {
-
-        banner =
-            document.createElement(
-                "div"
-            );
-
-
-        banner.id =
-            "invoiceModeBanner";
-
-
-        banner.className =
-            "invoice-mode-banner";
-
-
-        const invoiceNumberElement =
-            document.getElementById(
-                "invoiceNumber"
-            );
-
-
-        if (
-            invoiceNumberElement &&
-            invoiceNumberElement.parentNode
-        ) {
-
-            invoiceNumberElement.parentNode.insertBefore(
-                banner,
-                invoiceNumberElement
-            );
-
-        } else {
-
-            document.body.prepend(
-                banner
-            );
-
-        }
-
-    }
-
-
-    if (
-        currentDocumentType ===
-        "credit_note"
-    ) {
-
-        banner.textContent =
-            "CREDIT NOTE MODE - Credit for invoice " +
-            creditingInvoiceNumber;
-
-        banner.classList.add(
-            "active"
-        );
-
-
-        document.getElementById(
-            "invoiceNumber"
-        ).textContent =
-            "CN-" +
-            creditingInvoiceNumber;
-
-
-        return;
-    }
-
-
-    if (
-        editingInvoiceNumber
-    ) {
-
-        banner.textContent =
-            "EDITING INVOICE " +
-            editingInvoiceNumber +
-            " - The invoice number will remain unchanged.";
-
-        banner.classList.add(
-            "active"
-        );
-
-
-        document.getElementById(
-            "invoiceNumber"
-        ).textContent =
-            editingInvoiceNumber;
-
-
-        return;
-    }
-
-
-    banner.classList.remove(
-        "active"
-    );
-
-
-    document.getElementById(
-        "invoiceNumber"
-    ).textContent =
-        String(
-            invoiceNumber
-        ).padStart(
-            5,
-            "0"
-        );
 }
 
 
@@ -2380,7 +3633,8 @@ function formatDate(
 
 
     if (
-        parts.length !== 3
+        parts.length !==
+        3
     ) {
         return dateString;
     }
@@ -2476,10 +3730,13 @@ addItem();
 calculateTotals();
 
 
-createInvoiceHistoryUI();
+updateInvoiceHistory();
 
 
 updateInvoiceModeDisplay();
 
 </script>
+
+</body>
+</html>
 ```
