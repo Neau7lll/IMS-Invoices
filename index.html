@@ -1,868 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Impression Solutions - Invoice</title>
-    
-<link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#17263a">
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-:root {
-    --navy: #17263a;
-    --blue: #2474b8;
-    --blue-light: #eaf3fb;
-    --grey: #f4f6f8;
-    --border: #d9dee5;
-    --text: #202832;
-    --muted: #6b7280;
-}
-
-body {
-    margin: 0;
-    padding: 25px;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eef1f5;
-    color: var(--text);
-}
-
-.container {
-    max-width: 1050px;
-    margin: auto;
-    background: white;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 4px 25px rgba(23, 38, 58, 0.08);
-}
-
-/* TRADING COMPANY SELECTOR */
-
-.company-switcher {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    padding: 12px 15px;
-    background: var(--grey);
-    border-radius: 7px;
-    border: 1px solid var(--border);
-}
-
-.company-switcher label {
-    margin: 0;
-    white-space: nowrap;
-}
-
-.company-switcher select {
-    max-width: 280px;
-    font-weight: bold;
-    color: var(--navy);
-}
-
-/* HEADER */
-
-.form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 35px;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
-    border-bottom: 4px solid var(--blue);
-}
-
-.company {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-}
-
-.company-logo {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-.company-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.company h1 {
-    margin: 0 0 8px 0;
-    font-size: 30px;
-    letter-spacing: 1px;
-    color: var(--navy);
-}
-
-.company-details {
-    line-height: 1.6;
-    font-size: 14px;
-    color: var(--muted);
-}
-
-.company-details strong {
-    color: var(--navy);
-}
-
-.invoice-meta {
-    min-width: 260px;
-    background: var(--blue-light);
-    padding: 15px 18px;
-    border-radius: 8px;
-    border-left: 4px solid var(--blue);
-}
-
-.invoice-meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.invoice-meta-row:last-child {
-    margin-bottom: 0;
-}
-
-.invoice-meta-row strong {
-    white-space: nowrap;
-    color: var(--navy);
-}
-
-#invoiceNumber {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--blue);
-}
-
-/* SECTIONS */
-
-h2 {
-    font-size: 17px;
-    color: var(--navy);
-    margin-top: 30px;
-    margin-bottom: 15px;
-    padding: 10px 14px;
-    background: var(--blue-light);
-    border-left: 4px solid var(--blue);
-    border-radius: 4px;
-}
-
-/* INPUTS */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.full {
-    grid-column: 1 / -1;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: var(--navy);
-}
-
-input,
-textarea,
-select {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    font-size: 14px;
-    background: white;
-    color: var(--text);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(36, 116, 184, 0.12);
-}
-
-textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-/* CUSTOMER CONTROLS */
-
-.customer-controls {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    margin-bottom: 18px;
-    padding: 15px;
-    background: var(--grey);
-    border-radius: 7px;
-}
-
-.customer-controls > div {
-    flex: 1;
-}
-
-/* BUTTONS */
-
-button {
-    border: none;
-    padding: 11px 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.primary {
-    background: var(--blue);
-    color: white;
-}
-
-.secondary {
-    background: #e4e8ed;
-    color: var(--navy);
-}
-
-.danger {
-    background: #b4232c;
-    color: white;
-}
-
-/* TABLE */
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 15px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    overflow: hidden;
-}
-
-th {
-    background: var(--navy);
-    color: white;
-    text-align: left;
-    padding: 11px 9px;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-td {
-    border-top: 1px solid var(--border);
-    padding: 8px;
-    background: white;
-}
-
-.amount {
-    text-align: right;
-    white-space: nowrap;
-    font-weight: bold;
-    color: var(--navy);
-}
-
-.add-item {
-    margin-top: 15px;
-}
-
-/* TOTALS */
-
-.totals {
-    width: 320px;
-    margin-left: auto;
-    margin-top: 25px;
-    padding: 15px 18px;
-    background: var(--grey);
-    border-radius: 7px;
-}
-
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-}
-
-.grand-total {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--navy);
-    border-top: 2px solid var(--blue);
-    margin-top: 6px;
-    padding-top: 12px;
-}
-
-#grandTotal {
-    color: var(--blue);
-}
-
-/* ACTIONS */
-
-.actions {
-    text-align: center;
-    margin-top: 35px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-}
-
-/* PRINT VERSION */
-
-.print-invoice {
-    display: none;
-}
-
-/* MOBILE */
-
-@media (max-width: 700px) {
-
-    body {
-        padding: 5px;
-    }
-
-    .container {
-        padding: 15px;
-        border-radius: 5px;
-    }
-
-    .company-switcher {
-        display: block;
-    }
-
-    .company-switcher select {
-        max-width: none;
-        margin-top: 7px;
-    }
-
-    .form-header {
-        display: block;
-    }
-
-    .invoice-meta {
-        margin-top: 20px;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .full {
-        grid-column: auto;
-    }
-
-    .customer-controls {
-        display: block;
-    }
-
-    .customer-controls button {
-        margin-top: 10px;
-        margin-right: 5px;
-    }
-
-    .totals {
-        width: 100%;
-    }
-
-    table {
-        font-size: 12px;
-    }
-}
-
-/* PRINT */
-
-@media print {
-
-    @page {
-        size: A4;
-        margin: 15mm;
-    }
-
-    body {
-        background: white;
-        padding: 0;
-        margin: 0;
-    }
-
-    .container {
-        display: none !important;
-    }
-
-    .print-invoice {
-        display: block !important;
-        width: 100%;
-        font-family: Arial, Helvetica, sans-serif;
-        color: black;
-    }
-
-    .print-header {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 4px solid #2474b8;
-        padding-bottom: 15px;
-        margin-bottom: 25px;
-    }
-
-    .print-company {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .print-company-logo {
-        width: 60px;
-        height: 60px;
-        object-fit: contain;
-    }
-
-    .print-company-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .print-company h1 {
-        margin: 0 0 8px 0;
-        font-size: 25px;
-        color: #17263a;
-    }
-
-    .print-company-details {
-        font-size: 12px;
-        line-height: 1.5;
-    }
-
-    .print-invoice-title {
-        text-align: right;
-    }
-
-    .print-invoice-title h2 {
-        background: none;
-        border: none;
-        margin: 0 0 10px 0;
-        padding: 0;
-        font-size: 28px;
-        color: #17263a;
-    }
-
-    .print-meta {
-        font-size: 12px;
-        line-height: 1.8;
-    }
-
-    .print-customer {
-        border: 1px solid #d9dee5;
-        border-left: 4px solid #2474b8;
-        padding: 12px;
-        margin-bottom: 25px;
-    }
-
-    .print-section-title {
-        font-weight: bold;
-        font-size: 13px;
-        color: #17263a;
-        margin-bottom: 8px;
-    }
-
-    .print-customer-details {
-        font-size: 12px;
-        line-height: 1.6;
-    }
-
-    .print-items {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    .print-items th {
-        background: #17263a !important;
-        color: white !important;
-        border: 1px solid #17263a;
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .print-items td {
-        border: 1px solid #d9dee5;
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .print-items .right {
-        text-align: right;
-    }
-
-    .print-totals {
-        width: 280px;
-        margin-left: auto;
-        margin-top: 20px;
-    }
-
-    .print-total-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 6px;
-        font-size: 12px;
-    }
-
-    .print-grand-total {
-        border-top: 3px solid #2474b8;
-        color: #17263a;
-        font-size: 16px;
-        font-weight: bold;
-        padding-top: 10px;
-    }
-
-    .print-bank {
-        margin-top: 45px;
-        border-top: 1px solid #d9dee5;
-        padding-top: 12px;
-        font-size: 11px;
-        line-height: 1.6;
-    }
-
-    .print-footer {
-        margin-top: 35px;
-        text-align: center;
-        font-size: 10px;
-        color: #6b7280;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="company-switcher">
-        <label for="companySelect">Invoice As:</label>
-        <select id="companySelect" onchange="switchCompany(this.value)">
-            <option value="impression">Impression Solutions</option>
-            <option value="weekend">The Weekend Detailer</option>
-        </select>
-    </div>
-
-    <div class="form-header">
-
-        <div class="company">
-
-            <img
-                id="companyLogo"
-                src="icon.png"
-                alt="Impression Solutions"
-                class="company-logo"
-            >
-
-            <div class="company-content">
-
-                <h1 id="companyName">Impression Solutions</h1>
-
-                <div class="company-details">
-                    <strong id="companyLegalName">Impression Solutions (PTY) LTD</strong><br>
-                    <span id="companyAddress">17 Park Drive, Mulbarton, Johannesburg</span><br>
-                    <span id="companyPhone">Tel: 071 895 1445</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="invoice-meta">
-
-            <div class="invoice-meta-row">
-                <strong>Invoice No:</strong>
-                <span id="invoiceNumber"></span>
-            </div>
-
-            <div class="invoice-meta-row">
-                <strong>Date:</strong>
-                <input type="date" id="invoiceDate">
-            </div>
-
-            <div class="invoice-meta-row">
-                <strong>Due Date:</strong>
-                <input type="date" id="dueDate">
-            </div>
-
-        </div>
-
-    </div>
-
-    <h2>Customer Details</h2>
-
-    <div class="customer-controls">
-
-        <div>
-            <label>Saved Customer</label>
-
-            <select id="customerSelect">
-                <option value="">-- New Customer --</option>
-            </select>
-        </div>
-
-        <button
-            type="button"
-            class="secondary"
-            onclick="saveCustomer()"
-        >
-            Save Customer
-        </button>
-
-        <button
-            type="button"
-            class="danger"
-            onclick="deleteCustomer()"
-        >
-            Delete
-        </button>
-
-    </div>
-
-    <div class="grid">
-
-        <div>
-            <label>Customer / Contact Name</label>
-            <input type="text" id="customerName">
-        </div>
-
-        <div>
-            <label>Company</label>
-            <input type="text" id="customerCompany">
-        </div>
-
-        <div>
-            <label>Contact Number</label>
-            <input type="text" id="customerPhone">
-        </div>
-
-        <div>
-            <label>Email</label>
-            <input type="email" id="customerEmail">
-        </div>
-
-        <div class="full">
-            <label>Address</label>
-            <textarea id="customerAddress"></textarea>
-        </div>
-
-    </div>
-
-    <h2>Invoice Items</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th style="width:80px;">Qty</th>
-                <th style="width:120px;">Code</th>
-                <th>Description</th>
-                <th style="width:150px;">Unit Price</th>
-                <th style="width:150px;">Total</th>
-                <th style="width:70px;">Remove</th>
-            </tr>
-        </thead>
-
-        <tbody id="itemsBody"></tbody>
-
-    </table>
-
-    <button
-        type="button"
-        class="secondary add-item"
-        onclick="addItem()"
-    >
-        + Add Item
-    </button>
-
-    <div class="totals">
-
-        <div class="total-row">
-            <span>Subtotal</span>
-            <span id="subtotal">R 0.00</span>
-        </div>
-
-        <div class="total-row grand-total">
-            <span>Total</span>
-            <span id="grandTotal">R 0.00</span>
-        </div>
-
-    </div>
-
-    <div class="actions">
-
-        <button
-            type="button"
-            class="primary"
-            onclick="generatePDF()"
-        >
-            Generate PDF
-        </button>
-
-        <button
-            type="button"
-            class="secondary"
-            onclick="newInvoice()"
-        >
-            New Invoice
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- PRINTABLE INVOICE -->
-
-<div class="print-invoice" id="printInvoice">
-
-    <div class="print-header">
-
-        <div class="print-company">
-
-            <img
-                id="printCompanyLogo"
-                src="icon.png"
-                alt="Impression Solutions"
-                class="print-company-logo"
-            >
-
-            <div class="print-company-content">
-
-                <h1 id="printCompanyName">IMPRESSION SOLUTIONS</h1>
-
-                <div class="print-company-details">
-                    <strong id="printCompanyLegalName">Impression Solutions (PTY) LTD</strong><br>
-                    <span id="printCompanyAddress">17 Park Drive, Mulbarton, Johannesburg</span><br>
-                    <span id="printCompanyPhone">Tel: 071 895 1445</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="print-invoice-title">
-
-            <h2>INVOICE</h2>
-
-            <div class="print-meta">
-
-                <strong>Invoice No:</strong>
-                <span id="printInvoiceNumber"></span>
-                <br>
-
-                <strong>Date:</strong>
-                <span id="printInvoiceDate"></span>
-                <br>
-
-                <strong>Due Date:</strong>
-                <span id="printDueDate"></span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="print-customer">
-
-        <div class="print-section-title">
-            BILL TO
-        </div>
-
-        <div class="print-customer-details">
-
-            <strong id="printCustomerName"></strong><br>
-
-            <span id="printCustomerCompany"></span><br>
-
-            <span id="printCustomerAddress"></span><br>
-
-            <span id="printCustomerPhone"></span><br>
-
-            <span id="printCustomerEmail"></span>
-
-        </div>
-
-    </div>
-
-    <table class="print-items">
-
-        <thead>
-
-            <tr>
-                <th>Qty</th>
-                <th>Code</th>
-                <th>Description</th>
-                <th class="right">Unit Price</th>
-                <th class="right">Total</th>
-            </tr>
-
-        </thead>
-
-        <tbody id="printItemsBody"></tbody>
-
-    </table>
-
-    <div class="print-totals">
-
-        <div class="print-total-row">
-            <span>Subtotal</span>
-            <span id="printSubtotal"></span>
-        </div>
-
-        <div class="print-total-row print-grand-total">
-            <span>TOTAL</span>
-            <span id="printGrandTotal"></span>
-        </div>
-
-    </div>
-
-    <div class="print-bank">
-
-        <strong>Banking Details</strong><br>
-
-        Account Name:
-        IMS - Impression Marketing Solutions<br>
-
-        Bank:
-        FNB<br>
-
-        Account Number:
-        62471385346<br>
-
-        Branch Code:
-        00259605
-
-    </div>
-
-    <div class="print-footer">
-        <span id="printFooterCompany">Impression Solutions (PTY) LTD</span>
-    </div>
-
-</div>
-
-
+```html
 <script>
 
-/* TRADING COMPANIES */
+/* =========================================================
+   TRADING COMPANIES
+========================================================= */
 
 const companies = {
     impression: {
@@ -874,6 +15,7 @@ const companies = {
         phone: "Tel: 071 895 1445",
         footer: "Impression Solutions (PTY) LTD"
     },
+
     weekend: {
         name: "The Weekend Detailer",
         displayName: "THE WEEKEND DETAILER",
@@ -885,66 +27,143 @@ const companies = {
     }
 };
 
-let currentCompany = localStorage.getItem("currentCompany") || "impression";
+
+/* =========================================================
+   CURRENT COMPANY
+========================================================= */
+
+let currentCompany =
+    localStorage.getItem("currentCompany") || "impression";
+
 
 function switchCompany(companyKey) {
+
     if (!companies[companyKey]) {
         companyKey = "impression";
     }
 
     currentCompany = companyKey;
-    localStorage.setItem("currentCompany", currentCompany);
+
+    localStorage.setItem(
+        "currentCompany",
+        currentCompany
+    );
 
     const company = companies[currentCompany];
 
-    document.getElementById("companySelect").value = currentCompany;
+    document.getElementById("companySelect").value =
+        currentCompany;
 
-    document.getElementById("companyLogo").src = company.logo;
-    document.getElementById("companyLogo").alt = company.name;
-    document.getElementById("companyName").textContent = company.name;
-    document.getElementById("companyLegalName").textContent = company.legalName;
-    document.getElementById("companyAddress").textContent = company.address;
-    document.getElementById("companyPhone").textContent = company.phone;
+    /* Screen */
 
-    document.getElementById("printCompanyLogo").src = company.logo;
-    document.getElementById("printCompanyLogo").alt = company.name;
-    document.getElementById("printCompanyName").textContent = company.displayName;
-    document.getElementById("printCompanyLegalName").textContent = company.legalName;
-    document.getElementById("printCompanyAddress").textContent = company.address;
-    document.getElementById("printCompanyPhone").textContent = company.phone;
-    document.getElementById("printFooterCompany").textContent = company.footer;
+    document.getElementById("companyLogo").src =
+        company.logo;
+
+    document.getElementById("companyLogo").alt =
+        company.name;
+
+    document.getElementById("companyName").textContent =
+        company.name;
+
+    document.getElementById("companyLegalName").textContent =
+        company.legalName;
+
+    document.getElementById("companyAddress").textContent =
+        company.address;
+
+    document.getElementById("companyPhone").textContent =
+        company.phone;
+
+
+    /* Printable invoice */
+
+    document.getElementById("printCompanyLogo").src =
+        company.logo;
+
+    document.getElementById("printCompanyLogo").alt =
+        company.name;
+
+    document.getElementById("printCompanyName").textContent =
+        company.displayName;
+
+    document.getElementById("printCompanyLegalName").textContent =
+        company.legalName;
+
+    document.getElementById("printCompanyAddress").textContent =
+        company.address;
+
+    document.getElementById("printCompanyPhone").textContent =
+        company.phone;
+
+    document.getElementById("printFooterCompany").textContent =
+        company.footer;
 }
 
-/* INVOICE NUMBER */
 
-let invoiceNumber = parseInt(
-    localStorage.getItem("invoiceNumber") || "10322"
-);
+/* =========================================================
+   INVOICE NUMBER
+   STARTING NUMBER: 11260
+========================================================= */
 
-if (invoiceNumber < 10322) {
-    invoiceNumber = 10322;
-    localStorage.setItem("invoiceNumber", invoiceNumber);
+const STARTING_INVOICE_NUMBER = 11260;
+
+let storedInvoiceNumber =
+    parseInt(
+        localStorage.getItem("invoiceNumber") || "0"
+    );
+
+
+/*
+    If an old number is below 11260,
+    automatically move the sequence to 11260.
+*/
+
+if (
+    isNaN(storedInvoiceNumber) ||
+    storedInvoiceNumber < STARTING_INVOICE_NUMBER
+) {
+    storedInvoiceNumber = STARTING_INVOICE_NUMBER;
+
+    localStorage.setItem(
+        "invoiceNumber",
+        storedInvoiceNumber
+    );
 }
+
+
+let invoiceNumber = storedInvoiceNumber;
+
 
 document.getElementById("invoiceNumber").textContent =
     String(invoiceNumber).padStart(5, "0");
 
 
-/* DATES */
+/* =========================================================
+   DATES
+========================================================= */
 
-const today = new Date().toISOString().split("T")[0];
-
-document.getElementById("invoiceDate").value = today;
-document.getElementById("dueDate").value = today;
+const today =
+    new Date().toISOString().split("T")[0];
 
 
-/* ADD ITEM */
+document.getElementById("invoiceDate").value =
+    today;
+
+document.getElementById("dueDate").value =
+    today;
+
+
+/* =========================================================
+   ADD ITEM
+========================================================= */
 
 function addItem() {
 
-    const tbody = document.getElementById("itemsBody");
+    const tbody =
+        document.getElementById("itemsBody");
 
-    const row = document.createElement("tr");
+    const row =
+        document.createElement("tr");
 
     row.innerHTML = `
         <td>
@@ -1003,11 +222,14 @@ function addItem() {
 }
 
 
-/* REMOVE ITEM */
+/* =========================================================
+   REMOVE ITEM
+========================================================= */
 
 function removeItem(button) {
 
-    const row = button.closest("tr");
+    const row =
+        button.closest("tr");
 
     if (row) {
         row.remove();
@@ -1017,278 +239,506 @@ function removeItem(button) {
 }
 
 
-/* CALCULATE TOTALS */
+/* =========================================================
+   CALCULATE TOTALS
+========================================================= */
 
 function calculateTotals() {
 
     let total = 0;
 
-    const rows = document.querySelectorAll("#itemsBody tr");
-
-    rows.forEach(row => {
-
-        const qty = parseFloat(
-            row.querySelector(".qty").value
-        ) || 0;
-
-        const price = parseFloat(
-            row.querySelector(".price").value
-        ) || 0;
-
-        const amount = qty * price;
-
-        row.querySelector(".amount").textContent =
-            "R " + amount.toFixed(2);
-
-        total += amount;
-    });
-
-    document.getElementById("subtotal").textContent =
-        "R " + total.toFixed(2);
-
-    document.getElementById("grandTotal").textContent =
-        "R " + total.toFixed(2);
-}
-
-
-/* SAVE CUSTOMER */
-
-function saveCustomer() {
-
-    const name = document
-        .getElementById("customerName")
-        .value
-        .trim();
-
-    if (!name) {
-        alert("Please enter a customer name.");
-        return;
-    }
-
-    const customer = {
-        name: name,
-        company: document.getElementById("customerCompany").value,
-        phone: document.getElementById("customerPhone").value,
-        email: document.getElementById("customerEmail").value,
-        address: document.getElementById("customerAddress").value
-    };
-
-    let customers = JSON.parse(
-        localStorage.getItem("customers") || "[]"
-    );
-
-    const existing = customers.findIndex(
-        c => c.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (existing >= 0) {
-        customers[existing] = customer;
-    } else {
-        customers.push(customer);
-    }
-
-    localStorage.setItem(
-        "customers",
-        JSON.stringify(customers)
-    );
-
-    loadCustomers();
-
-    alert("Customer saved.");
-}
-
-
-/* LOAD CUSTOMERS */
-
-function loadCustomers() {
-
-    const select =
-        document.getElementById("customerSelect");
-
-    select.innerHTML =
-        '<option value="">-- New Customer --</option>';
-
-    const customers = JSON.parse(
-        localStorage.getItem("customers") || "[]"
-    );
-
-    customers.forEach((customer, index) => {
-
-        const option =
-            document.createElement("option");
-
-        option.value = index;
-
-        option.textContent =
-            customer.name +
-            (
-                customer.company
-                    ? " - " + customer.company
-                    : ""
-            );
-
-        select.appendChild(option);
-    });
-}
-
-
-/* SELECT CUSTOMER */
-
-document
-    .getElementById("customerSelect")
-    .addEventListener("change", function() {
-
-        if (this.value === "") {
-            return;
-        }
-
-        const customers = JSON.parse(
-            localStorage.getItem("customers") || "[]"
-        );
-
-        const customer = customers[this.value];
-
-        if (!customer) {
-            return;
-        }
-
-        document.getElementById("customerName").value =
-            customer.name || "";
-
-        document.getElementById("customerCompany").value =
-            customer.company || "";
-
-        document.getElementById("customerPhone").value =
-            customer.phone || "";
-
-        document.getElementById("customerEmail").value =
-            customer.email || "";
-
-        document.getElementById("customerAddress").value =
-            customer.address || "";
-    });
-
-
-/* DELETE CUSTOMER */
-
-function deleteCustomer() {
-
-    const select =
-        document.getElementById("customerSelect");
-
-    if (select.value === "") {
-
-        alert("Select a saved customer first.");
-
-        return;
-    }
-
-    let customers = JSON.parse(
-        localStorage.getItem("customers") || "[]"
-    );
-
-    customers.splice(
-        parseInt(select.value),
-        1
-    );
-
-    localStorage.setItem(
-        "customers",
-        JSON.stringify(customers)
-    );
-
-    loadCustomers();
-
-    document.getElementById("customerName").value = "";
-    document.getElementById("customerCompany").value = "";
-    document.getElementById("customerPhone").value = "";
-    document.getElementById("customerEmail").value = "";
-    document.getElementById("customerAddress").value = "";
-}
-
-
-/* PREPARE PRINT */
-
-function preparePrintInvoice() {
-
-    document.getElementById("printInvoiceNumber").textContent =
-        document.getElementById("invoiceNumber").textContent;
-
-    document.getElementById("printInvoiceDate").textContent =
-        formatDate(
-            document.getElementById("invoiceDate").value
-        );
-
-    document.getElementById("printDueDate").textContent =
-        formatDate(
-            document.getElementById("dueDate").value
-        );
-
-    document.getElementById("printCustomerName").textContent =
-        document.getElementById("customerName").value;
-
-    document.getElementById("printCustomerCompany").textContent =
-        document.getElementById("customerCompany").value;
-
-    document.getElementById("printCustomerAddress").textContent =
-        document.getElementById("customerAddress").value;
-
-    document.getElementById("printCustomerPhone").textContent =
-        document.getElementById("customerPhone").value;
-
-    document.getElementById("printCustomerEmail").textContent =
-        document.getElementById("customerEmail").value;
-
-    const printBody =
-        document.getElementById("printItemsBody");
-
-    printBody.innerHTML = "";
-
     const rows =
         document.querySelectorAll("#itemsBody tr");
+
 
     rows.forEach(row => {
 
         const qty =
-            row.querySelector(".qty").value;
+            parseFloat(
+                row.querySelector(".qty").value
+            ) || 0;
 
-        const code =
-            row.querySelector(".code").value;
-
-        const description =
-            row.querySelector(".description").value;
 
         const price =
             parseFloat(
                 row.querySelector(".price").value
             ) || 0;
 
+
         const amount =
-            (parseFloat(qty) || 0) * price;
+            qty * price;
+
+
+        row.querySelector(".amount").textContent =
+            "R " + amount.toFixed(2);
+
+
+        total += amount;
+
+    });
+
+
+    document.getElementById("subtotal").textContent =
+        "R " + total.toFixed(2);
+
+
+    document.getElementById("grandTotal").textContent =
+        "R " + total.toFixed(2);
+}
+
+
+/* =========================================================
+   SAVE CUSTOMER
+========================================================= */
+
+function saveCustomer() {
+
+    const name =
+        document
+            .getElementById("customerName")
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter a customer name."
+        );
+
+        return;
+    }
+
+
+    const customer = {
+
+        name: name,
+
+        company:
+            document.getElementById(
+                "customerCompany"
+            ).value,
+
+        phone:
+            document.getElementById(
+                "customerPhone"
+            ).value,
+
+        email:
+            document.getElementById(
+                "customerEmail"
+            ).value,
+
+        address:
+            document.getElementById(
+                "customerAddress"
+            ).value
+    };
+
+
+    let customers =
+        JSON.parse(
+            localStorage.getItem(
+                "customers"
+            ) || "[]"
+        );
+
+
+    const existing =
+        customers.findIndex(
+            c =>
+                c.name.toLowerCase() ===
+                name.toLowerCase()
+        );
+
+
+    if (existing >= 0) {
+
+        customers[existing] =
+            customer;
+
+    } else {
+
+        customers.push(customer);
+
+    }
+
+
+    localStorage.setItem(
+        "customers",
+        JSON.stringify(customers)
+    );
+
+
+    loadCustomers();
+
+
+    alert(
+        "Customer saved."
+    );
+}
+
+
+/* =========================================================
+   LOAD CUSTOMERS
+========================================================= */
+
+function loadCustomers() {
+
+    const select =
+        document.getElementById(
+            "customerSelect"
+        );
+
+
+    select.innerHTML =
+        '<option value="">-- New Customer --</option>';
+
+
+    const customers =
+        JSON.parse(
+            localStorage.getItem(
+                "customers"
+            ) || "[]"
+        );
+
+
+    customers.forEach(
+        (customer, index) => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                index;
+
+
+            option.textContent =
+                customer.name +
+                (
+                    customer.company
+                        ? " - " +
+                          customer.company
+                        : ""
+                );
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   SELECT CUSTOMER
+========================================================= */
+
+document
+    .getElementById("customerSelect")
+    .addEventListener(
+        "change",
+        function() {
+
+            if (this.value === "") {
+                return;
+            }
+
+
+            const customers =
+                JSON.parse(
+                    localStorage.getItem(
+                        "customers"
+                    ) || "[]"
+                );
+
+
+            const customer =
+                customers[this.value];
+
+
+            if (!customer) {
+                return;
+            }
+
+
+            document.getElementById(
+                "customerName"
+            ).value =
+                customer.name || "";
+
+
+            document.getElementById(
+                "customerCompany"
+            ).value =
+                customer.company || "";
+
+
+            document.getElementById(
+                "customerPhone"
+            ).value =
+                customer.phone || "";
+
+
+            document.getElementById(
+                "customerEmail"
+            ).value =
+                customer.email || "";
+
+
+            document.getElementById(
+                "customerAddress"
+            ).value =
+                customer.address || "";
+
+        }
+    );
+
+
+/* =========================================================
+   DELETE CUSTOMER
+========================================================= */
+
+function deleteCustomer() {
+
+    const select =
+        document.getElementById(
+            "customerSelect"
+        );
+
+
+    if (select.value === "") {
+
+        alert(
+            "Select a saved customer first."
+        );
+
+        return;
+    }
+
+
+    let customers =
+        JSON.parse(
+            localStorage.getItem(
+                "customers"
+            ) || "[]"
+        );
+
+
+    customers.splice(
+        parseInt(select.value),
+        1
+    );
+
+
+    localStorage.setItem(
+        "customers",
+        JSON.stringify(customers)
+    );
+
+
+    loadCustomers();
+
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
+
+
+    document.getElementById(
+        "customerCompany"
+    ).value = "";
+
+
+    document.getElementById(
+        "customerPhone"
+    ).value = "";
+
+
+    document.getElementById(
+        "customerEmail"
+    ).value = "";
+
+
+    document.getElementById(
+        "customerAddress"
+    ).value = "";
+}
+
+
+/* =========================================================
+   PREPARE PRINT INVOICE
+========================================================= */
+
+function preparePrintInvoice() {
+
+    document.getElementById(
+        "printInvoiceNumber"
+    ).textContent =
+        document.getElementById(
+            "invoiceNumber"
+        ).textContent;
+
+
+    document.getElementById(
+        "printInvoiceDate"
+    ).textContent =
+        formatDate(
+            document.getElementById(
+                "invoiceDate"
+            ).value
+        );
+
+
+    document.getElementById(
+        "printDueDate"
+    ).textContent =
+        formatDate(
+            document.getElementById(
+                "dueDate"
+            ).value
+        );
+
+
+    document.getElementById(
+        "printCustomerName"
+    ).textContent =
+        document.getElementById(
+            "customerName"
+        ).value;
+
+
+    document.getElementById(
+        "printCustomerCompany"
+    ).textContent =
+        document.getElementById(
+            "customerCompany"
+        ).value;
+
+
+    document.getElementById(
+        "printCustomerAddress"
+    ).textContent =
+        document.getElementById(
+            "customerAddress"
+        ).value;
+
+
+    document.getElementById(
+        "printCustomerPhone"
+    ).textContent =
+        document.getElementById(
+            "customerPhone"
+        ).value;
+
+
+    document.getElementById(
+        "printCustomerEmail"
+    ).textContent =
+        document.getElementById(
+            "customerEmail"
+        ).value;
+
+
+    const printBody =
+        document.getElementById(
+            "printItemsBody"
+        );
+
+
+    printBody.innerHTML = "";
+
+
+    const rows =
+        document.querySelectorAll(
+            "#itemsBody tr"
+        );
+
+
+    rows.forEach(row => {
+
+        const qty =
+            row.querySelector(
+                ".qty"
+            ).value;
+
+
+        const code =
+            row.querySelector(
+                ".code"
+            ).value;
+
+
+        const description =
+            row.querySelector(
+                ".description"
+            ).value;
+
+
+        const price =
+            parseFloat(
+                row.querySelector(
+                    ".price"
+                ).value
+            ) || 0;
+
+
+        const amount =
+            (parseFloat(qty) || 0) *
+            price;
+
 
         const printRow =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
+
 
         printRow.innerHTML = `
             <td>${escapeHtml(qty)}</td>
             <td>${escapeHtml(code)}</td>
             <td>${escapeHtml(description)}</td>
-            <td class="right">R ${price.toFixed(2)}</td>
-            <td class="right">R ${amount.toFixed(2)}</td>
+            <td class="right">
+                R ${price.toFixed(2)}
+            </td>
+            <td class="right">
+                R ${amount.toFixed(2)}
+            </td>
         `;
 
-        printBody.appendChild(printRow);
+
+        printBody.appendChild(
+            printRow
+        );
+
     });
 
-    document.getElementById("printSubtotal").textContent =
-        document.getElementById("subtotal").textContent;
 
-    document.getElementById("printGrandTotal").textContent =
-        document.getElementById("grandTotal").textContent;
+    document.getElementById(
+        "printSubtotal"
+    ).textContent =
+        document.getElementById(
+            "subtotal"
+        ).textContent;
+
+
+    document.getElementById(
+        "printGrandTotal"
+    ).textContent =
+        document.getElementById(
+            "grandTotal"
+        ).textContent;
 }
 
 
-/* DATE FORMAT */
+/* =========================================================
+   DATE FORMAT
+========================================================= */
 
 function formatDate(dateString) {
 
@@ -1296,69 +746,177 @@ function formatDate(dateString) {
         return "";
     }
 
-    const parts = dateString.split("-");
 
-    return parts[2] + "/" +
-           parts[1] + "/" +
-           parts[0];
+    const parts =
+        dateString.split("-");
+
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
 }
 
 
-/* HTML SAFETY */
+/* =========================================================
+   HTML SAFETY
+========================================================= */
 
 function escapeHtml(value) {
 
     return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-/* GENERATE PDF */
+/* =========================================================
+   PDF / PRINT
+   Sets the browser document title so Chrome uses it
+   as the suggested PDF filename.
+========================================================= */
 
 function generatePDF() {
 
     preparePrintInvoice();
 
+
+    const company =
+        companies[currentCompany];
+
+
+    const reference =
+        document.getElementById(
+            "invoiceNumber"
+        ).textContent;
+
+
+    const originalTitle =
+        document.title;
+
+
+    /*
+        Example:
+
+        IMPRESSION SOLUTIONS - 11260
+        THE WEEKEND DETAILER - 11261
+    */
+
+    document.title =
+        company.displayName +
+        " - " +
+        reference;
+
+
     window.print();
+
+
+    /*
+        Give the print dialog time to initialise
+        before restoring the original page title.
+    */
+
+    setTimeout(
+        function() {
+
+            document.title =
+                originalTitle;
+
+        },
+        1000
+    );
 }
 
 
-/* NEW INVOICE */
+/* =========================================================
+   NEW INVOICE
+========================================================= */
 
 function newInvoice() {
 
-    if (!confirm("Start a new invoice?")) {
+    if (
+        !confirm(
+            "Start a new invoice?"
+        )
+    ) {
         return;
     }
 
+
     let nextNumber =
         parseInt(
-            localStorage.getItem("invoiceNumber") || "10322"
+            localStorage.getItem(
+                "invoiceNumber"
+            ) || STARTING_INVOICE_NUMBER
         ) + 1;
+
+
+    /*
+        Safety check so the sequence can never
+        accidentally drop below 11260.
+    */
+
+    if (
+        nextNumber <
+        STARTING_INVOICE_NUMBER
+    ) {
+
+        nextNumber =
+            STARTING_INVOICE_NUMBER;
+
+    }
+
 
     localStorage.setItem(
         "invoiceNumber",
         nextNumber
     );
 
+
     location.reload();
 }
 
 
-/* STARTUP */
+/* =========================================================
+   STARTUP
+========================================================= */
 
-document.getElementById("companySelect").value = currentCompany;
-switchCompany(currentCompany);
+document.getElementById(
+    "companySelect"
+).value =
+    currentCompany;
+
+
+switchCompany(
+    currentCompany
+);
+
 
 loadCustomers();
+
 
 addItem();
 
 </script>
-
-</body>
-</html>
+```
