@@ -1,4 +1,5 @@
 ```html
+```html
 <script>
 
 /* =========================================================
@@ -29,12 +30,26 @@ const companies = {
 
 
 /* =========================================================
-   CURRENT COMPANY
+   CONSTANTS
 ========================================================= */
+
+const STARTING_INVOICE_NUMBER = 11260;
+
+const INVOICE_STORAGE_KEY = "invoiceRecords";
 
 let currentCompany =
     localStorage.getItem("currentCompany") || "impression";
 
+let editingInvoiceNumber = null;
+
+let currentDocumentType = "invoice";
+
+let creditingInvoiceNumber = null;
+
+
+/* =========================================================
+   COMPANY SWITCHING
+========================================================= */
 
 function switchCompany(companyKey) {
 
@@ -51,91 +66,205 @@ function switchCompany(companyKey) {
 
     const company = companies[currentCompany];
 
-    document.getElementById("companySelect").value =
-        currentCompany;
 
     /* Screen */
 
-    document.getElementById("companyLogo").src =
-        company.logo;
+    const companySelect =
+        document.getElementById("companySelect");
 
-    document.getElementById("companyLogo").alt =
-        company.name;
+    if (companySelect) {
+        companySelect.value =
+            currentCompany;
+    }
 
-    document.getElementById("companyName").textContent =
-        company.name;
 
-    document.getElementById("companyLegalName").textContent =
-        company.legalName;
+    document.getElementById(
+        "companyLogo"
+    ).src = company.logo;
 
-    document.getElementById("companyAddress").textContent =
-        company.address;
+    document.getElementById(
+        "companyLogo"
+    ).alt = company.name;
 
-    document.getElementById("companyPhone").textContent =
-        company.phone;
+    document.getElementById(
+        "companyName"
+    ).textContent = company.name;
+
+    document.getElementById(
+        "companyLegalName"
+    ).textContent = company.legalName;
+
+    document.getElementById(
+        "companyAddress"
+    ).textContent = company.address;
+
+    document.getElementById(
+        "companyPhone"
+    ).textContent = company.phone;
 
 
     /* Printable invoice */
 
-    document.getElementById("printCompanyLogo").src =
-        company.logo;
+    document.getElementById(
+        "printCompanyLogo"
+    ).src = company.logo;
 
-    document.getElementById("printCompanyLogo").alt =
-        company.name;
+    document.getElementById(
+        "printCompanyLogo"
+    ).alt = company.name;
 
-    document.getElementById("printCompanyName").textContent =
+    document.getElementById(
+        "printCompanyName"
+    ).textContent =
         company.displayName;
 
-    document.getElementById("printCompanyLegalName").textContent =
+    document.getElementById(
+        "printCompanyLegalName"
+    ).textContent =
         company.legalName;
 
-    document.getElementById("printCompanyAddress").textContent =
+    document.getElementById(
+        "printCompanyAddress"
+    ).textContent =
         company.address;
 
-    document.getElementById("printCompanyPhone").textContent =
+    document.getElementById(
+        "printCompanyPhone"
+    ).textContent =
         company.phone;
 
-    document.getElementById("printFooterCompany").textContent =
+    document.getElementById(
+        "printFooterCompany"
+    ).textContent =
         company.footer;
 }
 
 
 /* =========================================================
    INVOICE NUMBER
-   STARTING NUMBER: 11260
 ========================================================= */
 
-const STARTING_INVOICE_NUMBER = 11260;
+function getInvoiceRecords() {
 
-let storedInvoiceNumber =
-    parseInt(
-        localStorage.getItem("invoiceNumber") || "0"
-    );
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                INVOICE_STORAGE_KEY
+            ) || "[]"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read invoice records:",
+            error
+        );
+
+        return [];
+
+    }
+}
 
 
-/*
-    If an old number is below 11260,
-    automatically move the sequence to 11260.
-*/
-
-if (
-    isNaN(storedInvoiceNumber) ||
-    storedInvoiceNumber < STARTING_INVOICE_NUMBER
-) {
-    storedInvoiceNumber = STARTING_INVOICE_NUMBER;
+function saveInvoiceRecords(records) {
 
     localStorage.setItem(
-        "invoiceNumber",
-        storedInvoiceNumber
+        INVOICE_STORAGE_KEY,
+        JSON.stringify(records)
     );
 }
 
 
-let invoiceNumber = storedInvoiceNumber;
+/*
+    Determine the highest actual invoice number
+    already saved in history.
+*/
+
+function getHighestInvoiceNumber() {
+
+    const records =
+        getInvoiceRecords();
+
+    let highest =
+        STARTING_INVOICE_NUMBER - 1;
 
 
-document.getElementById("invoiceNumber").textContent =
-    String(invoiceNumber).padStart(5, "0");
+    records.forEach(record => {
+
+        if (
+            record.type !== "credit_note" &&
+            record.invoiceNumber
+        ) {
+
+            const number =
+                parseInt(
+                    record.invoiceNumber
+                );
+
+
+            if (
+                !isNaN(number) &&
+                number > highest
+            ) {
+
+                highest = number;
+
+            }
+        }
+
+    });
+
+
+    return highest;
+}
+
+
+function getNextInvoiceNumber() {
+
+    const stored =
+        parseInt(
+            localStorage.getItem(
+                "invoiceNumber"
+            ) || "0"
+        );
+
+
+    const highest =
+        getHighestInvoiceNumber();
+
+
+    let next =
+        Math.max(
+            STARTING_INVOICE_NUMBER,
+            stored,
+            highest
+        );
+
+
+    return next;
+}
+
+
+let invoiceNumber =
+    getNextInvoiceNumber();
+
+
+/*
+    Store the current invoice number.
+*/
+
+localStorage.setItem(
+    "invoiceNumber",
+    invoiceNumber
+);
+
+
+document.getElementById(
+    "invoiceNumber"
+).textContent =
+    String(invoiceNumber)
+        .padStart(5, "0");
 
 
 /* =========================================================
@@ -143,34 +272,47 @@ document.getElementById("invoiceNumber").textContent =
 ========================================================= */
 
 const today =
-    new Date().toISOString().split("T")[0];
+    new Date()
+        .toISOString()
+        .split("T")[0];
 
 
-document.getElementById("invoiceDate").value =
-    today;
+document.getElementById(
+    "invoiceDate"
+).value = today;
 
-document.getElementById("dueDate").value =
-    today;
+
+document.getElementById(
+    "dueDate"
+).value = today;
 
 
 /* =========================================================
    ADD ITEM
 ========================================================= */
 
-function addItem() {
+function addItem(
+    item = null
+) {
 
     const tbody =
-        document.getElementById("itemsBody");
+        document.getElementById(
+            "itemsBody"
+        );
+
 
     const row =
-        document.createElement("tr");
+        document.createElement(
+            "tr"
+        );
+
 
     row.innerHTML = `
         <td>
             <input
                 type="number"
                 class="qty"
-                value="1"
+                value="${item ? escapeAttribute(item.qty) : "1"}"
                 min="0"
                 oninput="calculateTotals()"
             >
@@ -180,6 +322,7 @@ function addItem() {
             <input
                 type="text"
                 class="code"
+                value="${item ? escapeAttribute(item.code) : ""}"
             >
         </td>
 
@@ -187,6 +330,7 @@ function addItem() {
             <input
                 type="text"
                 class="description"
+                value="${item ? escapeAttribute(item.description) : ""}"
             >
         </td>
 
@@ -194,7 +338,7 @@ function addItem() {
             <input
                 type="number"
                 class="price"
-                value="0"
+                value="${item ? escapeAttribute(item.price) : "0"}"
                 min="0"
                 step="0.01"
                 oninput="calculateTotals()"
@@ -216,7 +360,9 @@ function addItem() {
         </td>
     `;
 
+
     tbody.appendChild(row);
+
 
     calculateTotals();
 }
@@ -231,9 +377,11 @@ function removeItem(button) {
     const row =
         button.closest("tr");
 
+
     if (row) {
         row.remove();
     }
+
 
     calculateTotals();
 }
@@ -247,21 +395,28 @@ function calculateTotals() {
 
     let total = 0;
 
+
     const rows =
-        document.querySelectorAll("#itemsBody tr");
+        document.querySelectorAll(
+            "#itemsBody tr"
+        );
 
 
     rows.forEach(row => {
 
         const qty =
             parseFloat(
-                row.querySelector(".qty").value
+                row.querySelector(
+                    ".qty"
+                ).value
             ) || 0;
 
 
         const price =
             parseFloat(
-                row.querySelector(".price").value
+                row.querySelector(
+                    ".price"
+                ).value
             ) || 0;
 
 
@@ -269,8 +424,11 @@ function calculateTotals() {
             qty * price;
 
 
-        row.querySelector(".amount").textContent =
-            "R " + amount.toFixed(2);
+        row.querySelector(
+            ".amount"
+        ).textContent =
+            "R " +
+            amount.toFixed(2);
 
 
         total += amount;
@@ -278,12 +436,158 @@ function calculateTotals() {
     });
 
 
-    document.getElementById("subtotal").textContent =
-        "R " + total.toFixed(2);
+    document.getElementById(
+        "subtotal"
+    ).textContent =
+        "R " +
+        total.toFixed(2);
 
 
-    document.getElementById("grandTotal").textContent =
-        "R " + total.toFixed(2);
+    document.getElementById(
+        "grandTotal"
+    ).textContent =
+        "R " +
+        total.toFixed(2);
+}
+
+
+/* =========================================================
+   COLLECT CURRENT INVOICE
+========================================================= */
+
+function collectCurrentInvoice() {
+
+    const items = [];
+
+
+    document
+        .querySelectorAll(
+            "#itemsBody tr"
+        )
+        .forEach(row => {
+
+            const qty =
+                parseFloat(
+                    row.querySelector(
+                        ".qty"
+                    ).value
+                ) || 0;
+
+
+            const price =
+                parseFloat(
+                    row.querySelector(
+                        ".price"
+                    ).value
+                ) || 0;
+
+
+            const code =
+                row.querySelector(
+                    ".code"
+                ).value;
+
+
+            const description =
+                row.querySelector(
+                    ".description"
+                ).value;
+
+
+            items.push({
+
+                qty: qty,
+
+                code: code,
+
+                description: description,
+
+                price: price,
+
+                amount:
+                    qty * price
+
+            });
+
+        });
+
+
+    const total =
+        items.reduce(
+            (sum, item) =>
+                sum + item.amount,
+            0
+        );
+
+
+    return {
+
+        invoiceNumber:
+            document.getElementById(
+                "invoiceNumber"
+            ).textContent,
+
+        type:
+            currentDocumentType,
+
+        company:
+            currentCompany,
+
+        invoiceDate:
+            document.getElementById(
+                "invoiceDate"
+            ).value,
+
+        dueDate:
+            document.getElementById(
+                "dueDate"
+            ).value,
+
+        customer: {
+
+            name:
+                document.getElementById(
+                    "customerName"
+                ).value,
+
+            company:
+                document.getElementById(
+                    "customerCompany"
+                ).value,
+
+            phone:
+                document.getElementById(
+                    "customerPhone"
+                ).value,
+
+            email:
+                document.getElementById(
+                    "customerEmail"
+                ).value,
+
+            address:
+                document.getElementById(
+                    "customerAddress"
+                ).value
+
+        },
+
+        items: items,
+
+        subtotal: total,
+
+        total: total,
+
+        status:
+            "issued",
+
+        createdAt:
+            new Date().toISOString(),
+
+        updatedAt:
+            new Date().toISOString()
+
+    };
 }
 
 
@@ -295,7 +599,9 @@ function saveCustomer() {
 
     const name =
         document
-            .getElementById("customerName")
+            .getElementById(
+                "customerName"
+            )
             .value
             .trim();
 
@@ -366,7 +672,9 @@ function saveCustomer() {
 
     localStorage.setItem(
         "customers",
-        JSON.stringify(customers)
+        JSON.stringify(
+            customers
+        )
     );
 
 
@@ -404,7 +712,10 @@ function loadCustomers() {
 
 
     customers.forEach(
-        (customer, index) => {
+        (
+            customer,
+            index
+        ) => {
 
             const option =
                 document.createElement(
@@ -440,12 +751,16 @@ function loadCustomers() {
 ========================================================= */
 
 document
-    .getElementById("customerSelect")
+    .getElementById(
+        "customerSelect"
+    )
     .addEventListener(
         "change",
         function() {
 
-            if (this.value === "") {
+            if (
+                this.value === ""
+            ) {
                 return;
             }
 
@@ -459,7 +774,9 @@ document
 
 
             const customer =
-                customers[this.value];
+                customers[
+                    this.value
+                ];
 
 
             if (!customer) {
@@ -512,7 +829,9 @@ function deleteCustomer() {
         );
 
 
-    if (select.value === "") {
+    if (
+        select.value === ""
+    ) {
 
         alert(
             "Select a saved customer first."
@@ -531,19 +850,33 @@ function deleteCustomer() {
 
 
     customers.splice(
-        parseInt(select.value),
+        parseInt(
+            select.value
+        ),
         1
     );
 
 
     localStorage.setItem(
         "customers",
-        JSON.stringify(customers)
+        JSON.stringify(
+            customers
+        )
     );
 
 
     loadCustomers();
 
+
+    clearCustomerFields();
+}
+
+
+/* =========================================================
+   CLEAR CUSTOMER
+========================================================= */
+
+function clearCustomerFields() {
 
     document.getElementById(
         "customerName"
@@ -575,23 +908,26 @@ function deleteCustomer() {
    PREPARE PRINT INVOICE
 ========================================================= */
 
-function preparePrintInvoice() {
+function preparePrintInvoice(
+    documentOverride = null
+) {
+
+    const invoice =
+        documentOverride ||
+        collectCurrentInvoice();
+
 
     document.getElementById(
         "printInvoiceNumber"
     ).textContent =
-        document.getElementById(
-            "invoiceNumber"
-        ).textContent;
+        invoice.invoiceNumber;
 
 
     document.getElementById(
         "printInvoiceDate"
     ).textContent =
         formatDate(
-            document.getElementById(
-                "invoiceDate"
-            ).value
+            invoice.invoiceDate
         );
 
 
@@ -599,50 +935,38 @@ function preparePrintInvoice() {
         "printDueDate"
     ).textContent =
         formatDate(
-            document.getElementById(
-                "dueDate"
-            ).value
+            invoice.dueDate
         );
 
 
     document.getElementById(
         "printCustomerName"
     ).textContent =
-        document.getElementById(
-            "customerName"
-        ).value;
+        invoice.customer.name;
 
 
     document.getElementById(
         "printCustomerCompany"
     ).textContent =
-        document.getElementById(
-            "customerCompany"
-        ).value;
+        invoice.customer.company;
 
 
     document.getElementById(
         "printCustomerAddress"
     ).textContent =
-        document.getElementById(
-            "customerAddress"
-        ).value;
+        invoice.customer.address;
 
 
     document.getElementById(
         "printCustomerPhone"
     ).textContent =
-        document.getElementById(
-            "customerPhone"
-        ).value;
+        invoice.customer.phone;
 
 
     document.getElementById(
         "printCustomerEmail"
     ).textContent =
-        document.getElementById(
-            "customerEmail"
-        ).value;
+        invoice.customer.email;
 
 
     const printBody =
@@ -654,85 +978,1388 @@ function preparePrintInvoice() {
     printBody.innerHTML = "";
 
 
-    const rows =
-        document.querySelectorAll(
-            "#itemsBody tr"
-        );
+    invoice.items.forEach(
+        item => {
+
+            const printRow =
+                document.createElement(
+                    "tr"
+                );
 
 
-    rows.forEach(row => {
+            printRow.innerHTML = `
+                <td>
+                    ${escapeHtml(item.qty)}
+                </td>
 
-        const qty =
-            row.querySelector(
-                ".qty"
-            ).value;
+                <td>
+                    ${escapeHtml(item.code)}
+                </td>
 
+                <td>
+                    ${escapeHtml(item.description)}
+                </td>
 
-        const code =
-            row.querySelector(
-                ".code"
-            ).value;
+                <td class="right">
+                    R ${Number(item.price).toFixed(2)}
+                </td>
 
-
-        const description =
-            row.querySelector(
-                ".description"
-            ).value;
-
-
-        const price =
-            parseFloat(
-                row.querySelector(
-                    ".price"
-                ).value
-            ) || 0;
+                <td class="right">
+                    R ${Number(item.amount).toFixed(2)}
+                </td>
+            `;
 
 
-        const amount =
-            (parseFloat(qty) || 0) *
-            price;
-
-
-        const printRow =
-            document.createElement(
-                "tr"
+            printBody.appendChild(
+                printRow
             );
 
-
-        printRow.innerHTML = `
-            <td>${escapeHtml(qty)}</td>
-            <td>${escapeHtml(code)}</td>
-            <td>${escapeHtml(description)}</td>
-            <td class="right">
-                R ${price.toFixed(2)}
-            </td>
-            <td class="right">
-                R ${amount.toFixed(2)}
-            </td>
-        `;
-
-
-        printBody.appendChild(
-            printRow
-        );
-
-    });
+        }
+    );
 
 
     document.getElementById(
         "printSubtotal"
     ).textContent =
-        document.getElementById(
-            "subtotal"
-        ).textContent;
+        "R " +
+        Number(
+            invoice.subtotal
+        ).toFixed(2);
 
 
     document.getElementById(
         "printGrandTotal"
     ).textContent =
+        "R " +
+        Number(
+            invoice.total
+        ).toFixed(2);
+}
+
+
+/* =========================================================
+   SAVE ISSUED INVOICE
+========================================================= */
+
+function saveIssuedInvoice(
+    invoice
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const existingIndex =
+        records.findIndex(
+            record =>
+                record.type === "invoice" &&
+                record.invoiceNumber ===
+                    invoice.invoiceNumber
+        );
+
+
+    if (
+        existingIndex >= 0
+    ) {
+
+        const existing =
+            records[
+                existingIndex
+            ];
+
+
+        invoice.createdAt =
+            existing.createdAt ||
+            invoice.createdAt;
+
+
+        invoice.updatedAt =
+            new Date().toISOString();
+
+
+        invoice.status =
+            existing.status ===
+            "credited"
+                ? "credited"
+                : "issued";
+
+
+        records[
+            existingIndex
+        ] = invoice;
+
+    } else {
+
+        records.push(
+            invoice
+        );
+
+    }
+
+
+    saveInvoiceRecords(
+        records
+    );
+
+
+    updateInvoiceHistory();
+
+
+    return invoice;
+}
+
+
+/* =========================================================
+   GENERATE PDF
+========================================================= */
+
+function generatePDF() {
+
+    let invoice =
+        collectCurrentInvoice();
+
+
+    /*
+        Editing an existing invoice means
+        the original reference must be preserved.
+    */
+
+    if (
+        editingInvoiceNumber
+    ) {
+
+        invoice.invoiceNumber =
+            editingInvoiceNumber;
+
+    }
+
+
+    /*
+        Credit note mode.
+    */
+
+    if (
+        currentDocumentType ===
+        "credit_note"
+    ) {
+
+        invoice.type =
+            "credit_note";
+
+        invoice.invoiceNumber =
+            "CN-" +
+            creditingInvoiceNumber;
+
+        invoice.status =
+            "issued";
+
+        invoice.creditOf =
+            creditingInvoiceNumber;
+
+    } else {
+
+        invoice.type =
+            "invoice";
+
+    }
+
+
+    preparePrintInvoice(
+        invoice
+    );
+
+
+    /*
+        Save invoice before opening
+        the browser print dialog.
+    */
+
+    if (
+        invoice.type ===
+        "invoice"
+    ) {
+
+        saveIssuedInvoice(
+            invoice
+        );
+
+    } else {
+
+        saveCreditNote(
+            invoice
+        );
+
+    }
+
+
+    const company =
+        companies[
+            currentCompany
+        ];
+
+
+    const originalTitle =
+        document.title;
+
+
+    document.title =
+        company.displayName +
+        " - " +
+        invoice.invoiceNumber;
+
+
+    window.print();
+
+
+    setTimeout(
+        function() {
+
+            document.title =
+                originalTitle;
+
+        },
+        1000
+    );
+}
+
+
+/* =========================================================
+   SAVE CREDIT NOTE
+========================================================= */
+
+function saveCreditNote(
+    creditNote
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const existing =
+        records.find(
+            record =>
+                record.type ===
+                    "credit_note" &&
+                record.invoiceNumber ===
+                    creditNote.invoiceNumber
+        );
+
+
+    if (existing) {
+
+        alert(
+            "A credit note already exists for this invoice."
+        );
+
+        return;
+
+    }
+
+
+    records.push(
+        creditNote
+    );
+
+
+    /*
+        Mark original invoice as credited.
+    */
+
+    const original =
+        records.find(
+            record =>
+                record.type ===
+                    "invoice" &&
+                record.invoiceNumber ===
+                    creditNote.creditOf
+        );
+
+
+    if (original) {
+
+        original.status =
+            "credited";
+
+        original.updatedAt =
+            new Date().toISOString();
+
+    }
+
+
+    saveInvoiceRecords(
+        records
+    );
+
+
+    updateInvoiceHistory();
+}
+
+
+/* =========================================================
+   CREDIT AN INVOICE
+========================================================= */
+
+function creditInvoice(
+    invoiceNumber
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const invoice =
+        records.find(
+            record =>
+                record.type ===
+                    "invoice" &&
+                record.invoiceNumber ===
+                    invoiceNumber
+        );
+
+
+    if (!invoice) {
+
+        alert(
+            "Invoice could not be found."
+        );
+
+        return;
+    }
+
+
+    if (
+        invoice.status ===
+        "credited"
+    ) {
+
+        alert(
+            "This invoice has already been credited."
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Create a full credit note for invoice " +
+            invoiceNumber +
+            "?\n\n" +
+            "The original invoice will remain in your history."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    /*
+        Load the invoice into the form.
+    */
+
+    loadInvoiceIntoForm(
+        invoice
+    );
+
+
+    creditingInvoiceNumber =
+        invoiceNumber;
+
+
+    currentDocumentType =
+        "credit_note";
+
+
+    /*
+        Negative values are used on
+        the credit note.
+    */
+
+    document
+        .querySelectorAll(
+            "#itemsBody tr"
+        )
+        .forEach(
+            row => {
+
+                const price =
+                    row.querySelector(
+                        ".price"
+                    );
+
+
+                if (price) {
+
+                    price.value =
+                        -Math.abs(
+                            parseFloat(
+                                price.value
+                            ) || 0
+                        );
+
+                }
+
+            }
+        );
+
+
+    calculateTotals();
+
+
+    updateInvoiceModeDisplay();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+
+    alert(
+        "Credit note prepared. Review it, then click Generate PDF."
+    );
+}
+
+
+/* =========================================================
+   LOAD INVOICE INTO FORM
+========================================================= */
+
+function loadInvoiceIntoForm(
+    invoice
+) {
+
+    currentCompany =
+        invoice.company ||
+        "impression";
+
+
+    switchCompany(
+        currentCompany
+    );
+
+
+    document.getElementById(
+        "invoiceNumber"
+    ).textContent =
+        invoice.invoiceNumber;
+
+
+    document.getElementById(
+        "invoiceDate"
+    ).value =
+        invoice.invoiceDate || today;
+
+
+    document.getElementById(
+        "dueDate"
+    ).value =
+        invoice.dueDate || today;
+
+
+    document.getElementById(
+        "customerName"
+    ).value =
+        invoice.customer.name || "";
+
+
+    document.getElementById(
+        "customerCompany"
+    ).value =
+        invoice.customer.company || "";
+
+
+    document.getElementById(
+        "customerPhone"
+    ).value =
+        invoice.customer.phone || "";
+
+
+    document.getElementById(
+        "customerEmail"
+    ).value =
+        invoice.customer.email || "";
+
+
+    document.getElementById(
+        "customerAddress"
+    ).value =
+        invoice.customer.address || "";
+
+
+    const tbody =
         document.getElementById(
-            "grandTotal"
-        ).textContent;
+            "itemsBody"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    if (
+        invoice.items &&
+        invoice.items.length
+    ) {
+
+        invoice.items.forEach(
+            item => {
+
+                addItem(
+                    item
+                );
+
+            }
+        );
+
+    } else {
+
+        addItem();
+
+    }
+
+
+    calculateTotals();
+}
+
+
+/* =========================================================
+   EDIT INVOICE
+========================================================= */
+
+function editInvoice(
+    invoiceNumber
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const invoice =
+        records.find(
+            record =>
+                record.type ===
+                    "invoice" &&
+                record.invoiceNumber ===
+                    invoiceNumber
+        );
+
+
+    if (!invoice) {
+
+        alert(
+            "Invoice could not be found."
+        );
+
+        return;
+    }
+
+
+    if (
+        invoice.status ===
+        "credited"
+    ) {
+
+        alert(
+            "This invoice has already been credited and cannot be edited."
+        );
+
+        return;
+    }
+
+
+    loadInvoiceIntoForm(
+        invoice
+    );
+
+
+    editingInvoiceNumber =
+        invoiceNumber;
+
+
+    currentDocumentType =
+        "invoice";
+
+
+    updateInvoiceModeDisplay();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   NEW INVOICE
+========================================================= */
+
+function newInvoice() {
+
+    if (
+        !confirm(
+            "Start a new invoice?"
+        )
+    ) {
+        return;
+    }
+
+
+    /*
+        Determine the next unused invoice number
+        from the saved history.
+    */
+
+    const highest =
+        getHighestInvoiceNumber();
+
+
+    const nextNumber =
+        Math.max(
+            STARTING_INVOICE_NUMBER,
+            highest + 1
+        );
+
+
+    localStorage.setItem(
+        "invoiceNumber",
+        nextNumber
+    );
+
+
+    location.reload();
+}
+
+
+/* =========================================================
+   INVOICE HISTORY UI
+========================================================= */
+
+function createInvoiceHistoryUI() {
+
+    if (
+        document.getElementById(
+            "invoiceHistoryPanel"
+        )
+    ) {
+        return;
+    }
+
+
+    const style =
+        document.createElement(
+            "style"
+        );
+
+
+    style.id =
+        "invoiceHistoryStyles";
+
+
+    style.textContent = `
+
+        #invoiceHistoryPanel {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7f9fc;
+            border: 1px solid #dfe5ec;
+            border-radius: 12px;
+        }
+
+        #invoiceHistoryPanel h2 {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .history-subtitle {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        #invoiceHistorySearch {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccd3dc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid #e0e4e9;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .history-reference {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .history-customer {
+            font-weight: 600;
+        }
+
+        .history-meta {
+            color: #666;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .history-total {
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .history-actions button {
+            border: 0;
+            border-radius: 7px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .history-open {
+            background: #17365d;
+            color: white;
+        }
+
+        .history-credit {
+            background: #9d2c2c;
+            color: white;
+        }
+
+        .history-disabled {
+            background: #ddd;
+            color: #777;
+        }
+
+        .history-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .history-status-issued {
+            background: #dcefdc;
+            color: #246624;
+        }
+
+        .history-status-credited {
+            background: #f5dddd;
+            color: #8a2222;
+        }
+
+        .history-status-credit {
+            background: #e4e4f7;
+            color: #41418a;
+        }
+
+        .history-empty {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        .invoice-mode-banner {
+            display: none;
+            margin: 15px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #fff3cd;
+            color: #664d03;
+            border: 1px solid #ffecb5;
+        }
+
+        .invoice-mode-banner.active {
+            display: block;
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
+
+
+    const panel =
+        document.createElement(
+            "section"
+        );
+
+
+    panel.id =
+        "invoiceHistoryPanel";
+
+
+    panel.innerHTML = `
+
+        <h2>Invoice History</h2>
+
+        <div class="history-subtitle">
+            Saved invoices and credit notes on this device.
+        </div>
+
+        <input
+            type="search"
+            id="invoiceHistorySearch"
+            placeholder="Search invoice number, customer or company..."
+            oninput="updateInvoiceHistory()"
+        >
+
+        <div id="invoiceHistoryList"></div>
+
+    `;
+
+
+    /*
+        Put the history immediately before
+        the printable invoice section if possible.
+    */
+
+    const printInvoice =
+        document.getElementById(
+            "printInvoice"
+        );
+
+
+    if (
+        printInvoice &&
+        printInvoice.parentNode
+    ) {
+
+        printInvoice.parentNode.insertBefore(
+            panel,
+            printInvoice
+        );
+
+    } else {
+
+        document.body.appendChild(
+            panel
+        );
+
+    }
+
+
+    updateInvoiceHistory();
+}
+
+
+/* =========================================================
+   UPDATE HISTORY
+========================================================= */
+
+function updateInvoiceHistory() {
+
+    const list =
+        document.getElementById(
+            "invoiceHistoryList"
+        );
+
+
+    if (!list) {
+        return;
+    }
+
+
+    const search =
+        (
+            document.getElementById(
+                "invoiceHistorySearch"
+            )?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    let records =
+        getInvoiceRecords();
+
+
+    records =
+        records
+            .filter(record => {
+
+                if (!search) {
+                    return true;
+                }
+
+
+                const customer =
+                    record.customer?.name ||
+                    "";
+
+
+                const company =
+                    companies[
+                        record.company
+                    ]?.name ||
+                    "";
+
+
+                return (
+
+                    String(
+                        record.invoiceNumber
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    customer
+                        .toLowerCase()
+                        .includes(search)
+
+                    ||
+
+                    company
+                        .toLowerCase()
+                        .includes(search)
+
+                );
+
+            })
+            .sort(
+                (
+                    a,
+                    b
+                ) => {
+
+                    return (
+                        new Date(
+                            b.updatedAt ||
+                            b.createdAt
+                        ) -
+                        new Date(
+                            a.updatedAt ||
+                            a.createdAt
+                        )
+                    );
+
+                }
+            );
+
+
+    if (
+        records.length === 0
+    ) {
+
+        list.innerHTML = `
+            <div class="history-empty">
+                No saved invoices found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML =
+        records
+            .map(
+                record =>
+                    renderHistoryItem(
+                        record
+                    )
+            )
+            .join("");
+}
+
+
+/* =========================================================
+   RENDER HISTORY ITEM
+========================================================= */
+
+function renderHistoryItem(
+    record
+) {
+
+    const company =
+        companies[
+            record.company
+        ] ||
+        companies.impression;
+
+
+    const isCredit =
+        record.type ===
+        "credit_note";
+
+
+    const status =
+        record.status ||
+        "issued";
+
+
+    let statusClass =
+        "history-status-issued";
+
+
+    let statusText =
+        "Issued";
+
+
+    if (
+        status ===
+        "credited"
+    ) {
+
+        statusClass =
+            "history-status-credited";
+
+        statusText =
+            "Credited";
+
+    }
+
+
+    if (isCredit) {
+
+        statusClass =
+            "history-status-credit";
+
+        statusText =
+            "Credit Note";
+
+    }
+
+
+    const customer =
+        record.customer?.name ||
+        "No customer";
+
+
+    const total =
+        Number(
+            record.total || 0
+        );
+
+
+    return `
+
+        <div class="history-item">
+
+            <div class="history-header">
+
+                <div>
+
+                    <div class="history-reference">
+                        ${escapeHtml(
+                            record.invoiceNumber
+                        )}
+                    </div>
+
+                    <div class="history-customer">
+                        ${escapeHtml(
+                            customer
+                        )}
+                    </div>
+
+                </div>
+
+                <div>
+                    <span
+                        class="history-status ${statusClass}"
+                    >
+                        ${statusText}
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="history-meta">
+
+                ${escapeHtml(
+                    company.name
+                )}
+
+                &nbsp; • &nbsp;
+
+                ${formatDate(
+                    record.invoiceDate
+                )}
+
+            </div>
+
+
+            ${
+                isCredit
+                    ? `
+                        <div class="history-meta">
+                            Credit for invoice
+                            ${escapeHtml(
+                                record.creditOf
+                            )}
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            <div class="history-total">
+
+                R ${total.toFixed(2)}
+
+            </div>
+
+
+            <div class="history-actions">
+
+                ${
+                    isCredit
+                        ? `
+                            <button
+                                type="button"
+                                class="history-open"
+                                onclick="openSavedDocument('${escapeAttribute(record.invoiceNumber)}')"
+                            >
+                                Open
+                            </button>
+                        `
+                        : `
+                            <button
+                                type="button"
+                                class="history-open"
+                                onclick="editInvoice('${escapeAttribute(record.invoiceNumber)}')"
+                            >
+                                Edit
+                            </button>
+
+                            ${
+                                status ===
+                                "credited"
+                                    ? `
+                                        <button
+                                            type="button"
+                                            class="history-disabled"
+                                            disabled
+                                        >
+                                            Already Credited
+                                        </button>
+                                    `
+                                    : `
+                                        <button
+                                            type="button"
+                                            class="history-credit"
+                                            onclick="creditInvoice('${escapeAttribute(record.invoiceNumber)}')"
+                                        >
+                                            Credit Invoice
+                                        </button>
+                                    `
+                            }
+                        `
+                }
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================================
+   OPEN SAVED DOCUMENT
+========================================================= */
+
+function openSavedDocument(
+    documentNumber
+) {
+
+    const records =
+        getInvoiceRecords();
+
+
+    const record =
+        records.find(
+            item =>
+                item.invoiceNumber ===
+                documentNumber
+        );
+
+
+    if (!record) {
+
+        alert(
+            "Document could not be found."
+        );
+
+        return;
+    }
+
+
+    loadInvoiceIntoForm(
+        record
+    );
+
+
+    editingInvoiceNumber =
+        record.type ===
+            "invoice"
+            ? record.invoiceNumber
+            : null;
+
+
+    currentDocumentType =
+        record.type;
+
+
+    updateInvoiceModeDisplay();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   MODE DISPLAY
+========================================================= */
+
+function updateInvoiceModeDisplay() {
+
+    let banner =
+        document.getElementById(
+            "invoiceModeBanner"
+        );
+
+
+    if (!banner) {
+
+        banner =
+            document.createElement(
+                "div"
+            );
+
+
+        banner.id =
+            "invoiceModeBanner";
+
+
+        banner.className =
+            "invoice-mode-banner";
+
+
+        const invoiceNumberElement =
+            document.getElementById(
+                "invoiceNumber"
+            );
+
+
+        if (
+            invoiceNumberElement &&
+            invoiceNumberElement.parentNode
+        ) {
+
+            invoiceNumberElement.parentNode.insertBefore(
+                banner,
+                invoiceNumberElement
+            );
+
+        } else {
+
+            document.body.prepend(
+                banner
+            );
+
+        }
+
+    }
+
+
+    if (
+        currentDocumentType ===
+        "credit_note"
+    ) {
+
+        banner.textContent =
+            "CREDIT NOTE MODE - Credit for invoice " +
+            creditingInvoiceNumber;
+
+        banner.classList.add(
+            "active"
+        );
+
+
+        document.getElementById(
+            "invoiceNumber"
+        ).textContent =
+            "CN-" +
+            creditingInvoiceNumber;
+
+
+        return;
+    }
+
+
+    if (
+        editingInvoiceNumber
+    ) {
+
+        banner.textContent =
+            "EDITING INVOICE " +
+            editingInvoiceNumber +
+            " - The invoice number will remain unchanged.";
+
+        banner.classList.add(
+            "active"
+        );
+
+
+        document.getElementById(
+            "invoiceNumber"
+        ).textContent =
+            editingInvoiceNumber;
+
+
+        return;
+    }
+
+
+    banner.classList.remove(
+        "active"
+    );
+
+
+    document.getElementById(
+        "invoiceNumber"
+    ).textContent =
+        String(
+            invoiceNumber
+        ).padStart(
+            5,
+            "0"
+        );
 }
 
 
@@ -740,7 +2367,9 @@ function preparePrintInvoice() {
    DATE FORMAT
 ========================================================= */
 
-function formatDate(dateString) {
+function formatDate(
+    dateString
+) {
 
     if (!dateString) {
         return "";
@@ -749,6 +2378,13 @@ function formatDate(dateString) {
 
     const parts =
         dateString.split("-");
+
+
+    if (
+        parts.length !== 3
+    ) {
+        return dateString;
+    }
 
 
     return (
@@ -765,9 +2401,13 @@ function formatDate(dateString) {
    HTML SAFETY
 ========================================================= */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
-    return String(value || "")
+    return String(
+        value ?? ""
+    )
         .replace(
             /&/g,
             "&amp;"
@@ -791,110 +2431,25 @@ function escapeHtml(value) {
 }
 
 
-/* =========================================================
-   PDF / PRINT
-   Sets the browser document title so Chrome uses it
-   as the suggested PDF filename.
-========================================================= */
+function escapeAttribute(
+    value
+) {
 
-function generatePDF() {
-
-    preparePrintInvoice();
-
-
-    const company =
-        companies[currentCompany];
-
-
-    const reference =
-        document.getElementById(
-            "invoiceNumber"
-        ).textContent;
-
-
-    const originalTitle =
-        document.title;
-
-
-    /*
-        Example:
-
-        IMPRESSION SOLUTIONS - 11260
-        THE WEEKEND DETAILER - 11261
-    */
-
-    document.title =
-        company.displayName +
-        " - " +
-        reference;
-
-
-    window.print();
-
-
-    /*
-        Give the print dialog time to initialise
-        before restoring the original page title.
-    */
-
-    setTimeout(
-        function() {
-
-            document.title =
-                originalTitle;
-
-        },
-        1000
-    );
-}
-
-
-/* =========================================================
-   NEW INVOICE
-========================================================= */
-
-function newInvoice() {
-
-    if (
-        !confirm(
-            "Start a new invoice?"
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /\\/g,
+            "\\\\"
         )
-    ) {
-        return;
-    }
-
-
-    let nextNumber =
-        parseInt(
-            localStorage.getItem(
-                "invoiceNumber"
-            ) || STARTING_INVOICE_NUMBER
-        ) + 1;
-
-
-    /*
-        Safety check so the sequence can never
-        accidentally drop below 11260.
-    */
-
-    if (
-        nextNumber <
-        STARTING_INVOICE_NUMBER
-    ) {
-
-        nextNumber =
-            STARTING_INVOICE_NUMBER;
-
-    }
-
-
-    localStorage.setItem(
-        "invoiceNumber",
-        nextNumber
-    );
-
-
-    location.reload();
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        );
 }
 
 
@@ -918,5 +2473,16 @@ loadCustomers();
 
 addItem();
 
+
+calculateTotals();
+
+
+createInvoiceHistoryUI();
+
+
+updateInvoiceModeDisplay();
+
 </script>
+```
+
 ```
